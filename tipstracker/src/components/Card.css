@@ -1,0 +1,127 @@
+/* .here {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} */
+.here {
+  text-align: center;
+}
+.avatar {
+  width: 7em;
+  height: 7em;
+  background-position: cover;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.hum {
+  color: rgb(244, 244, 247) !important;
+  font-weight: 500 !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+.hum-item {
+  color: rgb(244, 244, 247) !important;
+  font-weight: 300 !important;
+}
+.hum-icon {
+  color: rgb(241, 241, 44) !important;
+  font-weight: 300 !important;
+  padding: 0;
+}
+.hum-icon-form {
+  color: rgb(241, 241, 44) !important;
+  font-weight: 300 !important;
+  height: 2% !important;
+}
+.wild {
+  height: 420px;
+  overflow: scroll;
+  padding: 0 !important;
+}
+svg {
+  height: 0.8em !important;
+  padding-bottom: 0.1em !important;
+  color: yellow;
+}
+.you {
+  /* height: 100%; */
+  background-color: rgba(80, 51, 160, 0.3) !important;
+}
+.main-card {
+  border: 2px solid rgb(117, 95, 203) !important;
+  border-radius: 25px !important;
+  width: 80% !important;
+  height: 500px;
+  overflow: scroll;
+  animation: rotationmove 0.4s linear;
+}
+.colore {
+  background-color: rgb(36, 27, 161) !important;
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  height: 50px;
+  background-color: rgba(7, 1, 53, 0.8) !important;
+}
+.card-footer {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 50px;
+  background-color: rgba(7, 1, 53, 0.8) !important;
+}
+.trtr {
+  border-color: rgb(170, 169, 193, 0.4);
+  border-style: solid;
+  border-bottom-width: 1px !important;
+  padding-top: 20px !important;
+}
+.row-profile {
+  background-color: rgb(36, 27, 161) !important;
+}
+table {
+  width: 100% !important;
+  height: 100% !important;
+}
+th {
+  font-weight: 300 !important;
+}
+.card-title,
+.card-body,
+.card-footer {
+  animation: rotationfade 0.4s forwards;
+}
+.tips-input {
+  border-radius: 2em;
+  background-color: rgba(255, 255, 255, 0.693);
+}
+
+@keyframes rotationmove {
+  50% {
+    transform: rotateY(90deg);
+  }
+}
+@keyframes rotationfade {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

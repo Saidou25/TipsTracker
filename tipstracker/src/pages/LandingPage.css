@@ -1,0 +1,31 @@
+.grad1 {
+  min-height: 100vh;
+  background-color: rgb(
+    8,
+    8,
+    8
+  ); /* For browsers that do not support gradients */
+  background-image: linear-gradient(30deg, rgb(72, 0, 255), rgb(4, 4, 4));
+}
+.logo {
+  border: solid;
+  border-radius: 50%;
+  padding: 1em !important;
+  width: 70px !important;
+  height: 70px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ul-row {
+  list-style-type: none;
+  padding: 0;
+}
+.nav-item {
+  text-decoration: none;
+}
+.login {
+  color: rgb(178, 55, 249);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
