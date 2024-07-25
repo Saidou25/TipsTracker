@@ -11,7 +11,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const tips = cardBodyTemplate.tips;
   
   const [newTipsArr, setNewTipsArr] = useState(tips);
-  const [weeklyTotal, setWeeklyTotal] = useState("");
 
   const titles = titlesData[0].titles;
   const months = [

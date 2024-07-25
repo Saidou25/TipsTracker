@@ -29,10 +29,10 @@ const Navbar = () => {
               <NavLink className="nav-text" to="/dashboard">dashboard
               </NavLink>
             </li>
-            <li className="nav-link">
+            {/* <li className="nav-link">
               <NavLink className="nav-text" to="/Team">Panier
               </NavLink>
-            </li>
+            </li> */}
             <li className="nav-link">
               <NavLink className="nav-text" to="/profile">profile
               </NavLink>
