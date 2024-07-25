@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 // import { auth } from "../firebase";
-// import { FaSackDollar } from "react-icons/fa6";
-// import { GiCoins } from "react-icons/gi";
+import { FaSackDollar } from "react-icons/fa6";
+import { GiCoins } from "react-icons/gi";
 import { titlesData } from "../data";
 
 import "./Card.css";
 
 const CardBodyDashboard = ({ cardBodyTemplate }) => {
-  const [newTipsArr, setNewTipsArr] = useState("");
+  const tips = cardBodyTemplate.tips;
+  
+  const [newTipsArr, setNewTipsArr] = useState(tips);
+  const [weeklyTotal, setWeeklyTotal] = useState("");
 
   const titles = titlesData[0].titles;
   const months = [
@@ -28,7 +31,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const monthTitle = months[new Date().getMonth()];
 
   const display = useCallback((newArrTips) => {
-    console.log(newArrTips);
     setNewTipsArr(newArrTips);
   }, []);
 
@@ -42,11 +44,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     if (dd < 10) dd = "0" + dd;
     if (mm < 10) mm = "0" + mm;
 
-    // const todaysDate = mm + "/" + dd + "/" + yyyy;
-
     const getDatesBetween = (startDate, endDate) => {
-      console.log("start date", startDate);
-      console.log("end date", endDate);
 
       let dates = [];
       let currentDate = new Date(startDate);
@@ -60,11 +58,8 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     };
 
     if (cardBodyTemplate) {
-      const tips = cardBodyTemplate.tips;
-      // console.log(tips.sort())
 
       if (tips) {
-        
         let startDate;
         let endDate;
 
@@ -76,13 +71,8 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
           startDate = tips[i].date;
           endDate = tips[(i + 1) % len].date;
-         
-          if (current === tips[0].date.split("/")[1]) {
-            newArrTips.push(tips[0]);
-          }
 
           if (next - current > 1) {
-
             let dateArray = getDatesBetween(startDate, endDate);
 
             // Format dates to MM/DD/YYYY
@@ -92,26 +82,29 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
               let year = date.getFullYear();
               return `${month}/${day}/${year}`;
             });
-            console.log(dateArray);
+        
             dateArray.pop();
+            dateArray.shift();
+
+            newArrTips.push({
+              dayName: tips[i].dayName,
+              date: !tips[i].date ? 0 : tips[i].date,
+              TipsBrut: tips[i].TipsBrut,
+              TipsNet: tips[i].TipsNet,
+            });
 
             for (let dateA of dateArray) {
-
               let date = new Date(`${dateA}`);
               let day = date.toLocaleString("en-us", { weekday: "long" });
-              console.log(day);
 
-              if (dateA !== tips[0].date) {
-                newArrTips.push({
-                  dayName: day,
-                  date: dateA,
-                  TipsBrut: 0,
-                  TipsNet: 0,
-                });
-              }
+              newArrTips.push({
+                dayName: day,
+                date: dateA,
+                TipsBrut: 0,
+                TipsNet: 0,
+              });
             }
           }
-
           if (next - current === 1) {
             newArrTips.push(tips[i]);
           }
@@ -120,10 +113,51 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           }
         }
       }
+
       display(newArrTips);
     }
-  }, [cardBodyTemplate, display]);
+  }, [cardBodyTemplate, display, tips]);
 
+ let weeklyTipsNet;
+ let weeklyTipsBrut;
+
+  const render = (tip) => {
+    if (tip) {
+   
+      for (let i = 0; i < newTipsArr.length; i++) {
+   
+        if (newTipsArr[i].date === tip.date) {
+       
+          const day6 = newTipsArr[i - 6] ? parseInt(newTipsArr[i - 6].TipsNet) : 0;
+          const day5 = newTipsArr[i - 5] ? parseInt(newTipsArr[i - 5].TipsNet) : 0;
+          const day4 = newTipsArr[i - 4] ? parseInt(newTipsArr[i - 4].TipsNet) : 0;
+          const day3 = newTipsArr[i - 3] ? parseInt(newTipsArr[i - 3].TipsNet) : 0;
+          const day2 = newTipsArr[i - 2] ? parseInt(newTipsArr[i - 2].TipsNet) : 0;
+          const day1 = newTipsArr[i - 1] ? parseInt(newTipsArr[i - 1].TipsNet) : 0;
+          const dayDay = parseInt(newTipsArr[i].TipsNet);
+
+          const dayBrut6 = newTipsArr[i - 6] ? parseInt(newTipsArr[i - 6].TipsBrut) : 0;
+          const dayBrut5 = newTipsArr[i - 5] ? parseInt(newTipsArr[i - 5].TipsBrut) : 0;
+          const dayBrut4 = newTipsArr[i - 4] ? parseInt(newTipsArr[i - 4].TipsBrut) : 0;
+          const dayBrut3 = newTipsArr[i - 3] ? parseInt(newTipsArr[i - 3].TipsBrut) : 0;
+          const dayBrut2 = newTipsArr[i - 2] ? parseInt(newTipsArr[i - 2].TipsBrut) : 0;
+          const dayBrut1 = newTipsArr[i - 1] ? parseInt(newTipsArr[i - 1].TipsBrut) : 0;
+          const dayBrutDay = parseInt(newTipsArr[i].TipsBrut);
+
+           weeklyTipsNet = (dayDay + day1 + day2 + day3 + day4 + day5 + day6)
+           weeklyTipsBrut = (dayBrutDay + dayBrut1 + dayBrut2 + dayBrut3 + dayBrut4 + dayBrut5 + dayBrut6)
+        }
+      }
+    }
+    return (
+      <div className="row bg-info">
+      <div className="col-3">weekly total: </div>
+      <div className="col-3"></div>
+      <div className="col-3">{weeklyTipsBrut}</div>
+      <div className="col-3">{weeklyTipsNet}</div>
+      </div>
+    )
+  }
   return (
     <>
       <h5
@@ -142,7 +176,11 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
             {titles &&
               titles.map((title) => (
                 <div className="col-3" key={title}>
-                  <span>{title}</span>
+                  {title === "tips(brut)" && <>
+                    <FaSackDollar />tips(brut)</>} 
+                  {title === "tips(net)" && <><GiCoins />tips(net)</>} 
+                  {title === "week day" && <>week day</>}
+                  {title === "date" && <>date</>}
                 </div>
               ))}
           </div>
@@ -150,25 +188,30 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
         <div className="here">
           <div className="py-2">
             {newTipsArr &&
-              newTipsArr.map((tip) => (
+              newTipsArr.map((tip, index) => (
                 <div className="row" key={tip.date}>
                   <span className="col-3">{tip.dayName}</span>
                   <span className="col-3">{tip.date}</span>
                   <span className="col-3">{tip.TipsBrut}</span>
                   <span className="col-3">{tip.TipsNet}</span>
+
                   {tip.dayName === "Sunday" ? (
                     <>
                       <div className="row">
-                        <span className="col-12 bg-danger">
-                          Total: {tip.TipsNet}
+                        <span className="col-12 bg-info">
+                          {newTipsArr ? <>{render(tip)}</> : null}
                         </span>
                       </div>
                       <div className="here">
-                        <div className="row bg-danger">
+                        <div className="row bg-secondary mt-2">
                           {titles &&
                             titles.map((title) => (
                               <div className="col-3" key={title}>
-                                <span>{title}</span>
+                                 {title === "tips(brut)" && <>
+                                 <FaSackDollar />tips(brut)</>} 
+                                 {title === "tips(net)" && <><GiCoins />tips(net)</>} 
+                                 {title === "week day" && <>week day</>}
+                                 {title === "date" && <>date</>}
                               </div>
                             ))}
                         </div>
