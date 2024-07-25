@@ -149,7 +149,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       }
     }
     return (
-      <div className="row bg-info">
+      <div className="row bg-info g-0" style={{ width: " 100%" }}>
       <div className="col-3">weekly total: </div>
       <div className="col-3"></div>
       <div className="col-3">{weeklyTipsBrut}</div>
@@ -171,7 +171,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       <br />
       <div className="you g-0 m-0 p-0">
         <div className="here">
-          <div className="row">
+          <div className="row bg-secondary g-0">
             {titles &&
               titles.map((title) => (
                 <div className="col-3" key={title}>
@@ -188,7 +188,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           <div className="py-2">
             {newTipsArr &&
               newTipsArr.map((tip, index) => (
-                <div className="row" key={tip.date}>
+                <div className="row g-0" key={tip.date}>
                   <span className="col-3">{tip.dayName}</span>
                   <span className="col-3">{tip.date}</span>
                   <span className="col-3">{tip.TipsBrut}</span>
@@ -196,7 +196,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
                   {tip.dayName === "Sunday" ? (
                     <>
-                      <div className="row">
+                      <div className="row g-0">
                         <span className="col-12 bg-info">
                           {newTipsArr ? <>{render(tip)}</> : null}
                         </span>
