@@ -26,7 +26,8 @@ const CardBodyTipsForm = ({ fields }) => {
 
   // Format the date as MM/DD/YYYY
   var formattedDate = month + "/" + day + "/" + year;
-  // var formattedDate = "07/15/2024";
+  // var formattedDate = new Date("07-28-2024");
+  // console.log(formattedDate);
 
   const [updateCurrentUserCollection, setUpdateCurrentUserCollection] =
     useState(false);
@@ -59,7 +60,7 @@ const CardBodyTipsForm = ({ fields }) => {
   const updateTodaysTips = useCallback(async () => {
     userTipsData.pop();
     userTipsData.push(formState);
-    console.log("tips data", userTipsData);
+    // console.log("tips data", userTipsData);
     try {
       await setDoc(doc(db, "users", currentUser.uid), {
         displayName: currentUser.displayName,
@@ -81,46 +82,44 @@ const CardBodyTipsForm = ({ fields }) => {
       });
       navigate("/dashboard");
     }
-  }, [userTipsData, 
-    currentUser, 
-    formattedDate, 
-    navigate, 
-    formState]);
+  }, [userTipsData, currentUser, formattedDate, navigate, formState]);
 
   const updateTheCollection = useCallback(
     async (e) => {
       e.preventDefault();
-console.log("update the collection");
+      console.log("update the collection");
       const userDocRef = doc(db, "users", currentUser.uid);
 
       if (userTipsData?.length && formState.date === formattedDate) {
         updateTodaysTips();
-      } 
-      // else
-        try {
-          // Atomically add a new region to the "regions" array field.
-          await updateDoc(userDocRef, {
-            tips: arrayUnion({ ...formState, date: formattedDate }),
-          });
-        } catch (error) {
-          console.log(error.message);
-        } finally {
-          console.log("did update doc/arrayUnion");
-          setFormState({
-            TipsBrut: 0,
-            TipsNet: 0,
-            dayName: "",
-            date: formattedDate,
-          });
-          navigate("/dashboard");
-        }
+      }
+      try {
+        // Atomically add a new region to the "regions" array field.
+        await updateDoc(userDocRef, {
+          tips: arrayUnion({ ...formState, date: formattedDate }),
+        });
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        console.log("did update doc/arrayUnion");
+        setFormState({
+          TipsBrut: 0,
+          TipsNet: 0,
+          dayName: "",
+          // date: "09/04/2024",
+          date: formattedDate,
+        });
+        navigate("/dashboard");
+      }
     },
-    [currentUser, 
-      formattedDate, 
-      navigate, 
-      formState, 
-      userTipsData, 
-      updateTodaysTips]
+    [
+      currentUser,
+      formattedDate,
+      navigate,
+      formState,
+      userTipsData,
+      updateTodaysTips,
+    ]
   );
 
   const createTheCollection = useCallback(
@@ -207,7 +206,7 @@ console.log("update the collection");
 
   useEffect(() => {
     if (users.length) {
-      console.log("there are users", users);
+      // console.log("there are users", users);
       const loggedinUser = users.filter(
         (user) => user.email === currentUser.email
       );
