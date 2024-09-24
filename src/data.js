@@ -158,7 +158,7 @@ const tipsDataFeed = [
 
 const titlesData = [
   {
-    titles: ["week day", "date", "tips(brut)", "tips(net)"],
+    titles: ["month", "week day", "date", "tips(brut)", "tips(net)"],
   },
 ];
 export {

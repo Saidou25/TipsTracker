@@ -1,40 +1,61 @@
-export function monthTipsArray(augustTips) {
-  console.log(augustTips);
-
-function buildMonthArray(augustTips, year, month) {
-    // Create an array to store all days of the month
-    const daysInMonth = new Date(year, month, 0).getDate(); // Get total number of days in the month
-    const monthArray = [];
-
-    // Create a map of existing augustTips by day
-    const tipsMap = new Map();
-    console.log(tipsMap)
-    for (const tip of augustTips) {
-        const day = parseInt(tip.date.slice(3, 5)); // Extract day from the "date" field
-        tipsMap.set(day, tip);
+export function monthTipsArray(newTipsArr) {
+  // Initialize an object to hold tips for both July and August
+  const tipsByMonth = {
+    "07": [],
+    "08": [],
+  };
+//   console.log(newTipsArr);
+  // Group tips by month (07 = July, 08 = August)
+  if (newTipsArr) {
+    for (let newTip of newTipsArr) {
+      const month = newTip.date.split("/")[0]; // Extract the month from the date
+      if (month === "07" || month === "08") {
+        tipsByMonth[month].push(newTip); // Push the tip into the respective month
+      }
     }
+  }
 
-    // Loop over all days in the month
-    for (let day = 1; day <= daysInMonth; day++) {
-        // If the augustTips map has data for this day, use it. Otherwise, fill it with default values.
-        const tip = tipsMap.get(day) || {
-            TipsNet: "0",
-            TipsBrut: "0",
-            dayName: new Date(year, month - 1, day).toLocaleDateString('en-US', { weekday: 'long' }),
-            date: `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}/${year}`
-        };
-        monthArray.push(tip);
-    }
+  // Build month arrays for both July and August
+  const julyArray = buildMonthArray(tipsByMonth["07"], 2024, 7); // July (month 07)
+  const augustArray = buildMonthArray(tipsByMonth["08"], 2024, 8); // August (month 08)
 
-    return monthArray;
+  // Combine both month arrays into one
+  const combinedMonthArray = [...julyArray, ...augustArray];
+
+  // console.log("Combined Tips Array:", combinedMonthArray);
+
+  // Return the combined array containing both July and August tips
+  return combinedMonthArray;
 }
 
-// Example usage:
-const year = 2024;
-const month = 8; // August (months are 1-indexed)
-const result = buildMonthArray(augustTips, year, month);
+function buildMonthArray(tips, year, month) {
+  // Get total number of days in the month
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const monthArray = [];
 
-console.log(result);
+  // Create a map of existing tips by day
+  const tipsMap = new Map();
+  for (const tip of tips) {
+    const day = parseInt(tip.date.slice(3, 5)); // Extract the day from the date
+    tipsMap.set(day, tip);
+  }
 
+  // Loop over all days in the month
+  for (let day = 1; day <= daysInMonth; day++) {
+    // Use the tip from the map if it exists, otherwise use default values
+    const tip = tipsMap.get(day) || {
+      TipsNet: "-",
+      TipsBrut: "-",
+      dayName: new Date(year, month - 1, day).toLocaleDateString("en-US", {
+        weekday: "long",
+      }),
+      date: `${String(month).padStart(2, "0")}/${String(day).padStart(
+        2,
+        "0"
+      )}/${year}`,
+    };
+    monthArray.push(tip);
+  }
 
+  return monthArray;
 }
