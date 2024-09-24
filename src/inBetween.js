@@ -3,13 +3,15 @@ export function monthTipsArray(newTipsArr) {
   const tipsByMonth = {
     "07": [],
     "08": [],
+    "09": [],
   };
 //   console.log(newTipsArr);
   // Group tips by month (07 = July, 08 = August)
   if (newTipsArr) {
+    console.log(newTipsArr)
     for (let newTip of newTipsArr) {
       const month = newTip.date.split("/")[0]; // Extract the month from the date
-      if (month === "07" || month === "08") {
+      if (month === "07" || month === "08" || month === "09") {
         tipsByMonth[month].push(newTip); // Push the tip into the respective month
       }
     }
@@ -18,9 +20,10 @@ export function monthTipsArray(newTipsArr) {
   // Build month arrays for both July and August
   const julyArray = buildMonthArray(tipsByMonth["07"], 2024, 7); // July (month 07)
   const augustArray = buildMonthArray(tipsByMonth["08"], 2024, 8); // August (month 08)
+  const septemberArray = buildMonthArray(tipsByMonth["09"], 2024, 9); // September (month 09)
 
   // Combine both month arrays into one
-  const combinedMonthArray = [...julyArray, ...augustArray];
+  const combinedMonthArray = [...julyArray, ...augustArray, ...septemberArray];
 
   // console.log("Combined Tips Array:", combinedMonthArray);
 
