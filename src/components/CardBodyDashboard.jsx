@@ -3,14 +3,18 @@ import { useCallback, useEffect, useState } from "react";
 import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
 import { titlesData } from "../data";
+import { classification } from "../helpers"
 
 import "./Card.css";
 
 const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const tips = cardBodyTemplate.tips;
+  // console.log("tips", tips);
+classification(tips);
 
   const [newTipsArr, setNewTipsArr] = useState(tips);
-  console.log("new tips array", newTipsArr);
+  // console.log("new tips array", newTipsArr);
+
   const titles = titlesData[0].titles;
   const months = [
     "January",
@@ -26,12 +30,17 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     "November",
     "December",
   ];
-  const monthTitle = months[new Date().getMonth()];
+  const currentMonthName = months[new Date().getMonth()]; // this gives us the current month's name
+  // console.log("month title", currentMonthName);
+
+  // getting the month of the current tip data to put same month datas together
+const monthName = months[new Date("2024-07-23").getMonth()]; 
+// console.log(monthName);
+
 
   const display = useCallback((newArrTips) => {
-    console.log("new tips array", newTipsArr);
+    // console.log("new tips array", newTipsArr);
     setNewTipsArr(newArrTips);
-
   }, []);
 
   useEffect(() => {
@@ -116,6 +125,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     }
   }, [cardBodyTemplate, display, tips]);
 
+  // ______________________________code for adding tips and display a weekly total tips___________________________
   let weeklyTipsNet;
   let weeklyTipsBrut;
 
@@ -193,7 +203,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           justifyContent: "center",
         }}
       >
-        {monthTitle}
+        {currentMonthName}
       </h5>
       <br />
       <div className="you g-0 m-0 p-0">
