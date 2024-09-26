@@ -1,8 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-// import { auth } from "../firebase";
 import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
-import { titlesData } from "../data";
 import { monthTipsArray } from "../inBetween";
 
 import "./Card.css";
@@ -10,7 +7,7 @@ import "./Card.css";
 const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const newTipsArr = cardBodyTemplate.tips;
   const displayTips = monthTipsArray(newTipsArr);
-
+// console.log(displayTips)
   // ______________________________code for adding tips and display a weekly total tips___________________________
   let weeklyTipsNet;
   let weeklyTipsBrut;
@@ -108,7 +105,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
         <div className="py-2">
           {displayTips &&
             displayTips.map((tip, index) => (
-              <div className="row g-0" key={tip.date}>
+              <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
                 <span className="col-2">
                   {(() => {
                     const [month, day, year] = tip.date.split("/"); // Extract month, day, year
