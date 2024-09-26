@@ -13,14 +13,14 @@ import "./index.css";
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.NODE_ENV === 'production' ? '/tipstracker' : '/'}>
       <Routes>
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
         </Route>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/Team" element={<Team />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/enterTips" element={<EnterTips />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/update" element={<Update />} />
