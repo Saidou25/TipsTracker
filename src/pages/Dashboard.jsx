@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+// import { signOut, onAuthStateChanged } from "firebase/auth";
+// import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase";
-// import { dashboardData } from "../data";
-import { IoPower } from "react-icons/io5";
+// import { IoPower } from "react-icons/io5";
+import { tipsDataFeed } from "../data";
 
 // import Button from "../components/Button";
 import Navbar from "../components/Navbar";
@@ -13,66 +13,72 @@ import TitleBox from "../components/TitleBox";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const [earnings, setEarnings] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState([]);
 
-  const currentUser = auth.currentUser;
+  // const currentUser = auth.currentUser;
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      // console.log(`User with the uid ${uid} is loggedin`);
-    } else {
-      // console.log("No user loggedin");
-    }
-  });
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     const uid = user.uid;
+  //     // console.log(`User with the uid ${uid} is loggedin`);
+  //   } else {
+  //     // console.log("No user loggedin");
+  //   }
+  // });
 
-  const logout = () => {
-    signOut(auth)
-      .then(() => {
-        // console.log("Sign-out successful");
-      })
-      .catch((error) => {
-        console.log("An error happened.", error.message);
-      });
-  };
+  // const logout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       console.log("Sign-out successful");
+  //     })
+  //     .catch((error) => {
+  //       console.log("An error happened.", error.message);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   const inconue = async () => {
+  //     const querySnapshot = await getDocs(collection(db, "users"));
+  //     const dataArray = []; // Initialize an array to store the stringified objects
+  //     querySnapshot.forEach((doc) => {
+  //       const data = doc.data();
+  //       // console.log(`${doc.id} => ${JSON.stringify(data)}`);
+  //       dataArray.push(data); // Push the data object into the dataArray
+  //     });
+
+  //     setUsers(dataArray); // list of users and their collection
+  //   };
+  //   inconue();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (users.length) {
+  //     const loggedinUser = users.filter(
+  //       (user) => user.email === currentUser.email
+  //     );
+
+  //     if (!loggedinUser[0].tips) {
+  //       console.log("there are no tips yet for this user");
+  //     }
+  //     if (loggedinUser[0].tips) {
+  //       console.log("there are tips for this user");
+  //       // setUpdateCurrentUserCollection(true);
+  //       const currentUserTips = loggedinUser[0].tips
+  //       setUserTipsData(currentUserTips); // pulling the tips list of the current loggedin user
+  //     }
+  //   }
+  // }, [users, currentUser]);
 
   useEffect(() => {
-    const inconue = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const dataArray = []; // Initialize an array to store the stringified objects
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        // console.log(`${doc.id} => ${JSON.stringify(data)}`);
-        dataArray.push(data); // Push the data object into the dataArray
-      });
-      // console.log(dataArray);
-      setEarnings(dataArray);
-      // console.log("querySnapshot", querySnapshot);
-    };
-    inconue();
-  }, []);
-
-  useEffect(() => {
-    if (earnings) {
-      // console.log(earnings);
-      for (let earning of earnings) {
-        // console.log("earning", earning);
-        if (earning.email === currentUser.email) {
-          // console.log("it is equal", earning);
-          setUserTipsData(earning);
-
-        } else {
-          // console.log("it is not equal");
-        }
-      }
+    if (tipsDataFeed) {
+      // console.log("tipsDataFeed", tipsDataFeed);
+      setUserTipsData(tipsDataFeed);
     }
-  }, [earnings, currentUser]);
-
+  }, [tipsDataFeed]);
 
   return (
     <div className="grad1">
-      <IoPower className="on-off" onClick={logout} />
       <Navbar />
       <div className="container-fluid g-0">
         <TitleBox firstname="Sy" />
@@ -91,5 +97,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-

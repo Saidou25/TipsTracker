@@ -1,5 +1,4 @@
 import { auth } from "../firebase";
-import { NavLink } from "react-router-dom";
 import { profile } from "../data";
 
 import Card from "../components/Card";
@@ -14,9 +13,6 @@ const Profile = () => {
 
   return (
     <div className="grad1">
-      <NavLink className="nav-item" to="/">
-        <div className="logofor-pages">GF</div>
-      </NavLink>
       <Navbar />
       <div className="container-fluid g-0">
         <TitleBox firstname="Sy" />

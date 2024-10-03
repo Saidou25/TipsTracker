@@ -1,37 +1,87 @@
+import { useEffect, useState } from "react";
 import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
 import { monthTipsArray } from "../inBetween";
-
+import useMonitorWidth from "../UseMonitorWidth";
 import "./Card.css";
 
 const CardBodyDashboard = ({ cardBodyTemplate }) => {
-  const newTipsArr = cardBodyTemplate.tips;
-  const displayTips = monthTipsArray(newTipsArr);
-// console.log(displayTips)
+  const [displayTips, setDisplayTips] = useState();
+  // console.log(cardBodyTemplate);
+
+  const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
+
   // ______________________________code for adding tips and display a weekly total tips___________________________
+  const newTipsArr = [];
   let weeklyTipsNet;
   let weeklyTipsBrut;
 
+  useEffect(() => {
+    // if (cardBodyTemplate) {
+    //   for (let allTips of cardBodyTemplate) {
+    //     newTipsArr.push(allTips);
+    //   }
+    // }
+    if (cardBodyTemplate) {
+      const dashboardTipsData = cardBodyTemplate.fields;
+      for (let allTips of dashboardTipsData) {
+        newTipsArr.push(allTips);
+      }
+    }
+    if (newTipsArr.length) {
+      const currentUserTips = monthTipsArray(newTipsArr);
+      // const dates = newTipsArr.map((e) => e.date);
+      // console.log(dates.sort((a, b) => a - b));
+      setDisplayTips(currentUserTips);
+    }
+  }, [cardBodyTemplate, setDisplayTips]);
+
+  // --------------------- render the columns' titles --------------
   const renderTitles = () => {
     return (
-      <div className="here">
-        <div className="row bg-secondary g-0">
-          <span className="col-2">month</span>
-          <span className="col-3">week day</span>
-          <span className="col-3">date</span>
-          <span className="col-2">
-            <FaSackDollar />
-            tips(brut)
-          </span>
-          <span className="col-2">
-            <GiCoins />
-            tips(net)
-          </span>
-        </div>
+      <div className="row dashboard-alignment font-weight bg-secondary g-0">
+        {showDashboardMediaView === false ? ( // if not mobile screen then we display that way
+          <>
+            <span className="col-2">month</span>
+            <span className="col-3">week day</span>
+            <span className="col-3">date</span>
+            <span className="col-2">
+              <FaSackDollar />
+              <span>tips(brut)</span>
+              
+            </span>
+            <span className="col-2">
+              <GiCoins />
+              tips(net)
+            </span>
+          </>
+        ) : (
+          // if mobile screen we display that way
+          <div className="">
+            <span className="col-4">date</span>
+            <span className="col-4">
+              <FaSackDollar />
+              tips(brut)
+            </span>
+            <span className="col-4">
+              <GiCoins />
+              tips(net)
+            </span>
+          </div>
+        )}
       </div>
     );
   };
-  const render = (tip) => {
+  // ------------------------------------------------------------------
+
+  // ------------------- Calculate the total tips for the week and returning a div to display --------
+
+  const render = (tip, index) => {
+    // console.log("tip", tip.TipsBrut, "index", index)
+    const prevDaysIndex = index - 1;
+    const prevDaysTips = tip.TipsBrut;
+    // console.log("prevDaysIndex", prevDaysIndex, "prevDaysTips", prevDaysTips);
+
     if (tip) {
       for (let i = 0; i < newTipsArr.length; i++) {
         if (newTipsArr[i].date === tip.date) {
@@ -89,65 +139,104 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     }
     return (
       <div className="row bg-info g-0" style={{ width: " 100%" }}>
-        <div className="col-2"></div>
-        <div className="col-3"></div>
-        <div className="col-3">weekly total: </div>
-        <div className="col-2">{weeklyTipsBrut}</div>
-        <div className="col-2">{weeklyTipsNet}</div>
+        {showDashboardMediaView === false ? (
+          <>
+            <div className="col-2 font-weight">weekly total:</div>
+            <div className="col-6"></div>
+            <div className="col-2">{weeklyTipsBrut}</div>
+            <div className="col-2">{weeklyTipsNet}</div>
+          </>
+        ) : (
+          <>
+            <div className="col-4 font-weight">weekly total: </div>
+            <div className="col-4">{weeklyTipsBrut}</div>
+            <div className="col-4">{weeklyTipsNet}</div>
+          </>
+        )}
       </div>
     );
   };
+  // ------------------------------------------------------------------
+
   return (
-    <>
+    <div className="wild">
       <div className="you g-0 m-0 p-0">{renderTitles()}</div>
+      <div className="dashboard-alignment py-2">
+        {displayTips &&
+          displayTips.map((tip, index) => (
+            <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
+              {showDashboardMediaView === false && (
+                <>
+                  <span className="col-lg-2 col-sm-0">
+                    {(() => {
+                      const [month, day, year] = tip.date.split("/"); // Extract month, day, year
 
-      <div className="here">
-        <div className="py-2">
-          {displayTips &&
-            displayTips.map((tip, index) => (
-              <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
-                <span className="col-2">
-                  {(() => {
-                    const [month, day, year] = tip.date.split("/"); // Extract month, day, year
+                      // Create a Date object using local time
+                      const correctedDate = new Date(
+                        year,
+                        parseInt(month, 10) - 1,
+                        day
+                      );
 
-                    // Create a correct Date object using local time
-                    const correctedDate = new Date(
-                      year,
-                      parseInt(month, 10) - 1,
-                      day
-                    );
+                      // Return the full month name
+                      const monthName = correctedDate.toLocaleDateString(
+                        "en-US",
+                        { month: "long" }
+                      );
 
-                    // Return the full month name
-                    const monthName = correctedDate.toLocaleDateString(
-                      "en-US",
-                      { month: "long" }
-                    );
-
-                    return monthName;
-                  })()}
-                </span>
-                <span className="col-3">{tip.dayName}</span>
-                <span className="col-3">{tip.date}</span>
-                <span className="col-2">{tip.TipsBrut}</span>
-                <span className="col-2">{tip.TipsNet}</span>
-
-                {tip.dayName === "Sunday" ? (
-                  <>
+                      return monthName;
+                    })()}
+                  </span>
+                  <span className="col-3">{tip.dayName}</span>
+                  <span className="col-3">{tip.date}</span>
+                  <span className="col-2">{tip.TipsBrut}</span>
+                  <span className="col-2">{tip.TipsNet}</span>
+                  {tip.dayName === "Sunday" ? ( // we add the column's titles line after each Sunday
                     <div className="row g-0">
                       <span className="col-12 bg-info">
-                        {newTipsArr ? <>{render(tip)}</> : null}
+                        {newTipsArr ? <>{render(tip, index)}</> : null} 
                       </span>
+                      {renderTitles()}
                     </div>
-                    {renderTitles()}
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-            ))}
-        </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+              {showDashboardMediaView === true && (
+                <>
+                  <span className="col-4">{tip.date}</span>
+                  <span className="col-4">{tip.TipsBrut}</span>
+                  <span className="col-4">{tip.TipsNet}</span>
+                  {tip.dayName === "Sunday" ? (
+                    <div className="row g-0">
+                      <span className="col-12 bg-info">
+                        {newTipsArr ? <>{render(tip, index)}</> : null}
+                      </span>
+                      {renderTitles()}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+
+              {/* {tip.dayName === "Sunday" ? (
+                // <>
+                  <div className="row g-0">
+                    <span className="col-12 bg-info">
+                      {newTipsArr ? <>{render(tip, index)}</> : null}
+                    </span>
+                  {renderTitles()}
+                  </div>
+                // </>
+              ) : (
+                <></>
+              )} */}
+            </div>
+          ))}
       </div>
-    </>
+    </div>
   );
 };
 

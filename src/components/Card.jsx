@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import CardBodyProfile from "./CardBodyProfile";
@@ -9,47 +10,65 @@ import CardBodyUpdate from "./CardBodyUpdate";
 
 import "./Card.css";
 
-const Card = ({ title, cardBodyTemplate = {}, footer, src }) => {
+const Card = ({ cardBodyTemplate = {}, footer, src }) => {
+  const [fieldsData, setFieldsData] = useState("");
+  const [titleData, setTitleData] = useState("");
+
   const { templateTitle, fields } = cardBodyTemplate;
 
-
-  const renderFields = (fields) => {
-    switch (templateTitle) {
-      case "signupData":
-        return <CardBodySignup fields={fields} />;
-      case "loginData":
-        return <CardBodyLogin fields={fields} />;
-      case "profile":
-        return <CardBodyProfile fields={fields} src={src} />;
-      case "tipsForm":
-        return (
-          <CardBodyTipsForm
-            fields={fields}
-            cardBodyTemplate={cardBodyTemplate}
-          />
-        );
-      case "update":
-        return <CardBodyUpdate fields={fields} src={src} />;
-      default:
-        return (
-          <CardBodyDashboard
-            fields={fields}
-            cardBodyTemplate={cardBodyTemplate}
-          />
-        );
+  const renderFields = () => {
+    if (titleData && fieldsData) {
+      switch (titleData) {
+        case "Signup":
+          return <CardBodySignup fields={fieldsData} title={titleData} />;
+        case "Login":
+          return <CardBodyLogin fields={fieldsData} title={titleData} />;
+        case "profile":
+          return <CardBodyProfile fields={fields} src={src} />;
+        case "tipsForm":
+          return (
+            <CardBodyTipsForm
+              fields={fields}
+              cardBodyTemplate={cardBodyTemplate}
+            />
+          );
+        case "update":
+          return <CardBodyUpdate fields={fields} src={src} />;
+        default:
+          return (
+            <CardBodyDashboard
+              // fields={fields}
+              cardBodyTemplate={cardBodyTemplate}
+            />
+          );
+      }
     }
   };
 
+  useEffect(() => {
+    if (fields && templateTitle) {
+      // console.log(fields);
+      // console.log(templateTitle)
+      setFieldsData(fields);
+      setTitleData(templateTitle);
+    }
+  }, [fields, templateTitle]);
+
   return (
     <div
-      className="card main-card bg-transparent"
+      className="card main-card"
       // role="test-card"
     >
-      <div className="card-title p-5">{title}</div>
-      <div className="card-body wild">{renderFields(fields)}</div>
+      <div className="card-title p-5">{titleData}</div>
+      <div className="card-body">{renderFields()}</div>
       <div className="card-footer p-5">
         {window.location.pathname === "/profile" ? (
-          <NavLink to="/update">update</NavLink>
+          <div className="profile-footer">
+            <span>You can update your profile </span>
+            <NavLink className="update" to="/update">
+              <span>here</span>
+            </NavLink>
+          </div>
         ) : (
           <>{footer}</>
         )}

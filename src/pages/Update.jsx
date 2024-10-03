@@ -41,7 +41,7 @@ const Update = () => {
         <Card
           role="card"
           title={new Date().toString()}
-          footer="Enter tips footer"
+          footer="You can delete your account here"
           cardBodyTemplate={update}
           data-testid="card-component"
         />

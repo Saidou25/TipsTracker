@@ -58,7 +58,6 @@ export function monthTipsArray(newTipsArr) {
   });
 
   // Return all tips, including default entries for days without tips
-  console.log("Final Filtered Tips Array:", filteredMonthArray);
   return filteredMonthArray; // Changed to return filteredMonthArray
 }
 

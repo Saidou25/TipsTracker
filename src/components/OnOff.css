@@ -1,0 +1,26 @@
+/* -------------------- logo -------------- */
+.logo-container {
+  padding-left: 5%;
+  margin: 2%;
+}
+.logofor-pages {
+  border: solid;
+  border-width: 2px;
+  border-radius: 50%;
+  padding-left: 5%;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 200 !important;
+  margin: 2%;
+}
+/* --------------------on/off button -------------- */
+.on-off-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2%;
+}
+.on-off {
+  color: rgb(148, 205, 240) !important;
+  width: 15%;
+  padding-right: 5%;
+  font-size: 2rem;
+}

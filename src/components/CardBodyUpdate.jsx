@@ -22,7 +22,7 @@ const CardBodyUpdate = ({ fields }) => {
   const form = useRef();
 
   const navigate = useNavigate();
-  
+
   const currentUser = auth.currentUser;
 
   const handleChange = (e) => {
@@ -64,18 +64,21 @@ const CardBodyUpdate = ({ fields }) => {
   };
 
   return (
-    <div className="row you tips g-0" data-testid="card-body-tips-form">
+    <div className="row g-0">
       <UpdateProfilePicture handleUrl={handleUrl} />
       <form
         ref={form}
         // role="form"
-        className="form px-5"
+        className="form mt-4 px-5"
         onSubmit={handleSubmit}
       >
         <br />
         {fields &&
           fields.map((field) => (
-            <div className="col-12" key={field.label}>
+            <div
+              className="col-12 d-flex justify-content-center"
+              key={field.label}
+            >
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
@@ -86,14 +89,6 @@ const CardBodyUpdate = ({ fields }) => {
               </label>
               <br />
               <br />
-              {field.label === "Tips brut" ? (
-                <FaSackDollar
-                  data-testid="fa-sack-dollar"
-                  className="hum-icon-form"
-                />
-              ) : (
-                <GiCoins data-testid="fa-gi-coins" className="hum-icon-form" />
-              )}
               <input
                 data-testid="input"
                 role="spinbutton"
@@ -112,16 +107,21 @@ const CardBodyUpdate = ({ fields }) => {
               <br />
             </div>
           ))}
-        <Button
-          type="submit"
-          className="button"
-          disabled={false}
-          loading={loading}
-        >
-          update
-        </Button>
+        <div className="col-12 d-flex justify-content-center mb-4">
+          <Button
+            type="submit"
+            className="button btn"
+            disabled={false}
+            loading={loading}
+          >
+            update
+          </Button>
+        </div>
         {error && (
-          <span className="text-danger" data-testid="oops">
+          <span
+            className="text-danger"
+            data-testid="oops something went wrong..."
+          >
             {error}
           </span>
         )}

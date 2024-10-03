@@ -3,16 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 10%;
+  /* padding-top: 10%; */
 }
-.on-off {
-  color: rgb(148, 205, 240) !important;
-  font-size: 3em;
-  width: 110px;
-  height: 110px;
-}
-.container-roundup {
-  margin-bottom: 12%;
+.container-hello {
+  margin-bottom: 4%;
   width: 80%;
 }
 .paragraph {
@@ -26,4 +20,11 @@
 .name {
   text-align: center;
   font-size: 5rem !important;
+}
+@media screen and (max-width: 430px) {
+  .on-off {
+    width: 5%;
+    height: 5%;
+    margin-bottom: 3% !important;
+  }
 }

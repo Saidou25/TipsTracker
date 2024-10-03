@@ -1,8 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
-import { FaSackDollar } from "react-icons/fa6";
-import { GiCoins } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
@@ -39,7 +37,7 @@ const CardBodyLogin = ({ fields }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-  
+
         setSuccess("You are now Loggedin");
         setFormState({ email: "", password: "" });
         navigate("/dashboard");
@@ -52,38 +50,26 @@ const CardBodyLogin = ({ fields }) => {
   };
 
   return (
-    <div className="row you tips g-0" data-testid="card-body-tips-form">
-      <form className="form px-5" onSubmit={handleSubmit}>
+    <form className="login-form" onSubmit={handleSubmit}>
+      <div className="row my-5 g-0">
         <br />
         {fields &&
           fields.map((field) => (
-            <div className="col-12" key={field.label}>
+            <div className="div-label" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
-                className="form-label here mb-3"
+                className="col-lg-3 col-sm-6 mb-3"
                 name={field.label}
               >
                 {field.label}:
               </label>
-              <br />
-              <br />
-              {field.label === "Tips brut" && (
-                <FaSackDollar
-                  data-testid="fa-sack-dollar"
-                  className="hum-icon-form"
-                />
-              )}{" "}
-              {field.label === "Tips net" && (
-                <GiCoins data-testid="fa-gi-coins" className="hum-icon-form" />
-              )}
               <input
                 data-testid="input"
                 role="spinbutton"
                 id={field.label}
-                // inputMode="numeric"
                 type={field.type}
-                className="tips-input mb-3 mx-2"
+                className="col-lg-6 col-sm-6 login-input mb-3"
                 placeholder="placeholder"
                 // placeholder={field.placeholder}
                 style={{
@@ -96,26 +82,20 @@ const CardBodyLogin = ({ fields }) => {
                 value={formState.field?.label}
                 onChange={handleChange}
               />
-              <br />
-              <br />
             </div>
           ))}
-        <Button
-          type="submit"
-          className="button"
-          disabled={false}
-
-          //   loading={loading}
-        >
-          save
-        </Button>
+        <div className="btn-div">
+          <Button type="submit" className="button btn" disabled={false}>
+            save
+          </Button>
+        </div>
         {error && (
           <span className="text-danger" data-testid="oops">
             Oops, something went wrong...
           </span>
         )}
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 export default CardBodyLogin;

@@ -1,5 +1,3 @@
-import { FaSackDollar } from "react-icons/fa6";
-import { GiCoins } from "react-icons/gi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
@@ -129,27 +127,27 @@ const CardBodyTipsForm = ({ fields }) => {
       if (updateCurrentUserCollection) {
         console.log("true, there is a collection");
         updateTheCollection();
-      }
-      try {
-        await setDoc(doc(db, "users", currentUser.uid), {
-          displayName: currentUser.displayName,
-          email: currentUser.email,
-          photoURL: currentUser.photoURL,
-          tips: formState,
-          date: formattedDate,
-        });
-      } catch (error) {
-        console.log("error", error.message);
-      } finally {
-        console.log("added for first time to doc");
-        setFormState({
-          TipsBrut: 0,
-          TipsNet: 0,
-          dayName: "",
-          date: formattedDate,
-        });
-        navigate("/dashboard");
-      }
+      } else
+        try {
+          await setDoc(doc(db, "users", currentUser.uid), {
+            displayName: currentUser.displayName,
+            email: currentUser.email,
+            photoURL: currentUser.photoURL,
+            tips: formState,
+            date: formattedDate,
+          });
+        } catch (error) {
+          console.log("error", error.message);
+        } finally {
+          console.log("added for first time to doc");
+          setFormState({
+            TipsBrut: 0,
+            TipsNet: 0,
+            dayName: "",
+            date: formattedDate,
+          });
+          navigate("/dashboard");
+        }
     },
     [
       currentUser,
@@ -206,35 +204,39 @@ const CardBodyTipsForm = ({ fields }) => {
 
   useEffect(() => {
     if (users.length) {
-      // console.log("there are users", users);
       const loggedinUser = users.filter(
         (user) => user.email === currentUser.email
       );
-      setUserTipsData(loggedinUser.tips); // pulling the tips list of the current loggedin user
-      setUpdateCurrentUserCollection(true);
-    } else {
-      console.log("there are no users", users);
+      console.log(loggedinUser);
+      if (!loggedinUser[0].tips) {
+        console.log("there are no tips yet for this user");
+      }
+      if (loggedinUser[0].tips) {
+        console.log("there are tips for this user");
+        setUpdateCurrentUserCollection(true);
+        const currentUserTips = loggedinUser[0].tips;
+        setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
+      }
     }
   }, [users, currentUser]);
-  // console.log("user tips data", userTipsData);
-  // console.log("update current user collection", updateCurrentUserCollection);
 
   return (
-    <div className="row you tips g-0" data-testid="card-body-tips-form">
-      <form
-        ref={form}
-        // role="form"
-        className="form px-5"
-        onSubmit={
-          updateCurrentUserCollection
-            ? updateTheCollection
-            : createTheCollection
-        }
+    <form
+      ref={form}
+      // role="form"
+      className="tips-form"
+      onSubmit={
+        updateCurrentUserCollection ? updateTheCollection : createTheCollection
+      }
+    >
+      <div
+        className="row my-5 g-0"
+        data-testid="card-body-tips-form"
       >
         <br />
         {fields &&
           fields.map((field) => (
-            <div className="col-12" key={field.label}>
+            <div className="div-label" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
@@ -245,15 +247,6 @@ const CardBodyTipsForm = ({ fields }) => {
               </label>
               <br />
               <br />
-              {field.label === "Tipsbrut" && (
-                <FaSackDollar
-                  data-testid="fa-sack-dollar"
-                  className="hum-icon-form"
-                />
-              )}
-              {field.label === "TipsNet" && (
-                <GiCoins data-testid="fa-gi-coins" className="hum-icon-form" />
-              )}
               <input
                 data-testid="input"
                 role="spinbutton"
@@ -278,23 +271,24 @@ const CardBodyTipsForm = ({ fields }) => {
               <br />
             </div>
           ))}
-
+        {/* <div className="btn-div"> */}
         <Button
           type="submit"
-          className="button"
+          className="button btn"
           disabled={false}
           loading={loading}
         >
           add tips
         </Button>
+        {/* </div> */}
 
         {error && (
           <span className="text-danger" data-testid="oops">
             Oops, something went wrong...
           </span>
         )}
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 export default CardBodyTipsForm;

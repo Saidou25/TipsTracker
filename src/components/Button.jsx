@@ -1,12 +1,12 @@
 
 import "./Button.css";
 
-const Button = ({ children, type, disabled, onClick, loading }) => {
+const Button = ({ children, type, disabled, onClick, loading, className }) => {
   return (
-    <div className="btn-div p-0">
+    // <div className="p-0">
       <button
         // role="test"
-        className="button btn"
+        className={className}
         type={type}
         disabled={disabled}
         onClick={onClick}
@@ -15,11 +15,11 @@ const Button = ({ children, type, disabled, onClick, loading }) => {
           <>Please wait...</>
         ) : (
           <>
-            <span className="show-save">{children}</span>
+            <span>{children}</span>
           </>
         )}
       </button>
-    </div>
+    // </div>
   );
 };
 export default Button;

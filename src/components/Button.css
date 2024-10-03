@@ -1,7 +1,6 @@
-.btn-div {
+/* .btn-div {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 7%;
 }
 .btn-div:hover {
@@ -10,23 +9,23 @@
   align-items: center;
   margin-top: 7%;
   cursor: pointer;
-  /* color: white !important; */
-}
+} */
 .button {
   background-color: rgba(210, 35, 241, 0.92) !important;
   border: solid;
   border-width: 1px;
   border-radius: 2em !important;
-  width: 100%;
+  width: 20% !important;
   margin-top: 2%;
-  padding: 1% !important;
-  font-size: 1.8rem !important;
-  /* color: white !important; */
+  /* padding: 1% !important; */
+  /* color: green !important; */
 }
 .button:hover {
   background-color: rgba(21, 3, 71, 0.4) !important;
   transition: 0.4s;
 }
- .show-save {
-  display: block !important;
-} 
+/* @media screen and (max-width: 430px) {
+  .button {
+    width: 40% !important;
+  }
+} */
