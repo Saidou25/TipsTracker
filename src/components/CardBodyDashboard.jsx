@@ -3,11 +3,11 @@ import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
 import { monthTipsArray } from "../inBetween";
 import useMonitorWidth from "../UseMonitorWidth";
+
 import "./Card.css";
 
 const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const [displayTips, setDisplayTips] = useState();
-  // console.log(cardBodyTemplate);
 
   const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
 
@@ -17,11 +17,11 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   let weeklyTipsBrut;
 
   useEffect(() => {
-    // if (cardBodyTemplate) {
-    //   for (let allTips of cardBodyTemplate) {
-    //     newTipsArr.push(allTips);
-    //   }
-    // }
+    if (cardBodyTemplate) {
+      for (let allTips of cardBodyTemplate.fields) {
+        newTipsArr.push(allTips);
+      }
+    }
     if (cardBodyTemplate) {
       const dashboardTipsData = cardBodyTemplate.fields;
       for (let allTips of dashboardTipsData) {
@@ -48,7 +48,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
             <span className="col-2">
               <FaSackDollar />
               <span>tips(brut)</span>
-              
             </span>
             <span className="col-2">
               <GiCoins />
@@ -194,7 +193,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
                   {tip.dayName === "Sunday" ? ( // we add the column's titles line after each Sunday
                     <div className="row g-0">
                       <span className="col-12 bg-info">
-                        {newTipsArr ? <>{render(tip, index)}</> : null} 
+                        {newTipsArr ? <>{render(tip, index)}</> : null}
                       </span>
                       {renderTitles()}
                     </div>
@@ -220,19 +219,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
                   )}
                 </>
               )}
-
-              {/* {tip.dayName === "Sunday" ? (
-                // <>
-                  <div className="row g-0">
-                    <span className="col-12 bg-info">
-                      {newTipsArr ? <>{render(tip, index)}</> : null}
-                    </span>
-                  {renderTitles()}
-                  </div>
-                // </>
-              ) : (
-                <></>
-              )} */}
             </div>
           ))}
       </div>

@@ -63,7 +63,7 @@ const dashboardData = {
   ],
 };
 
-const profile = {
+const profileData = {
   templateTitle: "profile",
   fields: [
     {
@@ -166,7 +166,7 @@ const titlesData = [
 ];
 export {
   dashboardData,
-  profile,
+  profileData,
   tipsForm,
   titlesData,
   signupData,
