@@ -2,11 +2,12 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodyLogin = ({ fields }) => {
+const CardBodyLogin = ({ cardBodyTemplate }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [formState, setFormState] = useState("");
@@ -34,7 +35,7 @@ const CardBodyLogin = ({ fields }) => {
     const email = formState.email;
     const password = formState.password;
 
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password) // Firebase login function
       .then((userCredential) => {
         const user = userCredential.user;
 
@@ -53,8 +54,8 @@ const CardBodyLogin = ({ fields }) => {
     <form className="login-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0">
         <br />
-        {fields &&
-          fields.map((field) => (
+        {cardBodyTemplate.fields &&
+          cardBodyTemplate.fields.map((field) => (
             <div className="div-label" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
@@ -70,8 +71,7 @@ const CardBodyLogin = ({ fields }) => {
                 id={field.label}
                 type={field.type}
                 className="col-lg-6 col-sm-6 login-input mb-3"
-                placeholder="placeholder"
-                // placeholder={field.placeholder}
+                placeholder={field.placeholder}
                 style={{
                   fontStyle: "oblique",
                   paddingLeft: "3%",

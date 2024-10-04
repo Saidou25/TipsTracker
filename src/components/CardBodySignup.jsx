@@ -7,13 +7,15 @@ import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodySignup = ({ fields }) => {
+const CardBodySignup = ({ cardBodyTemplate }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [formState, setFormState] = useState({
     email: "",
     password: "",
   });
+  
+  console.log(cardBodyTemplate);
 
   const navigate = useNavigate();
 
@@ -58,8 +60,8 @@ const CardBodySignup = ({ fields }) => {
     <form className="signup-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0">
         <br />
-        {fields &&
-          fields.map((field) => (
+        {cardBodyTemplate?.fields &&
+          cardBodyTemplate.fields.map((field) => (
             <div className="div-label" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}

@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import CardBodyProfile from "./CardBodyProfile";
 import CardBodyTipsForm from "./CardBodyTipsForm";
 import CardBodyDashboard from "./CardBodyDashboard";
@@ -10,21 +8,19 @@ import CardBodyUpdate from "./CardBodyUpdate";
 import "./Card.css";
 
 const Card = ({ cardBodyTemplate = {}, src }) => {
-  const [fieldsData, setFieldsData] = useState("");
-  const [titleData, setTitleData] = useState("");
 
-  const { title, templateTitle, fields, footer } = cardBodyTemplate;
+  const { title, fields, footer } = cardBodyTemplate;
 
   console.log(cardBodyTemplate);
 
   const renderFields = () => {
     if (title) {
       switch (title) {
-        case "Signup":
-          return <CardBodySignup fields={fieldsData} title={titleData} />;
-        case "Login":
-          return <CardBodyLogin fields={fieldsData} title={titleData} />;
-        case "profile":
+        case "Please signup":
+          return <CardBodySignup cardBodyTemplate={cardBodyTemplate} />;
+        case "Please login":
+          return <CardBodyLogin cardBodyTemplate={cardBodyTemplate} />;
+        case "Profile":
           return <CardBodyProfile cardBodyTemplate={cardBodyTemplate} />;
         case "tipsForm":
           return (
@@ -41,12 +37,6 @@ const Card = ({ cardBodyTemplate = {}, src }) => {
     }
   };
 
-  useEffect(() => {
-    if (fields && templateTitle) {
-      setFieldsData(fields);
-      setTitleData(templateTitle);
-    }
-  }, [fields, templateTitle]);
 
   return (
     <div

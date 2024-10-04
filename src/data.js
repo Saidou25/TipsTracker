@@ -1,17 +1,19 @@
 // data for testing purpose
 const signupData = {
-  templateTitle: "Signup",
+  templateTitle: "Please signup",
   fields: [
     { type: "email", label: "email", placeholder: "gf@example.com" },
     { type: "password", label: "password", placeholder: "******" },
   ],
+  footer: "Sign up and start tracking your tips"
 };
 const loginData = {
-  templateTitle: "Login",
+  templateTitle: "Please login",
   fields: [
     { type: "email", label: "email", placeholder: "gf@example.com" },
     { type: "password", label: "password", placeholder: "******" },
   ],
+  footer: "Welcome to Tips Tracker",
 };
 const dashboardData = {
   templateTitle: "dashboard",
@@ -64,7 +66,7 @@ const dashboardData = {
 };
 
 const profileData = {
-  templateTitle: "profile",
+  templateTitle: "Profile",
   fields: [
     {
       type: "",
