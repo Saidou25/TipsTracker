@@ -94,7 +94,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
         <div className="btn-div">
           <Button
             type="submit"
-            className="button btn"
+            className="button"
             disabled={false}
             //   onClick={handleSubmit}
             //   loading={loading}

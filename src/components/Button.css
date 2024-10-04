@@ -1,31 +1,14 @@
-/* .btn-div {
-  display: flex;
-  justify-content: center;
-  margin-top: 7%;
-}
-.btn-div:hover {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 7%;
-  cursor: pointer;
-} */
 .button {
   background-color: rgba(210, 35, 241, 0.92) !important;
-  border: solid;
+  /* border: solid; */
   border-width: 1px;
   border-radius: 2em !important;
-  width: 20% !important;
+  width: 80% !important;
+  margin: auto;
   margin-top: 2%;
-  /* padding: 1% !important; */
-  /* color: green !important; */
+  color: rgb(220, 210, 210);
 }
 .button:hover {
   background-color: rgba(21, 3, 71, 0.4) !important;
   transition: 0.4s;
 }
-/* @media screen and (max-width: 430px) {
-  .button {
-    width: 40% !important;
-  }
-} */

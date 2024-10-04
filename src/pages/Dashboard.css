@@ -5,10 +5,6 @@
   align-items: center;
   /* padding-top: 10%; */
 }
-.container-hello {
-  margin-bottom: 4%;
-  width: 80%;
-}
 .paragraph {
   text-align: center !important;
   font-weight: 300 !important;
@@ -20,6 +16,8 @@
 .name {
   text-align: center;
   font-size: 5rem !important;
+  margin-bottom: 5%;
+}
 }
 @media screen and (max-width: 430px) {
   .on-off {

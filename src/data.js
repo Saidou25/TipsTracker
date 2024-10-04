@@ -76,19 +76,20 @@ const profileData = {
   ],
 };
 
-const tipsForm = {
-  templateTitle: "tipsForm",
+const tipsFormData = {
+  templateTitle: "Please enter your tips",
   fields: [
     { type: "number", label: "TipsBrut", placeholder: "enter tips brut" },
     { type: "number", label: "TipsNet", placeholder: "enter tips net" },
   ],
+  footer: "Once your tips are added they will show in your dashboard"
 };
 
-const update = {
-  templateTitle: "update",
+const updateData = {
+  templateTitle: "Update your profile",
   fields: [{ type: "text", label: "displayName", placeholder: "display name" }],
 };
-
+// Testing data
 const tipsDataFeed = {
   templateTitle: "Dashboard",
   fields: [
@@ -169,10 +170,10 @@ const titlesData = [
 export {
   dashboardData,
   profileData,
-  tipsForm,
+  tipsFormData,
   titlesData,
   signupData,
   loginData,
-  update,
+  updateData,
   tipsDataFeed,
 };

@@ -22,7 +22,6 @@ const LandingPage = () => {
           </NavLink>
         </li>
       </ul>
-
       <Outlet />
     </div>
   );

@@ -5,7 +5,6 @@ import { auth, db } from "../firebase";
 
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-import TitleBox from "../components/TitleBox";
 
 import "./Dashboard.css";
 
@@ -13,7 +12,7 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
   // const [userTipsData, setUserTipsData] = useState([]);
   const [dashboardData, setDashboardData] = useState({ title: "", fields: [] });
-// console.log(dashboardData)
+
   const currentUser = auth.currentUser;
 
   onAuthStateChanged(auth, (user) => {
@@ -67,7 +66,6 @@ const Dashboard = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <TitleBox firstname="Sy" />
         <Card
           className="p-0 m-0 g-0"
           title="Dashboard title"

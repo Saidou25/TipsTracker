@@ -51,7 +51,14 @@
   height: 2%;
   margin-top: 1%;
 }
-
+.update-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.update-end {
+  display: flex;
+  justify-content: flex-end;
+}
 /* -------------- css for money svgs ---------------- */
 
 img,
@@ -62,6 +69,11 @@ svg {
 }
 .font-weight {
   font-weight: 700;
+}
+/* ---------------- tipsForm ---------------------- */
+.tips-form {
+  width: 80%;
+  margin: auto !important;
 }
 /* ---------------- remove some default css ------- */
 .card {
@@ -92,11 +104,6 @@ svg {
   overflow: scroll;
   padding: 0 !important;
 }
-/* svg {
-  height: 0.8em !important;
-  padding-bottom: 0.1em !important;
-  color: yellow;
-} */
 .main-card {
   border: 2px solid rgb(117, 95, 203) !important;
   background-color: rgb(15, 15, 19, 0.3) !important;
@@ -127,31 +134,11 @@ svg {
   height: 50px;
   background-color: rgba(7, 1, 53, 0.8) !important;
 }
-/* .trtr {
-  border-color: rgb(170, 169, 193, 0.4);
-  border-style: solid;
-  border-bottom-width: 1px !important;
-  padding-top: 20px !important;
-} */
-/* .row-profile {
-  background-color: rgb(36, 27, 161) !important;
-} */
-/* table {
-  width: 100% !important;
-  height: 100% !important;
-} */
-/* th {
-  font-weight: 300 !important;
-} */
 .card-title,
 .card-body,
 .card-footer {
   animation: rotationfade 0.4s forwards;
 }
-/* .tips-input {
-  border-radius: 2em;
-  background-color: rgba(255, 255, 255, 0.693);
-} */
 
 @keyframes rotationmove {
   50% {
@@ -186,5 +173,14 @@ svg {
     aspect-ratio: 1 / 1;
     background-position: cover;
     margin-top: 4%;
+  }
+  .update-start {
+    margin-bottom: 3%;
+    display: flex;
+    justify-content: center !important;
+  }
+  .update-end {
+    display: flex;
+    justify-content: center;
   }
 }

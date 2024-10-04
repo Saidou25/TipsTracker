@@ -85,7 +85,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
             </div>
           ))}
         <div className="btn-div">
-          <Button type="submit" className="button btn" disabled={false}>
+          <Button type="submit" className="button" disabled={false}>
             save
           </Button>
         </div>

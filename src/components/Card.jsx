@@ -7,9 +7,8 @@ import CardBodyUpdate from "./CardBodyUpdate";
 
 import "./Card.css";
 
-const Card = ({ cardBodyTemplate = {}, src }) => {
-
-  const { title, fields, footer } = cardBodyTemplate;
+const Card = ({ cardBodyTemplate = {} }) => {
+  const { title, footer } = cardBodyTemplate;
 
   console.log(cardBodyTemplate);
 
@@ -22,27 +21,22 @@ const Card = ({ cardBodyTemplate = {}, src }) => {
           return <CardBodyLogin cardBodyTemplate={cardBodyTemplate} />;
         case "Profile":
           return <CardBodyProfile cardBodyTemplate={cardBodyTemplate} />;
-        case "tipsForm":
-          return (
-            <CardBodyTipsForm
-              fields={fields}
-              cardBodyTemplate={cardBodyTemplate}
-            />
-          );
-        case "update":
-          return <CardBodyUpdate fields={fields} src={src} />;
+        case "Please enter your tips":
+          return <CardBodyTipsForm cardBodyTemplate={cardBodyTemplate} />;
+        case "Update your profile":
+          return <CardBodyUpdate cardBodyTemplate={cardBodyTemplate} />;
         default:
           return <CardBodyDashboard cardBodyTemplate={cardBodyTemplate} />;
       }
     }
   };
 
-
   return (
     <div
       className="card main-card"
       // role="test-card"
     >
+      
       <div className="card-title p-5">{title}</div>
       <div className="card-body">{renderFields()}</div>
       <div className="card-footer p-5">{footer}</div>

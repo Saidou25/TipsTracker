@@ -14,7 +14,8 @@ import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodyTipsForm = ({ fields }) => {
+const CardBodyTipsForm = ({ cardBodyTemplate }) => {
+  console.log(cardBodyTemplate);
   const date = useMemo(() => new Date(), []);
   const todaysDayName = date.toString().slice(0, 3);
   // Get the date components
@@ -207,7 +208,7 @@ const CardBodyTipsForm = ({ fields }) => {
       const loggedinUser = users.filter(
         (user) => user.email === currentUser.email
       );
-      console.log(loggedinUser);
+
       if (!loggedinUser[0].tips) {
         console.log("there are no tips yet for this user");
       }
@@ -229,18 +230,15 @@ const CardBodyTipsForm = ({ fields }) => {
         updateCurrentUserCollection ? updateTheCollection : createTheCollection
       }
     >
-      <div
-        className="row my-5 g-0"
-        data-testid="card-body-tips-form"
-      >
+      <div className="row tips-form my-5 g-0" data-testid="card-body-tips-form">
         <br />
-        {fields &&
-          fields.map((field) => (
+        {cardBodyTemplate.fields &&
+          cardBodyTemplate.fields.map((field) => (
             <div className="div-label" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
-                className="form-label here mb-3"
+                className="col-lg-3 col-sm-6 mb-"
                 name={field.label}
               >
                 {field.label}:
@@ -253,7 +251,7 @@ const CardBodyTipsForm = ({ fields }) => {
                 id={field.label}
                 inputMode="numeric"
                 type={field.type}
-                className="tips-input mb-3 mx-2"
+                className="col-lg-6 col-sm-6 login-input mb-3"
                 placeholder={field.placeholder}
                 style={{
                   fontStyle: "oblique",
@@ -271,17 +269,14 @@ const CardBodyTipsForm = ({ fields }) => {
               <br />
             </div>
           ))}
-        {/* <div className="btn-div"> */}
         <Button
           type="submit"
-          className="button btn"
+          className="button"
           disabled={false}
           loading={loading}
         >
           add tips
         </Button>
-        {/* </div> */}
-
         {error && (
           <span className="text-danger" data-testid="oops">
             Oops, something went wrong...

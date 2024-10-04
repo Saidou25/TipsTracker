@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { storage } from "../firebase";
+import { auth, storage } from "../firebase";
 import {
   deleteObject,
   getDownloadURL,
@@ -9,18 +9,23 @@ import {
 
 import emptyAvatar from "../assets/profileicon.png";
 import Button from "./Button";
+import findUser from "../UseFindUser";
 
-const UpdateProfilePicture = ({ handleUrl }) => {
+const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
+  const { user } = findUser();
+  console.log("user", user);
+
+
   const [file, setFile] = useState(null);
-  const [photoURL, setPhotoURL] = useState(emptyAvatar);
+  const [photoURL, setPhotoURL] = useState("");
   const [showProgress, setShowProgress] = useState("");
 
   const handleDelete = () => {
     // Create a reference to the file to delete
-    const desertRef = ref(storage, "images/star-icon-13.jpg");
+    const imageRef = ref(storage, photoURL);
 
     // Delete the file
-    deleteObject(desertRef)
+    deleteObject(imageRef)
       .then(() => {
         console.log("File deleted successfully");
       })
@@ -52,7 +57,6 @@ const UpdateProfilePicture = ({ handleUrl }) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        // console.log("Upload is " + progress + "% done");
         setShowProgress("Upload is " + progress + "% done");
         if (progress === 100) {
           console.log("done done");
@@ -100,7 +104,7 @@ const UpdateProfilePicture = ({ handleUrl }) => {
         getDownloadURL(uploadTask.snapshot.ref).then((storageRef) => {
           console.log("File available at", storageRef);
           setPhotoURL(storageRef);
-          handleUrl(storageRef, file);
+          uploadedPhotoUrl(storageRef, file);
         });
       }
     );
@@ -112,39 +116,27 @@ const UpdateProfilePicture = ({ handleUrl }) => {
         <div className="progress">
           {showProgress ? <>{showProgress}</> : <></>}
         </div>
-        <img
-          className="photo-url"
-          src={photoURL ? photoURL : emptyAvatar}
-          alt="avatar"
-        />
+        <img className="photo-url" src={user.photoURL || emptyAvatar } alt="avatar" />
       </div>
-      <div className="row mt-4">
-        <span className="col-6 d-flex justify-content-end">Select files: </span>
+      <div className="row g-0 mt-4">
+        <span className="col-lg-6 col-sm-12 update-end">Select picture: </span>
         <input
-        className="col-6 d-flex justify-content-start"
+          className="col-lg-6 col-sm-12 update-start"
           type="file"
           id="choose"
           name="choose"
           autoComplete="off"
           multiple
           onChange={handleChange}
-          // style={{ backgroundColor: "blue" }}
+        
         />
         <br />
         <br />
         <div className="col-12 d-flex justify-content-center">
-          <Button
-          className="button btn me-2"
-          type="submit"
-          onClick={handleClick}
-          >
+          <Button className="button me-2" type="submit" onClick={handleClick}>
             save
           </Button>
-          <Button
-            className="button btn ms-2"
-            type="button"
-            onClick={handleDelete}
-          >
+          <Button className="button ms-2" type="button" onClick={handleDelete}>
             delete
           </Button>
         </div>

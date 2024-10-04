@@ -1,15 +1,16 @@
+import { useState } from "react";
 import { deleteUser } from "firebase/auth";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { deleteDoc, doc } from "firebase/firestore";
-import { update } from "../data";
+import { updateData } from "../data";
 
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-import TitleBox from "../components/TitleBox";
 import Button from "../components/Button";
+import findUser from "../UseFindUser";
 
 const Update = () => {
-  const user = auth.currentUser;
+  const { user, loading } = findUser();
 
   const deleteFirestoreUser = async () => {
     try {
@@ -33,16 +34,26 @@ const Update = () => {
       });
   };
 
+  // Only show loading message until the timeout completes
+  // if (loading) {
+  //   return <p>Loading user data...</p>; // Show loading message
+  // }
+
   return (
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <TitleBox firstname="Sy" />
         <Card
           role="card"
           title={new Date().toString()}
           footer="You can delete your account here"
-          cardBodyTemplate={update}
+          cardBodyTemplate={{
+            title: updateData.templateTitle,
+            fields: updateData.fields,
+            footer: "footer",
+            loggedinUser: user,
+            usingSince: "",
+          }}
           data-testid="card-component"
         />
       </div>

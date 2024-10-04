@@ -11,6 +11,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
   const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
 
+  const today = new Date() // get today's date
   // ______________________________code for adding tips and display a weekly total tips___________________________
   const newTipsArr = [];
   let weeklyTipsNet;
@@ -30,9 +31,13 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     }
     if (newTipsArr.length) {
       const currentUserTips = monthTipsArray(newTipsArr);
-      // const dates = newTipsArr.map((e) => e.date);
-      // console.log(dates.sort((a, b) => a - b));
-      setDisplayTips(currentUserTips);
+      console.log(currentUserTips)
+      const filteredTips = currentUserTips.filter(tip => { 
+        let tipDate = new Date(tip.date);
+        return tipDate <= today;
+      })
+      console.log(filteredTips)
+      setDisplayTips(filteredTips);
     }
   }, [cardBodyTemplate, setDisplayTips]);
 
@@ -161,8 +166,8 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     <div className="wild">
       <div className="you g-0 m-0 p-0">{renderTitles()}</div>
       <div className="dashboard-alignment py-2">
-        {displayTips &&
-          displayTips.map((tip, index) => (
+        {displayTips && // slice(): Creates a shallow copy of the displayTips array, ensuring we don't modify the original array.
+          displayTips.slice().reverse().map((tip, index) => (
             <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
               {showDashboardMediaView === false && (
                 <>
