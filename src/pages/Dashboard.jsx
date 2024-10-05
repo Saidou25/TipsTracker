@@ -40,6 +40,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    console.log(users)
     if (users.length) {
       const loggedinUser = users.filter(
         (user) => user.email === currentUser.email

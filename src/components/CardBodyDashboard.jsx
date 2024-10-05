@@ -31,10 +31,9 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
     }
     if (newTipsArr.length) {
       const currentUserTips = monthTipsArray(newTipsArr);
-      console.log(currentUserTips)
       const filteredTips = currentUserTips.filter(tip => { 
-        let tipDate = new Date(tip.date);
-        return tipDate <= today;
+        let tipDate = new Date(tip.date); 
+        return tipDate <= today; // Only return tips from today or earlier
       })
       console.log(filteredTips)
       setDisplayTips(filteredTips);

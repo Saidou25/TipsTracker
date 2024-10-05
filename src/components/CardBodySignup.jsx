@@ -14,8 +14,6 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
     email: "",
     password: "",
   });
-  
-  console.log(cardBodyTemplate);
 
   const navigate = useNavigate();
 
@@ -66,7 +64,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
-                className="col-lg-6 col-md-6 col-sm-3 mb-3"
+                className="col-lg-6 col-sm-6 mb-3 label-end"
                 name={field.label}
               >
                 {field.label}:
@@ -77,7 +75,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
                 id={field.label}
                 inputMode="numeric"
                 type={field.type}
-                className="col-4 col-sm-8 signup-input mb-3"
+                className="col-lg-4 col-sm-6 signup-input mb-3 input-start"
                 placeholder={field.placeholder}
                 style={{
                   fontStyle: "oblique",
@@ -91,17 +89,14 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
               />
             </div>
           ))}
-        <div className="btn-div">
-          <Button
-            type="submit"
-            className="button"
-            disabled={false}
-            //   onClick={handleSubmit}
-            //   loading={loading}
-          >
-            save
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          className="button"
+          disabled={false}
+          //   loading={loading}
+        >
+          save
+        </Button>
         {success && <span className="text-success">{success}</span>}
         {error && (
           <span className="text-danger" data-testid="oops">

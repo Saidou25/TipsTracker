@@ -84,17 +84,15 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
               />
             </div>
           ))}
-        <div className="btn-div">
-          <Button type="submit" className="button" disabled={false}>
-            save
-          </Button>
-        </div>
-        {error && (
-          <span className="text-danger" data-testid="oops">
-            Oops, something went wrong...
-          </span>
-        )}
+        <Button type="submit" className="button" disabled={false}>
+          save
+        </Button>
       </div>
+      {error && (
+        <span className="text-danger" data-testid="oops">
+          Oops, something went wrong...
+        </span>
+      )}
     </form>
   );
 };

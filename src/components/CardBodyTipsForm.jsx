@@ -215,7 +215,6 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
       if (loggedinUser[0].tips) {
         console.log("there are tips for this user");
         setUpdateCurrentUserCollection(true);
-        const currentUserTips = loggedinUser[0].tips;
         setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
       }
     }
@@ -230,7 +229,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
         updateCurrentUserCollection ? updateTheCollection : createTheCollection
       }
     >
-      <div className="row tips-form my-5 g-0" data-testid="card-body-tips-form">
+      <div className="row my-5 g-0" data-testid="card-body-tips-form">
         <br />
         {cardBodyTemplate.fields &&
           cardBodyTemplate.fields.map((field) => (
