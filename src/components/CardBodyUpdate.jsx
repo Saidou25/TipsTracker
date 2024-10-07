@@ -4,7 +4,6 @@ import { updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { deleteObject, ref } from "firebase/storage";
 import findUser from "../UseFindUser";
-import emptyAvatar from "../assets/profileicon.png";
 
 import UpdateProfilePicture from "./UpdateProfilePicture";
 import Button from "./Button";
@@ -14,13 +13,11 @@ import "./Card.css";
 const CardBodyUpdate = ({ cardBodyTemplate }) => {
   const { user, loading } = findUser();
   const [error, setError] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({
     displayName: user.displayName ? user.displayName : "",
     photoURL: "",
   });
-
-  // console.log("user hook", user);
+  console.log("form state", formState);
 
   const form = useRef();
 
@@ -38,50 +35,54 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let photo;
-    if (user.photoURL) {
-      photo = user.photoURL;
-    } else if (formState.photoURL) {
-      photo = formState.photoURL;
-    } else {
-      photo = emptyAvatar;
-    }
-
+    // console.log("form state from submit", formState);
     try {
       await updateProfile(user, {
-        displayName: formState.displayName || user.displayName,
-        photoURL: photo,
-        // createdAt: currentUser.metadata.creationTime,
+        displayName: user.displayName || formState.displayName,
+        photoURL: formState.photoURL,
       });
     } catch (error) {
-      console.log("An error occurred", error.message);
+      // console.log("An error occurred", error.message);
       setError("Oops, something went wrong.");
     } finally {
-      console.log("profile updated!");
+      // console.log("profile updated!");
       navigate("/profile");
     }
   };
-  // Getting the url for user's profile picture from UpdateProfilePicture and updating user's profile thru formState
 
-  const handleUrl = (storageRef, file) => {
-    if (user.photoURL) {
-      // If user already has a profile picture we delete it
-      const imageRef = ref(storage, user.photoURL);
-      deleteObject(imageRef)
-        .then(() => {
-          console.log("File deleted successfully");
-        })
-        .catch((error) => {
-          console.log("Uh-oh, an error occurred!", error.message);
-        });
-    }
-    if (storageRef) {
-      const name = "photoURL";
-      const value = storageRef;
-      // add the new profile picture to the user's profile
+  const handleUrl = (newlyUploadedPhotoURL) => {
+    // console.log("in hadle url: ", newlyUploadedPhotoURL);
+
+    if (newlyUploadedPhotoURL && user.photoURL) {
+      // console.log(
+      //   " case 2: deleting and setting with new photo",
+      //   newlyUploadedPhotoURL
+      // );
+
+      // If user already has a profile picture and just uploaded a new one
+      // we delete the old one from database
+      if (user.photoURL) {
+        const imageRef = ref(storage, user.photoURL);
+        deleteObject(imageRef)
+          .then(() => {
+            console.log("File deleted successfully");
+            //  And add the new profile picture to the user's profile
+            setFormState({
+              ...formState,
+              photoURL: newlyUploadedPhotoURL,
+            });
+          })
+          .catch((error) => {
+            // console.log("image ref", imageRef);
+            console.log("Uh-oh, an error occurred!", error.message);
+          });
+      }
+    } else {
+      // If no previous profile picture we set the form with new one
+      // console.log("case 1: no previous picture", newlyUploadedPhotoURL);
       setFormState({
         ...formState,
-        [name]: value,
+        photoURL: newlyUploadedPhotoURL,
       });
     }
   };
@@ -127,7 +128,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
                 }
                 style={{ fontStyle: "oblique", paddingLeft: "3%" }}
                 name={field.label}
-                value={formState.field}
+                value={formState.displayName}
                 onChange={handleChange}
                 autoComplete="off"
               />

@@ -46,11 +46,10 @@ const Update = () => {
         <Card
           role="card"
           title={new Date().toString()}
-          footer="You can delete your account here"
           cardBodyTemplate={{
             title: updateData.templateTitle,
             fields: updateData.fields,
-            footer: "footer",
+            footer: "You can delete your account here",
             loggedinUser: user,
             usingSince: "",
           }}

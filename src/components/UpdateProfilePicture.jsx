@@ -1,38 +1,18 @@
-import { useState } from "react";
-import { auth, storage } from "../firebase";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { useEffect, useState } from "react";
+import { storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import findUser from "../UseFindUser";
 
 import emptyAvatar from "../assets/profileicon.png";
 import Button from "./Button";
-import findUser from "../UseFindUser";
 
 const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
-  const { user } = findUser();
-  console.log("user", user);
-
-
+  const [srcUrl, setSrcUrl] = useState("");
+  const [newlyUploadedPhotoURL, setNewlyUplaodedPhotoURL] = useState("");
   const [file, setFile] = useState(null);
-  const [photoURL, setPhotoURL] = useState("");
   const [showProgress, setShowProgress] = useState("");
 
-  const handleDelete = () => {
-    // Create a reference to the file to delete
-    const imageRef = ref(storage, photoURL);
-
-    // Delete the file
-    deleteObject(imageRef)
-      .then(() => {
-        console.log("File deleted successfully");
-      })
-      .catch((error) => {
-        console.log("Uh-oh, an error occurred!", error.message);
-      });
-  };
+  const { user } = findUser();
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -68,9 +48,9 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           case "paused":
             console.log("Upload is paused");
             break;
-          // case "running":
-          //   console.log("Upload is running");
-          //   break;
+          case "running":
+            console.log("Upload is running");
+            break;
           default:
             console.log("Nothing running");
         }
@@ -102,13 +82,30 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
       () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((storageRef) => {
-          console.log("File available at", storageRef);
-          setPhotoURL(storageRef);
-          uploadedPhotoUrl(storageRef, file);
+          setNewlyUplaodedPhotoURL(storageRef);
+          setSrcUrl(storageRef)
+          
         });
       }
     );
   };
+  useEffect(() => {
+    // Setting src according to different conditions
+    // 1. if user already has a profile picturen then we display it 
+    if (user.photoURL && !newlyUploadedPhotoURL) {
+      console.log("case 1");
+      const prevPhoto = user.photoURL;
+      setSrcUrl(prevPhoto);
+    } else if (newlyUploadedPhotoURL) { // If users uploads a new profile picture we display it and send it to CardBody update
+      //so the previous profile picture can be deleted and we also display the newly uploaded picture by setting srcUrl with it
+      console.log("case 2");
+      setSrcUrl(newlyUploadedPhotoURL);
+      uploadedPhotoUrl(newlyUploadedPhotoURL);
+    } else { // otherwise it means no profile picture has been set so we display an empty avatar
+      console.log("case 3");
+      setSrcUrl(emptyAvatar);
+    }
+  }, [user.photoURL, newlyUploadedPhotoURL]);
 
   return (
     <>
@@ -116,7 +113,7 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
         <div className="progress">
           {showProgress ? <>{showProgress}</> : <></>}
         </div>
-        <img className="photo-url" src={user.photoURL || emptyAvatar } alt="avatar" />
+        <img className="photo-url" src={srcUrl} alt="avatar" />
       </div>
       <div className="row g-0 mt-4">
         <span className="col-lg-6 col-sm-12 update-end">Select picture: </span>
@@ -128,7 +125,6 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           autoComplete="off"
           multiple
           onChange={handleChange}
-        
         />
         <br />
         <br />
@@ -136,9 +132,9 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           <Button className="button me-2" type="submit" onClick={handleClick}>
             save
           </Button>
-          <Button className="button ms-2" type="button" onClick={handleDelete}>
+          {/* <Button className="button ms-2" type="button" onClick={handleDelete}>
             delete
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

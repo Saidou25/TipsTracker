@@ -5,7 +5,7 @@ const signupData = {
     { type: "email", label: "email", placeholder: "gf@example.com" },
     { type: "password", label: "password", placeholder: "******" },
   ],
-  footer: "Sign up and start tracking your tips"
+  footer: "Sign up and start tracking your tips",
 };
 const loginData = {
   templateTitle: "Please login",
@@ -16,53 +16,9 @@ const loginData = {
   footer: "Welcome to Tips Tracker",
 };
 const dashboardData = {
-  templateTitle: "dashboard",
-  fields: [
-    {
-      date: "02/23/2024",
-      day: "Monday",
-      brut: 0,
-      net: 0,
-    },
-    {
-      date: "02/23/2024",
-      day: "Tuesday",
-      brut: 0,
-      net: 0,
-    },
-    {
-      date: "02/23/2024",
-      day: "Wednesday",
-      brut: 330,
-      net: 242,
-    },
-    {
-      date: "02/23/2024",
-      day: "Thursday",
-      brut: 350,
-      net: 220,
-    },
-    {
-      date: "02/23/2024",
-      day: "Friday",
-      brut: 400,
-      net: 350,
-    },
-    {
-      date: "02/23/2024",
-      day: "Saturday",
-      brut: 334,
-      net: 200,
-      shift: "day",
-    },
-    {
-      date: "02/23/2024",
-      day: "Sunday",
-      shift: "day",
-      brut: 350,
-      net: 230,
-    },
-  ],
+  templateTitle: "Dashboard",
+  fields: [],
+  footer: "Dashboard footer"
 };
 
 const profileData = {
@@ -82,7 +38,7 @@ const tipsFormData = {
     { type: "number", label: "TipsBrut", placeholder: "enter tips brut" },
     { type: "number", label: "TipsNet", placeholder: "enter tips net" },
   ],
-  footer: "Once your tips are added they will show in your dashboard"
+  footer: "Once your tips are added they will show in your dashboard",
 };
 
 const updateData = {
