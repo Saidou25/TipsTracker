@@ -110,7 +110,7 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
   return (
     <>
       <div className="container-fluid">
-        <div className="progress my-4">
+        <div className="progress">
           {showProgress ? <>{showProgress}</> : <></>}
         </div>
         <img className="photo-url" src={srcUrl} alt="avatar" />
