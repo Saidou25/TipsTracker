@@ -15,9 +15,9 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
   const [error, setError] = useState(false);
   const [formState, setFormState] = useState({
     displayName: user.displayName ? user.displayName : "",
-    photoURL: "",
+    photoURL: user.photoURL,
   });
-  console.log("form state", formState);
+
 
   const form = useRef();
 
@@ -35,11 +35,13 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("form state from submit", formState);
+
     try {
       await updateProfile(user, {
-        displayName: user.displayName || formState.displayName,
-        photoURL: formState.photoURL,
+        displayName: formState.displayName
+          ? formState.displayName
+          : user.displayName,
+        photoURL: formState.photoURL ? formState.photoURL : user.PhotoURL,
       });
     } catch (error) {
       // console.log("An error occurred", error.message);
@@ -132,14 +134,13 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
                 onChange={handleChange}
                 autoComplete="off"
               />
-              <br />
-              <br />
             </div>
           ))}
+          <br />
         <div className="col-12 d-flex justify-content-center mb-4">
           <Button
             type="submit"
-            className="button"
+            className="button no-wrap"
             disabled={false}
             loading={loading}
           >

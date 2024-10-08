@@ -35,8 +35,8 @@ const profileData = {
 const tipsFormData = {
   templateTitle: "Please enter your tips",
   fields: [
-    { type: "number", label: "TipsBrut", placeholder: "enter tips brut" },
-    { type: "number", label: "TipsNet", placeholder: "enter tips net" },
+    { type: "number", label: "Tips(gross)", placeholder: "enter tips" },
+    { type: "number", label: "Tips(net)", placeholder: "enter tips" },
   ],
   footer: "Once your tips are added they will show in your dashboard",
 };

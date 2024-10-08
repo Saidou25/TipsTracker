@@ -9,13 +9,7 @@ const Button = ({ children, type, disabled, onClick, loading, className }) => {
       disabled={disabled}
       onClick={onClick}
     >
-      {loading ? (
-        <>Please wait...</>
-      ) : (
-        <>
-          <span>{children}</span>
-        </>
-      )}
+      {loading ? <>Please wait...</> : <>{children}</>}
     </button>
   );
 };

@@ -6,38 +6,56 @@ import { updateData } from "../data";
 
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-import Button from "../components/Button";
 import findUser from "../UseFindUser";
+import ModalWindow from "../components/ModalWindow";
+
+// import "./Card.css"
 
 const Update = () => {
   const { user, loading } = findUser();
+  const [showModalWindow, setShowModalWindow] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState(""); // State for error messages
 
-  const deleteFirestoreUser = async () => {
+  const handleClick = () => {
+    setShowModalWindow(true);
+  };
+
+  const handleClose = () => {
+    setShowModalWindow(false);
+    setError(""); // Reset error state on close
+  };
+
+  // Function to delete Firestore user
+  const deleteFirestoreUser = async (userId) => {
+    await deleteDoc(doc(db, "users", userId));
+    console.log("Firestore user deleted");
+  };
+
+  // Function to delete Firebase Auth user
+  const deleteAuthUser = async (user) => {
+    await deleteUser(user);
+    console.log("User deleted.");
+  };
+
+  const handleConfirm = async () => {
+    setIsDeleting(true);
+    setError(""); // Reset error state before deletion
     try {
-      await deleteDoc(doc(db, "users", user.uid));
+      // Call both deletion functions
+      await Promise.all([deleteFirestoreUser(user.uid), deleteAuthUser(user)]);
     } catch (e) {
+      setError(e.message); // Set error message
       console.log(e.message);
     } finally {
-      console.log("success deleting firestore user");
+      setIsDeleting(false);
+      setShowModalWindow(false);
     }
   };
 
-  const deleteCurrentUser = () => {
-    console.log(user.uid);
-
-    deleteUser(user)
-      .then(() => {
-        console.log("User deleted.");
-      })
-      .catch((error) => {
-        console.log("An error ocurred.", error.message);
-      });
-  };
-
-  // Only show loading message until the timeout completes
-  // if (loading) {
-  //   return <p>Loading user data...</p>; // Show loading message
-  // }
+  if (loading) {
+    return <p>Loading user data...</p>; // Show loading message
+  }
 
   return (
     <div className="grad1">
@@ -49,22 +67,26 @@ const Update = () => {
           cardBodyTemplate={{
             title: updateData.templateTitle,
             fields: updateData.fields,
-            footer: "You can delete your account here",
+            footer: (
+              <div>
+                <span>You can delete your account </span>
+                <span className="here-text" onClick={handleClick}>
+                  here
+                </span>
+              </div>
+            ),
             loggedinUser: user,
             usingSince: "",
           }}
           data-testid="card-component"
         />
       </div>
-      <Button
-        type="button"
-        onClick={(e) => {
-          deleteCurrentUser(e);
-          deleteFirestoreUser(e);
-        }}
-      >
-        delete your account here.
-      </Button>
+      {showModalWindow && (
+        <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
+      )}
+      {isDeleting && <p>Deleting your account...</p>}
+      {error && <p className="error-message">{error}</p>}{" "}
+      {/* Display error message */}
     </div>
   );
 };

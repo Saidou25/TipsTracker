@@ -2,7 +2,7 @@ import emptyAvatar from "../assets/profileicon.png";
 
 import "./Card.css";
 const CardBodyProfile = ({ cardBodyTemplate }) => {
-  console.log(cardBodyTemplate)
+
   return (
     <>
       <div className="col-12">

@@ -36,7 +36,6 @@ const Card = ({ cardBodyTemplate = {} }) => {
       className="card main-card"
       // role="test-card"
     >
-      
       <div className="card-title p-5">{title}</div>
       <div className="card-body">{renderFields()}</div>
       <div className="card-footer p-5">{footer}</div>

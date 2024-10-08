@@ -37,9 +37,8 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setShowProgress("Upload is " + progress + "% done");
+        setShowProgress("Upload is " + Math.floor(progress) + "% done");
         if (progress === 100) {
-          console.log("done done");
           setTimeout(() => {
             setShowProgress("");
           }, 4000);
@@ -83,26 +82,27 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((storageRef) => {
           setNewlyUplaodedPhotoURL(storageRef);
-          setSrcUrl(storageRef)
-          
+          setSrcUrl(storageRef);
         });
       }
     );
   };
   useEffect(() => {
     // Setting src according to different conditions
-    // 1. if user already has a profile picturen then we display it 
+    // 1. if user already has a profile picturen then we display it
     if (user.photoURL && !newlyUploadedPhotoURL) {
-      console.log("case 1");
+      // console.log("case 1");
       const prevPhoto = user.photoURL;
       setSrcUrl(prevPhoto);
-    } else if (newlyUploadedPhotoURL) { // If users uploads a new profile picture we display it and send it to CardBody update
+    } else if (newlyUploadedPhotoURL) {
+      // If users uploads a new profile picture we display it and send it to CardBody update
       //so the previous profile picture can be deleted and we also display the newly uploaded picture by setting srcUrl with it
-      console.log("case 2");
+      // console.log("case 2");
       setSrcUrl(newlyUploadedPhotoURL);
       uploadedPhotoUrl(newlyUploadedPhotoURL);
-    } else { // otherwise it means no profile picture has been set so we display an empty avatar
-      console.log("case 3");
+    } else {
+      // otherwise it means no profile picture has been set so we display an empty avatar
+      // console.log("case 3");
       setSrcUrl(emptyAvatar);
     }
   }, [user.photoURL, newlyUploadedPhotoURL]);
@@ -110,31 +110,28 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
   return (
     <>
       <div className="container-fluid">
-        <div className="progress">
+        <div className="progress my-4">
           {showProgress ? <>{showProgress}</> : <></>}
         </div>
         <img className="photo-url" src={srcUrl} alt="avatar" />
       </div>
-      <div className="row g-0 mt-4">
-        <span className="col-lg-6 col-sm-12 update-end">Select picture: </span>
-        <input
-          className="col-lg-6 col-sm-12 update-start"
-          type="file"
-          id="choose"
-          name="choose"
-          autoComplete="off"
-          multiple
-          onChange={handleChange}
-        />
+      <div className="row justify-content-center g-0 mt-4">
+        <div className="col-lg-12 col-sm-8 d-flex justify-content-center">
+          <input
+            type="file"
+            id="choose"
+            name="choose"
+            autoComplete="off"
+            multiple
+            onChange={handleChange}
+          />
+        </div>
         <br />
         <br />
         <div className="col-12 d-flex justify-content-center">
-          <Button className="button me-2" type="submit" onClick={handleClick}>
+          <Button className="button" type="submit" onClick={handleClick}>
             save
           </Button>
-          {/* <Button className="button ms-2" type="button" onClick={handleDelete}>
-            delete
-          </Button> */}
         </div>
       </div>
     </>

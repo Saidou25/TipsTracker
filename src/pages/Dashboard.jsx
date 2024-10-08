@@ -47,10 +47,10 @@ const Dashboard = () => {
       const loggedinUser = users.filter((user) => user.email === user.email);
 
       if (!loggedinUser[0].tips) {
-        console.log("there are no tips yet for this user");
+        // console.log("there are no tips yet for this user");
       }
       if (loggedinUser[0].tips) {
-        console.log("there are tips for this user");
+        // console.log("there are tips for this user");
         const currentUserTips = loggedinUser[0].tips;
         setUserTipsData(currentUserTips); // Getting tips of the loggedinUser
       }

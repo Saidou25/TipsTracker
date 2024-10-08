@@ -13,9 +13,11 @@ import {
 import Button from "./Button";
 
 import "./Card.css";
+import findUser from "../UseFindUser";
 
 const CardBodyTipsForm = ({ cardBodyTemplate }) => {
-  console.log(cardBodyTemplate);
+const { user, loading } = findUser();
+
   const date = useMemo(() => new Date(), []);
   const todaysDayName = date.toString().slice(0, 3);
   // Get the date components
@@ -33,7 +35,6 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState([]);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({
     TipsBrut: 0,
     TipsNet: 0,
@@ -45,7 +46,6 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
 
   const form = useRef();
 
-  const currentUser = auth.currentUser;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,10 +61,10 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
     userTipsData.push(formState);
     // console.log("tips data", userTipsData);
     try {
-      await setDoc(doc(db, "users", currentUser.uid), {
-        displayName: currentUser.displayName,
-        email: currentUser.email,
-        photoURL: currentUser.photoURL,
+      await setDoc(doc(db, "users", user.uid), {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
         tips: userTipsData,
         date: formattedDate,
       });
@@ -81,13 +81,13 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
       });
       navigate("/dashboard");
     }
-  }, [userTipsData, currentUser, formattedDate, navigate, formState]);
+  }, [userTipsData, user, formattedDate, navigate, formState]);
 
   const updateTheCollection = useCallback(
     async (e) => {
       e.preventDefault();
       console.log("update the collection");
-      const userDocRef = doc(db, "users", currentUser.uid);
+      const userDocRef = doc(db, "users", user.uid);
 
       if (userTipsData?.length && formState.date === formattedDate) {
         updateTodaysTips();
@@ -112,7 +112,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
       }
     },
     [
-      currentUser,
+      user,
       formattedDate,
       navigate,
       formState,
@@ -130,10 +130,10 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
         updateTheCollection();
       } else
         try {
-          await setDoc(doc(db, "users", currentUser.uid), {
-            displayName: currentUser.displayName,
-            email: currentUser.email,
-            photoURL: currentUser.photoURL,
+          await setDoc(doc(db, "users", user.uid), {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
             tips: formState,
             date: formattedDate,
           });
@@ -151,7 +151,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
         }
     },
     [
-      currentUser,
+      user,
       formState,
       formattedDate,
       updateCurrentUserCollection,
@@ -206,19 +206,19 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
   useEffect(() => {
     if (users.length) {
       const loggedinUser = users.filter(
-        (user) => user.email === currentUser.email
+        (user) => user.email === user.email
       );
 
       if (!loggedinUser[0].tips) {
-        console.log("there are no tips yet for this user");
+        // console.log("there are no tips yet for this user");
       }
       if (loggedinUser[0].tips) {
-        console.log("there are tips for this user");
+        // console.log("there are tips for this user");
         setUpdateCurrentUserCollection(true);
         setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
       }
     }
-  }, [users, currentUser]);
+  }, [users, user]);
 
   return (
     <form

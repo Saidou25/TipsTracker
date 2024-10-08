@@ -29,14 +29,6 @@
   border-radius: 2em;
   background-color: rgba(255, 255, 255, 0.693);
 }
-/* .input-start {
-  display: flex;
-  justify-content: flex-start;
-}
-.label-end {
-  display: flex;
-  justify-content: flex-end;
-} */
 /* -------------- profile --------------------------- */
 .profile-info {
   text-align: center;
@@ -55,10 +47,16 @@
 .profile-footer {
   display: inline !important;
 }
+
 /* -------------- update profilePicture ------------- */
 .progress {
-  height: 2%;
-  margin-top: 1%;
+  height: 10% !important;
+ background-color: transparent !important;
+  color: rgba(198, 135, 209, 0.92) !important;
+  font-size: 1rem !important;
+}
+.no-wrap {
+  white-space: nowrap !important;
 }
 .update-start {
   display: flex;
@@ -67,6 +65,12 @@
 .update-end {
   display: flex;
   justify-content: flex-end;
+}
+.here-text {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+}
+.here-text:hover {
+  cursor: pointer;
 }
 /* -------------- css for money svgs ---------------- */
 
@@ -92,21 +96,6 @@ svg {
 .dashboard-alignment {
   text-align: center;
 }
-/* .hum {
-  color: rgb(244, 244, 247) !important;
-  font-weight: 500 !important;
-  padding-top: 2%;
-  padding-bottom: 2%;
-} */
-/* .hum-item {
-  color: rgb(244, 244, 247) !important;
-  font-weight: 300 !important;
-} */
-/* .hum-icon {
-  color: rgb(241, 241, 44) !important;
-  font-weight: 300 !important;
-  padding: 0;
-} */
 /* ---------------- manages the card css for the tips displayed in dasboard ---------- */
 .wild {
   height: 420px;
@@ -123,9 +112,6 @@ svg {
   animation: rotationmove 0.4s linear;
   margin-bottom: 5% !important;
 }
-/* .colore {
-  background-color: rgb(36, 27, 161) !important;
-} */
 .card-title {
   display: flex;
   align-items: center;
@@ -192,5 +178,4 @@ svg {
     display: flex;
     justify-content: center;
   }
-  
 }
