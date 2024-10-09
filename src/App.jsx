@@ -8,8 +8,7 @@ import Signup from "./pages/Signup";
 import Update from "./pages/Update";
 import Team from "./components/Team";
 
-import "bootswatch/dist/cyborg/bootstrap.min.css";
-import "./index.css";
+import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
 
 function App() {
   return (
