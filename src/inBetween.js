@@ -74,7 +74,7 @@ function buildMonthArray(tips, year, month) {
   for (let day = 1; day <= daysInMonth; day++) {
     const tip = tipsMap.get(day) || {
       TipsNet: "-",
-      TipsBrut: "-",
+      TipsGross: "-",
       dayName: new Date(year, month - 1, day).toLocaleDateString("en-US", {
         weekday: "long",
       }),

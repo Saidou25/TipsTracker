@@ -85,7 +85,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
             </div>
           ))}
         <Button type="submit" className="button" disabled={false}>
-          save
+          login
         </Button>
       </div>
       {error && (

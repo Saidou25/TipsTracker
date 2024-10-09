@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import {
   arrayUnion,
   collection,
@@ -10,13 +10,14 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
+import findUser from "../UseFindUser";
+
 import Button from "./Button";
 
 import "./Card.css";
-import findUser from "../UseFindUser";
 
 const CardBodyTipsForm = ({ cardBodyTemplate }) => {
-const { user, loading } = findUser();
+  const { user, loading } = findUser();
 
   const date = useMemo(() => new Date(), []);
   const todaysDayName = date.toString().slice(0, 3);
@@ -36,16 +37,16 @@ const { user, loading } = findUser();
   const [userTipsData, setUserTipsData] = useState([]);
   const [error, setError] = useState(false);
   const [formState, setFormState] = useState({
-    TipsBrut: 0,
+    TipsGross: 0,
     TipsNet: 0,
     dayName: "",
     date: formattedDate,
+    // date: formattedDate,
   });
 
   const navigate = useNavigate();
 
   const form = useRef();
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +66,7 @@ const { user, loading } = findUser();
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        tips: userTipsData,
+        tips: formState,
         date: formattedDate,
       });
     } catch (error) {
@@ -74,10 +75,10 @@ const { user, loading } = findUser();
       console.log("did set doc");
       setUpdateCurrentUserCollection(false);
       setFormState({
-        TipsBrut: 0,
+        TipsGross: 0,
         TipsNet: 0,
         dayName: "",
-        date: formattedDate,
+        date: "",
       });
       navigate("/dashboard");
     }
@@ -102,7 +103,7 @@ const { user, loading } = findUser();
       } finally {
         console.log("did update doc/arrayUnion");
         setFormState({
-          TipsBrut: 0,
+          TipsGross: 0,
           TipsNet: 0,
           dayName: "",
           // date: "09/04/2024",
@@ -111,14 +112,7 @@ const { user, loading } = findUser();
         navigate("/dashboard");
       }
     },
-    [
-      user,
-      formattedDate,
-      navigate,
-      formState,
-      userTipsData,
-      updateTodaysTips,
-    ]
+    [user, formattedDate, navigate, formState, userTipsData, updateTodaysTips]
   );
 
   const createTheCollection = useCallback(
@@ -142,7 +136,7 @@ const { user, loading } = findUser();
         } finally {
           console.log("added for first time to doc");
           setFormState({
-            TipsBrut: 0,
+            TipsGross: 0,
             TipsNet: 0,
             dayName: "",
             date: formattedDate,
@@ -205,9 +199,7 @@ const { user, loading } = findUser();
 
   useEffect(() => {
     if (users.length) {
-      const loggedinUser = users.filter(
-        (user) => user.email === user.email
-      );
+      const loggedinUser = users.filter((user) => user.email === user.email);
 
       if (!loggedinUser[0].tips) {
         // console.log("there are no tips yet for this user");

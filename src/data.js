@@ -17,8 +17,8 @@ const loginData = {
 };
 const dashboardData = {
   templateTitle: "Dashboard",
-  fields: [],
-  footer: "Dashboard footer"
+  tips: [],
+  footer: "Dashboard footer",
 };
 
 const profileData = {
@@ -35,8 +35,8 @@ const profileData = {
 const tipsFormData = {
   templateTitle: "Please enter your tips",
   fields: [
-    { type: "number", label: "Tips(gross)", placeholder: "enter tips" },
-    { type: "number", label: "Tips(net)", placeholder: "enter tips" },
+    { type: "number", label: "TipsGross", placeholder: "enter tips" },
+    { type: "number", label: "TipsNet", placeholder: "enter tips" },
   ],
   footer: "Once your tips are added they will show in your dashboard",
 };
@@ -120,7 +120,7 @@ const tipsDataFeed = {
 
 const titlesData = [
   {
-    titles: ["month", "week day", "date", "tips(brut)", "tips(net)"],
+    titles: ["month", "week day", "date", "tips(gross)", "tips(net)"],
   },
 ];
 export {

@@ -11,30 +11,33 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
   const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
 
-  const today = new Date() // get today's date
+  const today = new Date(); // get today's date
   // ______________________________code for adding tips and display a weekly total tips___________________________
   const newTipsArr = [];
   let weeklyTipsNet;
-  let weeklyTipsBrut;
+  let weeklyTipsGross;
+  // console.log("newTipsArr", newTipsArr)
 
   useEffect(() => {
-    if (cardBodyTemplate) {
-      for (let allTips of cardBodyTemplate.fields) {
-        newTipsArr.push(allTips);
-      }
-    }
-    if (cardBodyTemplate) {
-      const dashboardTipsData = cardBodyTemplate.fields;
-      for (let allTips of dashboardTipsData) {
-        newTipsArr.push(allTips);
-      }
+    if (cardBodyTemplate.tips) {
+      // Checks if tips is an array or object and handles accordingly
+      const tipsArray = Array.isArray(cardBodyTemplate.tips) ? cardBodyTemplate.tips : [cardBodyTemplate.tips];
+      const currentUserTips = monthTipsArray(tipsArray);
+      const filteredTips = currentUserTips.filter((tip) => {
+        let tipDate = new Date(tip.date);
+        return tipDate <= today;
+      });
+      setDisplayTips(filteredTips);
+    } else {
+      // console.log("No tips data available.");
+      setDisplayTips([]);
     }
     if (newTipsArr.length) {
       const currentUserTips = monthTipsArray(newTipsArr);
-      const filteredTips = currentUserTips.filter(tip => { 
-        let tipDate = new Date(tip.date); 
+      const filteredTips = currentUserTips.filter((tip) => {
+        let tipDate = new Date(tip.date);
         return tipDate <= today; // Only return tips from today or earlier
-      })
+      });
       setDisplayTips(filteredTips);
     }
   }, [cardBodyTemplate, setDisplayTips]);
@@ -50,11 +53,13 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
             <span className="col-3">date</span>
             <span className="col-2">
               <FaSackDollar />
-              <span>tips(brut)</span>
+              <span>
+                tips(<i>gross</i>)
+              </span>
             </span>
             <span className="col-2">
               <GiCoins />
-              tips(net)
+              tips(<i>net</i>)
             </span>
           </>
         ) : (
@@ -63,11 +68,11 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
             <span className="col-4">date</span>
             <span className="col-4">
               <FaSackDollar />
-              tips(brut)
+              tips(<i>gross</i>)
             </span>
             <span className="col-4">
               <GiCoins />
-              tips(net)
+              tips(<i>net</i>)
             </span>
           </div>
         )}
@@ -79,9 +84,9 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   // ------------------- Calculate the total tips for the week and returning a div to display --------
 
   const render = (tip, index) => {
-    // console.log("tip", tip.TipsBrut, "index", index)
+    // console.log("tip", tip.TipsGross, "index", index)
     const prevDaysIndex = index - 1;
-    const prevDaysTips = tip.TipsBrut;
+    const prevDaysTips = tip.TipsGross;
     // console.log("prevDaysIndex", prevDaysIndex, "prevDaysTips", prevDaysTips);
 
     if (tip) {
@@ -108,27 +113,27 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           const dayDay = parseInt(newTipsArr[i].TipsNet);
 
           const dayBrut6 = newTipsArr[i - 6]
-            ? parseInt(newTipsArr[i - 6].TipsBrut)
+            ? parseInt(newTipsArr[i - 6].TipsGross)
             : 0;
           const dayBrut5 = newTipsArr[i - 5]
-            ? parseInt(newTipsArr[i - 5].TipsBrut)
+            ? parseInt(newTipsArr[i - 5].TipsGross)
             : 0;
           const dayBrut4 = newTipsArr[i - 4]
-            ? parseInt(newTipsArr[i - 4].TipsBrut)
+            ? parseInt(newTipsArr[i - 4].TipsGross)
             : 0;
           const dayBrut3 = newTipsArr[i - 3]
-            ? parseInt(newTipsArr[i - 3].TipsBrut)
+            ? parseInt(newTipsArr[i - 3].TipsGross)
             : 0;
           const dayBrut2 = newTipsArr[i - 2]
-            ? parseInt(newTipsArr[i - 2].TipsBrut)
+            ? parseInt(newTipsArr[i - 2].TipsGross)
             : 0;
           const dayBrut1 = newTipsArr[i - 1]
-            ? parseInt(newTipsArr[i - 1].TipsBrut)
+            ? parseInt(newTipsArr[i - 1].TipsGross)
             : 0;
-          const dayBrutDay = parseInt(newTipsArr[i].TipsBrut);
+          const dayBrutDay = parseInt(newTipsArr[i].TipsGross);
 
           weeklyTipsNet = dayDay + day1 + day2 + day3 + day4 + day5 + day6;
-          weeklyTipsBrut =
+          weeklyTipsGross =
             dayBrutDay +
             dayBrut1 +
             dayBrut2 +
@@ -145,13 +150,13 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           <>
             <div className="col-2 font-weight">weekly total:</div>
             <div className="col-6"></div>
-            <div className="col-2">{weeklyTipsBrut}</div>
+            <div className="col-2">{weeklyTipsGross}</div>
             <div className="col-2">{weeklyTipsNet}</div>
           </>
         ) : (
           <>
             <div className="col-4 font-weight">weekly total: </div>
-            <div className="col-4">{weeklyTipsBrut}</div>
+            <div className="col-4">{weeklyTipsGross}</div>
             <div className="col-4">{weeklyTipsNet}</div>
           </>
         )}
@@ -165,65 +170,68 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       <div className="you g-0 m-0 p-0">{renderTitles()}</div>
       <div className="dashboard-alignment py-2">
         {displayTips && // slice(): Creates a shallow copy of the displayTips array, ensuring we don't modify the original array.
-          displayTips.slice().reverse().map((tip, index) => (
-            <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
-              {showDashboardMediaView === false && (
-                <>
-                  <span className="col-lg-2 col-sm-0">
-                    {(() => {
-                      const [month, day, year] = tip.date.split("/"); // Extract month, day, year
+          displayTips
+            .slice()
+            .reverse()
+            .map((tip, index) => (
+              <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
+                {showDashboardMediaView === false && (
+                  <>
+                    <span className="col-lg-2 col-sm-0">
+                      {(() => {
+                        const [month, day, year] = tip.date.split("/"); // Extract month, day, year
 
-                      // Create a Date object using local time
-                      const correctedDate = new Date(
-                        year,
-                        parseInt(month, 10) - 1,
-                        day
-                      );
+                        // Create a Date object using local time
+                        const correctedDate = new Date(
+                          year,
+                          parseInt(month, 10) - 1,
+                          day
+                        );
 
-                      // Return the full month name
-                      const monthName = correctedDate.toLocaleDateString(
-                        "en-US",
-                        { month: "long" }
-                      );
+                        // Return the full month name
+                        const monthName = correctedDate.toLocaleDateString(
+                          "en-US",
+                          { month: "long" }
+                        );
 
-                      return monthName;
-                    })()}
-                  </span>
-                  <span className="col-3">{tip.dayName}</span>
-                  <span className="col-3">{tip.date}</span>
-                  <span className="col-2">{tip.TipsBrut}</span>
-                  <span className="col-2">{tip.TipsNet}</span>
-                  {tip.dayName === "Sunday" ? ( // we add the column's titles line after each Sunday
-                    <div className="row g-0">
-                      <span className="col-12 bg-info">
-                        {newTipsArr ? <>{render(tip, index)}</> : null}
-                      </span>
-                      {renderTitles()}
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
-              {showDashboardMediaView === true && (
-                <>
-                  <span className="col-4">{tip.date}</span>
-                  <span className="col-4">{tip.TipsBrut}</span>
-                  <span className="col-4">{tip.TipsNet}</span>
-                  {tip.dayName === "Sunday" ? (
-                    <div className="row g-0">
-                      <span className="col-12 bg-info">
-                        {newTipsArr ? <>{render(tip, index)}</> : null}
-                      </span>
-                      {renderTitles()}
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                        return monthName;
+                      })()}
+                    </span>
+                    <span className="col-3">{tip.dayName}</span>
+                    <span className="col-3">{tip.date}</span>
+                    <span className="col-2">{tip.TipsGross}</span>
+                    <span className="col-2">{tip.TipsNet}</span>
+                    {tip.dayName === "Sunday" ? ( // we add the column's titles line after each Sunday
+                      <div className="row g-0">
+                        <span className="col-12 bg-info">
+                          {newTipsArr ? <>{render(tip, index)}</> : null}
+                        </span>
+                        {renderTitles()}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )}
+                {showDashboardMediaView === true && (
+                  <>
+                    <span className="col-4">{tip.date}</span>
+                    <span className="col-4">{tip.TipsGross}</span>
+                    <span className="col-4">{tip.TipsNet}</span>
+                    {tip.dayName === "Sunday" ? (
+                      <div className="row g-0">
+                        <span className="col-12 bg-info">
+                          {newTipsArr ? <>{render(tip, index)}</> : null}
+                        </span>
+                        {renderTitles()}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
       </div>
     </div>
   );

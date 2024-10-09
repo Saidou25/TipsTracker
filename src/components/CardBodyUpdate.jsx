@@ -18,7 +18,6 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
     photoURL: user.photoURL,
   });
 
-
   const form = useRef();
 
   const navigate = useNavigate();
@@ -136,7 +135,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
               />
             </div>
           ))}
-          <br />
+        <br />
         <div className="col-12 d-flex justify-content-center mb-4">
           <Button
             type="submit"

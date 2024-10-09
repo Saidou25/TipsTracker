@@ -42,7 +42,6 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
-        console.log(user);
         setSuccess("Congratulation Your account has been created...");
         setFormState({ email: "", password: "" });
         navigate("/login");
