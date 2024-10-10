@@ -111,7 +111,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
                 }}
                 autoComplete="on"
                 name={field.label}
-                value={formState[field.label]}
+                value={formState.label}
                 onChange={handleChange}
               />
             </div>

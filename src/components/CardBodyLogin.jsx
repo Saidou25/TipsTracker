@@ -10,7 +10,10 @@ import "./Card.css";
 const CardBodyLogin = ({ cardBodyTemplate }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [formState, setFormState] = useState("");
+  const [formState, setFormState] = useState({
+    email: "",
+    password: "",
+  });
 
   const navigate = useNavigate();
 
@@ -66,8 +69,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
                 {field.label}:
               </label>
               <input
-                data-testid="input"
-                role="spinbutton"
+                data-testid="login"
                 id={field.label}
                 type={field.type}
                 className="col-lg-6 col-sm-6 login-input mb-3"
@@ -79,7 +81,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
                 }}
                 autoComplete="on"
                 name={field.label}
-                value={formState.field?.label}
+                value={formState.label}
                 onChange={handleChange}
               />
             </div>
