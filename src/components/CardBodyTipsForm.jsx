@@ -33,6 +33,9 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
 
   const [updateCurrentUserCollection, setUpdateCurrentUserCollection] =
     useState(false);
+  const [todayTipAdjustment, setTodayTipAdjustment] = useState(false);
+  const [firstCurrentUserTipEntry, setFirstCurrentUserTipEntry] =
+    useState(false);
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState([]);
   const [error, setError] = useState(false);
@@ -57,103 +60,80 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
     });
   };
 
+  // if user wants to re-adjust the tips just entered
+  let updatedTips = [];
   const updateTodaysTips = useCallback(async () => {
-    userTipsData.pop();
-    userTipsData.push(formState);
-    // console.log("tips data", userTipsData);
+    const userDocRef = doc(db, "users", user.uid);
+     // Remove the last entry if it exists
+     if (userTipsData.length) {
+      userTipsData.pop(); // Remove the last entry
+    }
+    updatedTips = [...userTipsData, { ...formState }]; // Create a new array with existing tips and the new one
     try {
-      await setDoc(doc(db, "users", user.uid), {
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        tips: formState,
-        date: formattedDate,
-      });
+      // Update Firestore with the new tips array
+    await updateDoc(userDocRef, {
+      tips: updatedTips,
+    });
     } catch (error) {
-      console.log("error", error.message);
+      console.log(error.message);
     } finally {
-      console.log("did set doc");
+      console.log("user tips were corrected successfully");
       setUpdateCurrentUserCollection(false);
+      setFirstCurrentUserTipEntry(false);
       setFormState({
         TipsGross: 0,
         TipsNet: 0,
         dayName: "",
-        date: "",
+        date: formattedDate,
       });
       navigate("/dashboard");
     }
   }, [userTipsData, user, formattedDate, navigate, formState]);
 
-  const updateTheCollection = useCallback(
-    async (e) => {
-      e.preventDefault();
-      console.log("update the collection");
-      const userDocRef = doc(db, "users", user.uid);
+  // When user enters the most recent tips
+  const updateTheCollection = useCallback(async () => {
+    const userDocRef = doc(db, "users", user.uid);
 
-      if (userTipsData?.length && formState.date === formattedDate) {
-        updateTodaysTips();
-      }
-      try {
-        // Atomically add a new region to the "regions" array field.
-        await updateDoc(userDocRef, {
-          tips: arrayUnion({ ...formState, date: formattedDate }),
-        });
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        console.log("did update doc/arrayUnion");
-        setFormState({
-          TipsGross: 0,
-          TipsNet: 0,
-          dayName: "",
-          // date: "09/04/2024",
-          date: formattedDate,
-        });
-        navigate("/dashboard");
-      }
-    },
-    [user, formattedDate, navigate, formState, userTipsData, updateTodaysTips]
-  );
+    // if (userTipsData?.length) {
+    //   await updateTodaysTips();
+    // }
+    try {
+      // Atomically add a new region to the "regions" array field.
+      await updateDoc(userDocRef, {
+        tips: arrayUnion({ ...formState }),
+      });
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      console.log("user tips were updated successfully");
+      setUpdateCurrentUserCollection(false);
+      setFirstCurrentUserTipEntry(false);
+      setFormState({
+        TipsGross: 0,
+        TipsNet: 0,
+        dayName: "",
+        date: formattedDate,
+      });
+      navigate("/dashboard");
+    }
+  }, [user, navigate, formState, userTipsData, updateTodaysTips]);
 
-  const createTheCollection = useCallback(
-    async (e) => {
-      e.preventDefault();
-      console.log("create the collection");
-      if (updateCurrentUserCollection) {
-        console.log("true, there is a collection");
-        updateTheCollection();
-      } else
-        try {
-          await setDoc(doc(db, "users", user.uid), {
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            tips: formState,
-            date: formattedDate,
-          });
-        } catch (error) {
-          console.log("error", error.message);
-        } finally {
-          console.log("added for first time to doc");
-          setFormState({
-            TipsGross: 0,
-            TipsNet: 0,
-            dayName: "",
-            date: formattedDate,
-          });
-          navigate("/dashboard");
-        }
-    },
-    [
-      user,
-      formState,
-      formattedDate,
-      updateCurrentUserCollection,
-      navigate,
-      updateTheCollection,
-    ]
-  );
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log("in handle submit");
+    if (firstCurrentUserTipEntry) {
+      // console.log("case: 1 first time", firstCurrentUserTipEntry);
+      updateTheCollection();
+    }
+    if (updateCurrentUserCollection) {
+      // console.log("case: 2", updateCurrentUserCollection);
+      updateTheCollection();
+    }
+    if (todayTipAdjustment) {
+      // console.log("case: 3", todayTipAdjustment);
+      updateTodaysTips();
+    }
+  };
   useEffect(() => {
     const weekDays = [
       "Monday",
@@ -199,15 +179,35 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
 
   useEffect(() => {
     if (users.length) {
-      const loggedinUser = users.filter((user) => user.email === user.email);
-
+      const loggedinUser = users.filter(
+        (eachUser) => eachUser.email === user.email
+      );
+      // console.log("tips for logged in user", loggedinUser[0].tips);
       if (!loggedinUser[0].tips) {
-        // console.log("there are no tips yet for this user");
+        // console.log(
+        //   "there are no tips yet for this user",
+        //   loggedinUser[0].tips
+        // );
+        setFirstCurrentUserTipEntry(true);
       }
+      // If loggedin user already did enter his/her tips in the past then we set update the collection to true and the collection will be update thru handleSubmit
       if (loggedinUser[0].tips) {
-        // console.log("there are tips for this user");
-        setUpdateCurrentUserCollection(true);
-        setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
+        // console.log(loggedinUser[0].tips);
+        const tipsAdjustment = loggedinUser[0].tips.filter(
+          (tip) => tip.date === formattedDate
+        );
+        // If loggedin user is trying to correct is today's tip entry we trigger updateTodaysTips her so he/her can do it
+        if (tipsAdjustment.length) {
+          // console.log(
+          //   "trying to correct today tips adjustment",
+          //   tipsAdjustment
+          // );
+          setTodayTipAdjustment(true);
+          setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
+        } else {
+          // console.log("there are tips for this user", loggedinUser[0].tips);
+          setUpdateCurrentUserCollection(true);
+        }
       }
     }
   }, [users, user]);
@@ -217,9 +217,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
       ref={form}
       // role="form"
       className="tips-form"
-      onSubmit={
-        updateCurrentUserCollection ? updateTheCollection : createTheCollection
-      }
+      onSubmit={handleSubmit}
     >
       <div className="row my-5 g-0" data-testid="card-body-tips-form">
         <br />

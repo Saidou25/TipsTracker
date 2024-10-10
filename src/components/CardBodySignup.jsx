@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { useCallback, useState } from "react";
+
+import findUser from "../UseFindUser";
 
 import Button from "./Button";
 
 import "./Card.css";
 
 const CardBodySignup = ({ cardBodyTemplate }) => {
+  const { user, loading } = findUser();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [formState, setFormState] = useState({
@@ -18,41 +22,67 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
     setError("");
     setSuccess("");
+    const { name, value } = e.target;
+
     setFormState({
       ...formState,
       [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Creating a collection to store user's tips
+  const createNewCollection = useCallback(
+    async (user) => {
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          displayName: "",
+          email: formState.email,
+          photoURL: "",
+          tips: [],
+          date: Timestamp.fromDate(new Date()),
+        });
+        console.log("Congratulation your collection has been created");
+      } catch (error) {
+        console.log("error", error.message);
+      }
+    },
+    [user, formState]
+  );
 
+  const createNewUser = useCallback(async () => {
     if (!formState.email || !formState.password) {
       setError("All fields are required...");
       return;
     }
-    const email = formState.email;
-    const password = formState.password;
+    const { email, password } = formState;
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        setSuccess("Congratulation Your account has been created...");
-        setFormState({ email: "", password: "" });
-        navigate("/login");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage, errorCode);
-      });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setSuccess("Congratulations! Your account has been created.");
+      setFormState({ email: "", password: "" });
+      return userCredential.user;
+    } catch (error) {
+      setError(`${error.message} (${error.code})`);
+      throw error;
+    }
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const newUser = await createNewUser();
+      await createNewCollection(newUser);
+      navigate("/dashboard");
+    } catch (e) {
+      console.log(error);
+    }
   };
-
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0">
@@ -70,9 +100,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
               </label>
               <input
                 data-testid="input"
-                role="spinbutton"
                 id={field.label}
-                inputMode="numeric"
                 type={field.type}
                 className="col-lg-4 col-sm-6 signup-input mb-3 input-start"
                 placeholder={field.placeholder}
@@ -83,7 +111,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
                 }}
                 autoComplete="on"
                 name={field.label}
-                value={formState.field?.label}
+                value={formState[field.label]}
                 onChange={handleChange}
               />
             </div>
