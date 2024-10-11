@@ -10,7 +10,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const [displayTips, setDisplayTips] = useState();
 
   const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
-
+  console.log(cardBodyTemplate);
   const today = new Date(); // get today's date
   // ______________________________code for adding tips and display a weekly total tips___________________________
   const newTipsArr = [];
@@ -21,7 +21,9 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   useEffect(() => {
     if (cardBodyTemplate.tips) {
       // Checks if tips is an array or object and handles accordingly
-      const tipsArray = Array.isArray(cardBodyTemplate.tips) ? cardBodyTemplate.tips : [cardBodyTemplate.tips];
+      const tipsArray = Array.isArray(cardBodyTemplate.tips)
+        ? cardBodyTemplate.tips
+        : [cardBodyTemplate.tips];
       const currentUserTips = monthTipsArray(tipsArray);
       const filteredTips = currentUserTips.filter((tip) => {
         let tipDate = new Date(tip.date);
@@ -53,28 +55,26 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
             <span className="col-3">date</span>
             <span className="col-2">
               <FaSackDollar />
-              <span>
-                tips(<i>gross</i>)
-              </span>
+              <span>gross</span>
             </span>
             <span className="col-2">
               <GiCoins />
-              tips(<i>net</i>)
+              net
             </span>
           </>
         ) : (
           // if mobile screen we display that way
-          <div className="">
+          <>
             <span className="col-4">date</span>
             <span className="col-4">
               <FaSackDollar />
-              tips(<i>gross</i>)
+              gross
             </span>
             <span className="col-4">
               <GiCoins />
-              tips(<i>net</i>)
+              net
             </span>
-          </div>
+          </>
         )}
       </div>
     );
@@ -167,7 +167,8 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
   return (
     <div className="wild">
-      <div className="you g-0 m-0 p-0">{renderTitles()}</div>
+      {/* <div className="g-0 m-0 p-0">{renderTitles()}</div> */}
+      {renderTitles()}
       <div className="dashboard-alignment py-2">
         {displayTips && // slice(): Creates a shallow copy of the displayTips array, ensuring we don't modify the original array.
           displayTips
@@ -177,7 +178,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
               <div className="row g-0" key={`${tip.date}-${index}`} tip={tip}>
                 {showDashboardMediaView === false && (
                   <>
-                    <span className="col-lg-2 col-sm-0">
+                    <span className="col-2">
                       {(() => {
                         const [month, day, year] = tip.date.split("/"); // Extract month, day, year
 

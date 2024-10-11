@@ -59,11 +59,11 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
         <br />
         {cardBodyTemplate.fields &&
           cardBodyTemplate.fields.map((field) => (
-            <div className="div-label" key={field.label}>
+            <div className="login-signup" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
-                className="col-lg-3 col-sm-6 mb-3"
+                className="col-12 mb-3"
                 name={field.label}
               >
                 {field.label}:
@@ -72,7 +72,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
                 data-testid="login"
                 id={field.label}
                 type={field.type}
-                className="col-lg-6 col-sm-6 login-input mb-3"
+                className="col-12 login-input mb-3"
                 placeholder={field.placeholder}
                 style={{
                   fontStyle: "oblique",

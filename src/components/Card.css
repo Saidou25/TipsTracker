@@ -10,12 +10,20 @@
   -moz-osx-font-smoothing: grayscale;
 } */
 /* ------ login && signup ---------------------- */
-.login-form,
 .signup-form,
-.tips-form {
-  width: 80%;
-  margin: auto;
+.login-form {
+  display: flex;
+  width: 40%;
+  margin: auto !important;
 }
+.login-signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 2rem;
+  margin: 0;
+}
+
 .div-label {
   display: inline;
   display: flex;
@@ -23,6 +31,7 @@
   padding-bottom: 2rem;
   margin: 0;
 }
+
 .login-input,
 .signup-input,
 .tips-input {
@@ -51,7 +60,7 @@
 /* -------------- update profilePicture ------------- */
 .progress {
   height: 10% !important;
- background-color: transparent !important;
+  background-color: transparent !important;
   color: rgba(198, 135, 209, 0.92) !important;
   font-size: 1rem !important;
 }
@@ -85,7 +94,7 @@ svg {
 }
 /* ---------------- tipsForm ---------------------- */
 .tips-form {
-  width: 80%;
+  width: 40%;
   margin: auto !important;
 }
 /* ---------------- remove some default css ------- */
@@ -151,15 +160,31 @@ svg {
     opacity: 1;
   }
 }
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 1440px) {
+  .tips-form {
+  width: 60%;
+  margin: auto;
+}
+@media screen and (max-width: 1030px) {
+  .login-sinup {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+}
+@media screen and (max-width: 950px) {
+  .tips-form {
+    width: 60%;
+    margin: auto !important;
+  }
+}
+@media screen and (max-width: 850px) {
   .main-card {
-    width: 80% !important;
+    width: 70% !important;
   }
   .login-form,
   .signup-form {
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    width: 50%;
   }
   .photo-url {
     width: 100px;
@@ -177,5 +202,62 @@ svg {
   .update-end {
     display: flex;
     justify-content: center;
+  }
+}
+@media screen and (max-width: 600px) {
+  .main-card {
+    width: 85% !important;
+  }
+  .photo-url {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    background-position: cover;
+    margin-top: 4%;
+  }
+  .update-start {
+    margin-bottom: 3%;
+    display: flex;
+    justify-content: center !important;
+  }
+  .update-end {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 460px) {
+  .main-card {
+    width: 90% !important;
+  }
+  /* .login-form,
+  .signup-form {
+    width: 100%;
+  } */
+  .photo-url {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    background-position: cover;
+    margin-top: 4%;
+  }
+  .update-start {
+    margin-bottom: 3%;
+    display: flex;
+    justify-content: center !important;
+  }
+  .update-end {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 450px) {
+  .div-label {
+    display: inline;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+    width: 100% !important;
   }
 }

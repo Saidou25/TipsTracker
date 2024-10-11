@@ -227,7 +227,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
-                className="col-lg-3 col-sm-6 mb-"
+                className="col-6"
                 name={field.label}
               >
                 {field.label}:
@@ -240,7 +240,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate }) => {
                 id={field.label}
                 inputMode="numeric"
                 type={field.type}
-                className="col-lg-6 col-sm-6 login-input mb-3"
+                className="col-6 login-input mb-3"
                 placeholder={field.placeholder}
                 style={{
                   fontStyle: "oblique",
