@@ -101,6 +101,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
               <input
                 data-testid="input"
                 id={field.label}
+                inputMode={field.inputMod}
                 type={field.type}
                 className="col-12 signup-input mb-3"
                 placeholder={field.placeholder}

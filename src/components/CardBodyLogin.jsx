@@ -71,6 +71,7 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
               <input
                 data-testid="login"
                 id={field.label}
+                inputMode={field.inputMod}
                 type={field.type}
                 className="col-12 login-input mb-3"
                 placeholder={field.placeholder}

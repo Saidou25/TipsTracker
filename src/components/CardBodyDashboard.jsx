@@ -10,7 +10,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const [displayTips, setDisplayTips] = useState();
 
   const { showDashboardMediaView } = useMonitorWidth(); // Evaluate if user is on a mobile screen or not
-  console.log(cardBodyTemplate);
+
   const today = new Date(); // get today's date
   // ______________________________code for adding tips and display a weekly total tips___________________________
   const newTipsArr = [];

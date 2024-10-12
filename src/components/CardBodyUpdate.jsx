@@ -121,7 +121,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
                 data-testid="input"
                 role="spinbutton"
                 id={field.label}
-                inputMode="numeric"
+                inputMode={field.inputMod}
                 type={field.type}
                 className="tips-input mb-3 mx-2 text-black"
                 placeholder={

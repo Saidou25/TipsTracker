@@ -12,7 +12,7 @@ import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
 
 function App() {
   return (
-    <Router basename={process.env.NODE_ENV === 'production' ? '/tipstracker' : '/'}>
+    <Router basename={process.env.NODE_ENV === 'production' ? '/tipstracker/' : '/'}>
       <Routes>
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />

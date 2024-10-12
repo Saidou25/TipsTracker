@@ -2,16 +2,36 @@
 const signupData = {
   templateTitle: "Please signup",
   fields: [
-    { type: "email", label: "email", placeholder: "gf@example.com" },
-    { type: "password", label: "password", placeholder: "******" },
+    {
+      type: "email",
+      label: "email",
+      placeholder: "gf@example.com",
+      imputMod: "email",
+    },
+    {
+      type: "password",
+      label: "password",
+      placeholder: "******",
+      imputMod: "text",
+    },
   ],
   footer: "Sign up and start tracking your tips",
 };
 const loginData = {
   templateTitle: "Please login",
   fields: [
-    { type: "email", label: "email", placeholder: "gf@example.com" },
-    { type: "password", label: "password", placeholder: "******" },
+    {
+      type: "email",
+      label: "email",
+      placeholder: "gf@example.com",
+      imputMod: "email",
+    },
+    {
+      type: "password",
+      label: "password",
+      placeholder: "******",
+      imputMod: "text",
+    },
   ],
   footer: "Welcome to Tips Tracker",
 };
@@ -25,25 +45,39 @@ const profileData = {
   templateTitle: "Profile",
   fields: [
     {
-      type: "",
-      displayName: "",
-      email: "",
+      type: "text",
+      label: "displayName",
     },
+    {
+      label: "email: ",
+      type: "email",
+    },
+    { type: "text", label: "using Tips Tracker since: " },
   ],
 };
 
 const tipsFormData = {
   templateTitle: "Please enter your tips",
   fields: [
-    { type: "number", label: "TipsGross", placeholder: "enter tips" },
-    { type: "number", label: "TipsNet", placeholder: "enter tips" },
+    {
+      type: "number",
+      label: "TipsGross",
+      placeholder: "enter tips",
+      inputMod: "numeric",
+    },
+    {
+      type: "number",
+      label: "TipsNet",
+      placeholder: "enter tips",
+      inputMod: "numeric",
+    },
   ],
   footer: "Once your tips are added they will show in your dashboard",
 };
 
 const updateData = {
   templateTitle: "Update your profile",
-  fields: [{ type: "text", label: "displayName", placeholder: "display name" }],
+  fields: [{ type: "text", label: "displayName", placeholder: "display name", inputMod: "text" }],
 };
 // Testing data
 const tipsDataFeed = {
