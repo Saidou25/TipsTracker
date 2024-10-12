@@ -2,7 +2,6 @@ import emptyAvatar from "../assets/profileicon.png";
 
 import "./Card.css";
 const CardBodyProfile = ({ cardBodyTemplate }) => {
-
   return (
     <>
       <div className="col-12">
@@ -22,9 +21,12 @@ const CardBodyProfile = ({ cardBodyTemplate }) => {
         <p className="col-12">
           Display name: {cardBodyTemplate?.loggedinUser?.displayName}
         </p>
-        <p className="col-12">Contact: {cardBodyTemplate?.loggedinUser?.email}</p>
         <p className="col-12">
-          Using Tip Tracker since: {cardBodyTemplate?.usingSince}
+          Contact: {cardBodyTemplate?.loggedinUser?.email}
+        </p>
+        <p className="col-12">
+          Using Tip Tracker since:{" "}
+          {cardBodyTemplate?.loggedinUser.metadata.creationTime}
         </p>
       </section>
     </>
