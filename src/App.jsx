@@ -15,6 +15,7 @@ function App() {
     <Router
       basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
     >
+      <h1>Hello World</h1>
       {/* <Routes>
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />
