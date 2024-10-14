@@ -27,7 +27,7 @@ const CardBodyProfile = ({ cardBodyTemplate }) => {
         </p>
         <p className="col-12">
           Using Tip Tracker since:{" "}
-          {cardBodyTemplate?.loggedinUser.metadata.creationTime}
+          {/* {cardBodyTemplate?.loggedinUser.metadata.creationTime} */}
         </p>
       </section>
     </>
