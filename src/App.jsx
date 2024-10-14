@@ -12,21 +12,22 @@ import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
 
 function App() {
   return (
-    <Router
-      basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
-    >
-      <Routes>
-        <Route path="/" element={<LandingPage />}>
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
-        </Route>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/enterTips" element={<EnterTips />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/update" element={<Update />} />
-      </Routes>
-    </Router>
+    <h1>Hello world</h1>
+    // <Router
+    //   basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
+    // >
+    //   <Routes>
+    //     <Route path="/" element={<LandingPage />}>
+    //       <Route path="signup" element={<Signup />} />
+    //       <Route path="login" element={<Login />} />
+    //     </Route>
+    //     <Route path="/dashboard" element={<Dashboard />} />
+    //     <Route path="/team" element={<Team />} />
+    //     <Route path="/enterTips" element={<EnterTips />} />
+    //     <Route path="/profile" element={<Profile />} />
+    //     <Route path="/update" element={<Update />} />
+    //   </Routes>
+    // </Router>
   );
 }
 
