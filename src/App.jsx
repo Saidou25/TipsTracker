@@ -15,7 +15,7 @@ function App() {
     <Router
       basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
     >
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
@@ -25,7 +25,7 @@ function App() {
         <Route path="/enterTips" element={<EnterTips />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/update" element={<Update />} />
-      </Routes>
+      </Routes> */}
     </Router>
   );
 }
