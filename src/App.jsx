@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
@@ -16,7 +16,7 @@ function App() {
       basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
     >
       <h1>Hello World</h1>
-      <Routes>
+   <Routes> 
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
@@ -26,7 +26,7 @@ function App() {
         <Route path="/enterTips" element={<EnterTips />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/update" element={<Update />} />
-      </Routes>
+      </Routes> 
     </Router>
   );
 }
