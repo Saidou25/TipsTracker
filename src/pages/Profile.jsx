@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { profileData } from "../data";
 import findUser from "../UseFindUser";
 
-import Card from "../components/Card";
+import CardBodyProfile from "../components/CardBodyProfile";
+
 import Navbar from "../components/Navbar";
 
 import "./Profile.css";
@@ -33,7 +34,7 @@ const Profile = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <Card
+        <CardBodyProfile
           cardBodyTemplate={{
             title: profileData.templateTitle,
             fields: profileData.fields,

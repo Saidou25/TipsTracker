@@ -19,8 +19,6 @@ const Card = ({ cardBodyTemplate = {} }) => {
           return <CardBodySignup cardBodyTemplate={cardBodyTemplate} />;
         case "Please login":
           return <CardBodyLogin cardBodyTemplate={cardBodyTemplate} />;
-        case "Profile":
-          return <CardBodyProfile cardBodyTemplate={cardBodyTemplate} />;
         case "Please enter your tips":
           return <CardBodyTipsForm cardBodyTemplate={cardBodyTemplate} />;
         case "Update your profile":

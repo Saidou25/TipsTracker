@@ -2,9 +2,12 @@ import emptyAvatar from "../assets/profileicon.png";
 
 import "./Card.css";
 const CardBodyProfile = ({ cardBodyTemplate }) => {
-  console.log('card body template', cardBodyTemplate)
   return (
-    <>
+    <div
+      className="card main-card"
+      // role="test-card"
+    >
+      <div className="card-title p-5">{cardBodyTemplate.title}</div>
       <div className="col-12">
         <div className="container-fluid">
           <img
@@ -30,7 +33,8 @@ const CardBodyProfile = ({ cardBodyTemplate }) => {
           {/* {cardBodyTemplate?.loggedinUser.metadata.creationTime} */}
         </p>
       </section>
-    </>
+      <div className="card-footer p-5">{cardBodyTemplate.footer}</div>
+    </div>
   );
 };
 export default CardBodyProfile;
