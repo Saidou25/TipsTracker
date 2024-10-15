@@ -9,7 +9,6 @@ const Login = () => {
         // role="test-card"
       >
         <div className="card-title p-5">{loginData.templateTitle}</div>
-
         <CardBodyLogin
           className="p-0 m-0 g-0"
           cardBodyTemplate={{

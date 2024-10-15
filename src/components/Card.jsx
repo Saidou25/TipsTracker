@@ -1,9 +1,4 @@
-import CardBodyProfile from "./CardBodyProfile";
-import CardBodyTipsForm from "./CardBodyTipsForm";
-import CardBodyDashboard from "./CardBodyDashboard";
-import CardBodyLogin from "./CardBodyLogin";
-import CardBodySignup from "./CardBodySignup";
-import CardBodyUpdate from "./CardBodyUpdate";
+
 
 import "./Card.css";
 
@@ -15,11 +10,10 @@ const Card = ({ cardBodyTemplate = {} }) => {
   const renderFields = () => {
     if (title) {
       switch (title) {
-        case "Please enter your tips":
-          return <CardBodyTipsForm cardBodyTemplate={cardBodyTemplate} />;
+        
         // case "Update your profile":
         default:
-          return <CardBodyUpdate cardBodyTemplate={cardBodyTemplate} />;
+          // return <CardBodyUpdate cardBodyTemplate={cardBodyTemplate} />;
       }
     }
   };

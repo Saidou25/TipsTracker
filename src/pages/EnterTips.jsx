@@ -1,14 +1,19 @@
 import { tipsFormData } from "../data";
 import Navbar from "../components/Navbar";
-import Card from "../components/Card";
+import CardBodyTipsForm from "../components/CardBodyTipsForm";
 
 const EnterTips = () => {
-  // const date = new Date().toString()
+
   return (
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <Card
+      <div
+        className="card main-card"
+        // role="test-card"
+      >
+        <div className="card-title p-5">{tipsFormData.templateTitle}</div>
+        <CardBodyTipsForm
           role="card"
           cardBodyTemplate={{
             title: tipsFormData.templateTitle,
@@ -17,6 +22,8 @@ const EnterTips = () => {
           }}
           data-testid="card-component"
         />
+          <div className="card-footer p-5">{tipsFormData.footer}</div>
+      </div>
       </div>
     </div>
   );

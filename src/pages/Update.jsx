@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import findUser from "../UseFindUser";
 import ModalWindow from "../components/ModalWindow";
+import CardBodyUpdate from "../components/CardBodyUpdate";
 
 const Update = () => {
   const { user, loading } = findUser();
@@ -93,31 +94,36 @@ const Update = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <Card
-          role="card"
-          title={new Date().toString()}
-          cardBodyTemplate={{
-            title: updateData.templateTitle,
-            fields: updateData.fields,
-            footer: (
-              <div>
-                <span>You can delete your account </span>
-                <span className="here-text" onClick={handleClick}>
-                  here
-                </span>
-              </div>
-            ),
-            loggedinUser: user,
-            usingSince: "",
-          }}
-          data-testid="card-component"
-        />
+        <div
+          className="card main-card"
+          // role="test-card"
+        >
+          <div className="card-title p-5">{updateData.templateTitle}</div>
+          <CardBodyUpdate
+            role="card"
+            title={new Date().toString()}
+            cardBodyTemplate={{
+              fields: updateData.fields,
+              gedinUser: user,
+              usingSince: "",
+            }}
+            data-testid="card-component"
+          />
+          <div className="card-footer p-5">
+            <div>
+              <span>You can delete your account </span>
+              <span className="here-text" onClick={handleClick}>
+                here
+              </span>
+            </div>
+          </div>
+        </div>
+        {showModalWindow && (
+          <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
+        )}
+        {isDeleting && <p>Deleting your account...</p>}
+        {error && <p className="error-message">{error}</p>}
       </div>
-      {showModalWindow && (
-        <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
-      )}
-      {isDeleting && <p>Deleting your account...</p>}
-      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };

@@ -3,8 +3,12 @@ import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import findUser from "../UseFindUser";
 
+import { CiCamera } from "react-icons/ci";
 import emptyAvatar from "../assets/profileicon.png";
+// import camera from "../assets/camera.jpg";
 import Button from "./Button";
+
+import "./UpdateProfilePicture.css";
 
 const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
   const [srcUrl, setSrcUrl] = useState("");
@@ -109,30 +113,30 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid mt-4">
         <div className="progress">
           {showProgress ? <>{showProgress}</> : <></>}
         </div>
-        <img className="photo-url" src={srcUrl} alt="avatar" />
+        <div style={{ position: "relative" }}>
+          <img className="photo-url" src={srcUrl} alt="avatar" />
+          <label htmlFor="choose" style={{ cursor: "pointer" }}>
+            <input
+              type="file"
+              id="choose"
+              name="choose"
+              autoComplete="off"
+              multiple
+              onChange={handleChange}
+              style={{ display: "none" }} // Hide the default file input
+            />
+            <CiCamera className="camera img-fluid" alt="camera" />
+          </label>
+        </div>
       </div>
-      <div className="row justify-content-center g-0 mt-4">
-        <div className="col-lg-12 col-sm-8 d-flex justify-content-center">
-          <input
-            type="file"
-            id="choose"
-            name="choose"
-            autoComplete="off"
-            multiple
-            onChange={handleChange}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="col-12 d-flex justify-content-center">
-          <Button className="button" type="submit" onClick={handleClick}>
-            save
-          </Button>
-        </div>
+      <div className="d-flex justify-content-center mt-4">
+        <Button className="button" type="submit" onClick={handleClick}>
+          save Picture
+        </Button>
       </div>
     </>
   );

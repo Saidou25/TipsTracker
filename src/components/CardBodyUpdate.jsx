@@ -143,7 +143,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
             disabled={false}
             loading={loading}
           >
-            update
+            update profile
           </Button>
         </div>
         {error && (
