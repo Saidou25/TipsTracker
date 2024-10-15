@@ -10,20 +10,18 @@ import Navbar from "../components/Navbar";
 import "./Profile.css";
 
 const Profile = () => {
-  const [creationTime, setCreationTime] = useState();
-  const { user, loading } = findUser(); // Finds the loggedinUser
+  const { user: currentUser, loading } = findUser(); // Finds the loggedinUser
+  const [timeCreated, setTimeCreated] = useState();
 
   useEffect(() => {
-    if (user.creationTime) {
-      // Removing the time from the creationTime metadata
-      const creationTimeArr = user.metadata.creationTime.split(" ").slice(0, 4);
-      const removedDay = creationTimeArr.shift().replace(",", "");
-      creationTimeArr.unshift(removedDay);
-
-      // Setting the creationTime with new array (creationTimeArr)
-      setCreationTime(creationTimeArr.join().replaceAll(",", " "));
+    if (currentUser.metadata) {
+      // Extracting and formatting the creation date directly
+      const [day, month, date, year] =
+        currentUser.metadata.creationTime.split(" ");
+      // Remove the comma from the date and set the formatted creation time
+      setTimeCreated(`${day.replace(",", "")} ${month} ${date} ${year}`);
     }
-  }, [user]);
+  }, [currentUser]);
 
   // Only show loading message until the timeout completes
   if (loading) {
@@ -34,22 +32,27 @@ const Profile = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <CardBodyProfile
-          cardBodyTemplate={{
-            title: profileData.templateTitle,
-            fields: profileData.fields,
-            footer: (
-              <div className="profile-footer">
-                <span>You can update your profile </span>
-                <NavLink className="update" to="/update">
-                  <span>here</span>
-                </NavLink>
-              </div>
-            ),
-            loggedinUser: user,
-            usingSince: creationTime,
-          }}
-        />
+        <div
+          className="card main-card"
+          // role="test-card"
+        >
+          <div className="card-title p-5">{profileData.templateTitle}</div>
+          <CardBodyProfile
+            cardBodyTemplate={{
+              fields: profileData.fields,
+              loggedinUser: currentUser,
+              usingSince: timeCreated,
+            }}
+          />
+          <div className="card-footer p-5">
+            <div className="profile-footer">
+              <span>You can update your profile </span>
+              <NavLink className="update" to="/update">
+                <span>here</span>
+              </NavLink>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

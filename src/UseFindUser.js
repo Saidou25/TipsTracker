@@ -4,6 +4,7 @@ import { auth } from "./firebase";
 const findUser = () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
+  const [usingSince, setUsingSince] = useState("");
 
   useEffect(() => {
     // Start the loading timeout
@@ -14,12 +15,10 @@ const findUser = () => {
     // Listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        // Removing the time from the creationTime metadata
-        const creationTimeArr = currentUser.metadata.creationTime
-          .split(" ")
-          .slice(0, 4);
-        const removedDay = creationTimeArr.shift().replace(",", "");
-        creationTimeArr.unshift(removedDay);
+        // Extracting and formatting the creation date directly
+      const [day, month, date, year] = currentUser.metadata.creationTime.split(" ");
+      // Remove the comma from the date and set the formatted creation time
+      setUsingSince(`${day.replace(",", "")} ${month} ${date} ${year}`);
 
         setUser(currentUser);
 
@@ -36,6 +35,6 @@ const findUser = () => {
       unsubscribe();
     };
   }, []);
-  return { user, loading };
+  return { user, loading, usingSince };
 };
 export default findUser;

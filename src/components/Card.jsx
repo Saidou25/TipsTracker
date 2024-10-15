@@ -21,10 +21,9 @@ const Card = ({ cardBodyTemplate = {} }) => {
           return <CardBodyLogin cardBodyTemplate={cardBodyTemplate} />;
         case "Please enter your tips":
           return <CardBodyTipsForm cardBodyTemplate={cardBodyTemplate} />;
-        case "Update your profile":
-          return <CardBodyUpdate cardBodyTemplate={cardBodyTemplate} />;
+        // case "Update your profile":
         default:
-          return <CardBodyDashboard cardBodyTemplate={cardBodyTemplate} />;
+          return <CardBodyUpdate cardBodyTemplate={cardBodyTemplate} />;
       }
     }
   };

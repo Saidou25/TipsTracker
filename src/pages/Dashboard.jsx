@@ -5,14 +5,14 @@ import { dashboardData } from "../data";
 import findUser from "../UseFindUser";
 
 import Navbar from "../components/Navbar";
-import Card from "../components/Card";
+import CardBodyDashboard from "../components/CardBodyDashboard";
 
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState("");
-// console.log("user tips data", userTipsData);
+  // console.log("user tips data", userTipsData);
 
   const { user: currentUser, loading } = findUser();
 
@@ -33,13 +33,15 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-   // filtering all collections to find the one belonging to the loggedinUser
+    // filtering all collections to find the one belonging to the loggedinUser
     if (users.length) {
-      const loggedinUser = users.filter((user) => user.email === currentUser.email);
+      const loggedinUser = users.filter(
+        (user) => user.email === currentUser.email
+      );
 
       if (!loggedinUser[0].tips) {
         // console.log("there are no tips yet for this user");
-        setUserTipsData([])
+        setUserTipsData([]);
       }
       if (loggedinUser[0].tips) {
         // console.log("there are tips for this user", loggedinUser[0].tips);
@@ -52,16 +54,21 @@ const Dashboard = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <Card
-          className="p-0 m-0 g-0"
-          cardBodyTemplate={{
-            title: dashboardData.templateTitle,
-            fields: dashboardData.fields,
-            tips: userTipsData,
-            loggedinUser: currentUser,
-            footer: dashboardData.footer,
-          }}
-        />
+        <div
+          className="card main-card"
+          // role="test-card"
+        >
+          <div className="card-title p-5">{dashboardData.templateTitle}</div>
+          <CardBodyDashboard
+            className="p-0 m-0 g-0"
+            cardBodyTemplate={{
+              fields: dashboardData.fields,
+              tips: userTipsData,
+              loggedinUser: currentUser,
+            }}
+          />
+          <div className="card-footer p-5">{dashboardData.footer}</div>
+        </div>
       </div>
     </div>
   );

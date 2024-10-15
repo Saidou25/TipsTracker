@@ -167,7 +167,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
   return (
     <div className="wild">
-      {/* <div className="g-0 m-0 p-0">{renderTitles()}</div> */}
       {renderTitles()}
       <div className="dashboard-alignment py-2">
         {displayTips && // slice(): Creates a shallow copy of the displayTips array, ensuring we don't modify the original array.
