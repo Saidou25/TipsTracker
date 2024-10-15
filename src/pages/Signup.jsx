@@ -1,17 +1,22 @@
 import { signupData } from "../data";
-import Card from "../components/Card";
+import CardBodySignup from "../components/CardBodySignup";
 
 const Signup = () => {
   return (
     <div className="container-fluid g-0">
-      <Card
-        className="p-0 m-0 g-0"
-        cardBodyTemplate={{
-          title: signupData.templateTitle,
-          fields: signupData.fields,
-          footer: signupData.footer,
-        }}
-      />
+      <div
+        className="card main-card"
+        // role="test-card"
+      >
+        <div className="card-title p-5">{signupData.templateTitle}</div>
+        <CardBodySignup
+          className="p-0 m-0 g-0"
+          cardBodyTemplate={{
+            fields: signupData.fields,
+          }}
+        />
+        <div className="card-footer p-5">{signupData.footer}</div>
+      </div>
     </div>
   );
 };

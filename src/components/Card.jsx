@@ -15,10 +15,6 @@ const Card = ({ cardBodyTemplate = {} }) => {
   const renderFields = () => {
     if (title) {
       switch (title) {
-        case "Please signup":
-          return <CardBodySignup cardBodyTemplate={cardBodyTemplate} />;
-        case "Please login":
-          return <CardBodyLogin cardBodyTemplate={cardBodyTemplate} />;
         case "Please enter your tips":
           return <CardBodyTipsForm cardBodyTemplate={cardBodyTemplate} />;
         // case "Update your profile":
