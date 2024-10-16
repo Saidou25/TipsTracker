@@ -1,12 +1,22 @@
 import ConfettiComponent from "./ConfettiComponent";
 
 export default function Success({ success }) {
- 
   return (
     <>
-      {success === "You are Loggedin" && (
-          <h2>You are logged in...</h2>
+      {success === "Profile successfully updated..." && (
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "20%",
+            marginBottom: "40%",
+            marginRight: "5%",
+            marginLeft: "5%",
+          }}
+        >
+          Profile successfully updated...
+        </h2>
       )}
+      {success === "You are Loggedin" && <h2>You are logged in...</h2>}
       {success === "Tips added successfully" && (
         <div className="confetti-container">
           <ConfettiComponent />

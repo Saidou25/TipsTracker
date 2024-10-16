@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import findUser from "../UseFindUser";
 
@@ -11,7 +11,9 @@ import Button from "./Button";
 import "./Card.css";
 
 const CardBodySignup = ({ cardBodyTemplate }) => {
-  const { user, loading } = findUser();
+  const { user, loading: loadingCurrentUser } = findUser();
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [formState, setFormState] = useState({
@@ -43,6 +45,9 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
           tips: [],
           date: Timestamp.fromDate(new Date()),
         });
+        setLoading(false);
+        setButtonDisabled(true);
+        navigate("/dashboard");
         console.log("Congratulation your collection has been created");
       } catch (error) {
         console.log("error", error.message);
@@ -75,14 +80,25 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const newUser = await createNewUser();
       await createNewCollection(newUser);
-      navigate("/dashboard");
+      // navigate("/dashboard");
     } catch (e) {
+      setLoading(false)
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (formState.email && formState.password) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [formState]);
+
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0">
@@ -120,8 +136,9 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
         <Button
           type="submit"
           className="button"
-          disabled={false}
-          //   loading={loading}
+          disabled={buttonDisabled}
+          loading={loading}
+          error={error}
         >
           save
         </Button>

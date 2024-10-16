@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import findUser from "../UseFindUser";
-
 import { CiCamera } from "react-icons/ci";
+import findUser from "../UseFindUser"; // Custom hook to retrieve user's data
+
 import emptyAvatar from "../assets/profileicon.png";
-// import camera from "../assets/camera.jpg";
 import Button from "./Button";
 
 import "./UpdateProfilePicture.css";
@@ -15,22 +14,29 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
   const [newlyUploadedPhotoURL, setNewlyUplaodedPhotoURL] = useState("");
   const [file, setFile] = useState(null);
   const [showProgress, setShowProgress] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [error, setError] = useState("");
 
   const { user } = findUser();
 
+  // Gets the file's name selected from the user's device and enable Button to be clicked for updating user's profile
   const handleChange = (e) => {
+    setError("");
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
+      setButtonDisabled(false);
     }
   };
 
+  // Manages the upload user's new picture to be saved
   const handleClick = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const metadata = {
       contentType: file.name,
     };
-    // Upload file and metadata to the object 'images/mountains.jpg'
+    // Upload file and metadata
     const storageRef = ref(storage, "images/" + file.name);
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
@@ -59,54 +65,54 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
         }
       },
       (error) => {
-        console.log("Big error my friend...", error.message);
+        setLoading(false);
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
         switch (error.code) {
           case "storage/unauthorized":
-            console.log(
+            setError(
               "User doesn't have permission access permission...",
               error.message
             );
             break;
           case "storage/canceled":
-            console.log("User canceled the upload...", error.message);
+            setError("User canceled the upload...", error.message);
             break;
           case "storage/unknown":
-            console.log(
+            setError(
               "Unknown error occurred, inspect error.serverResponse",
               error.message
             );
             break;
           default:
-            console.log("Oops, something happened!");
+            setError("Oops, something happened!");
         }
       },
       () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((storageRef) => {
           setNewlyUplaodedPhotoURL(storageRef);
+          setButtonDisabled(true);
+          setLoading(false);
           setSrcUrl(storageRef);
+          uploadedPhotoUrl(storageRef); // Sends the new picture url to the update component
         });
       }
     );
   };
+
   useEffect(() => {
     // Setting src according to different conditions
     // 1. if user already has a profile picturen then we display it
     if (user.photoURL && !newlyUploadedPhotoURL) {
-      // console.log("case 1");
       const prevPhoto = user.photoURL;
       setSrcUrl(prevPhoto);
     } else if (newlyUploadedPhotoURL) {
       // If users uploads a new profile picture we display it and send it to CardBody update
       //so the previous profile picture can be deleted and we also display the newly uploaded picture by setting srcUrl with it
-      // console.log("case 2");
       setSrcUrl(newlyUploadedPhotoURL);
-      uploadedPhotoUrl(newlyUploadedPhotoURL);
     } else {
       // otherwise it means no profile picture has been set so we display an empty avatar
-      // console.log("case 3");
       setSrcUrl(emptyAvatar);
     }
   }, [user.photoURL, newlyUploadedPhotoURL]);
@@ -134,7 +140,14 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
         </div>
       </div>
       <div className="d-flex justify-content-center mt-4">
-        <Button className="button" type="submit" onClick={handleClick}>
+        <Button
+          className="button"
+          type="submit"
+          error={error}
+          loading={loading}
+          disabled={buttonDisabled}
+          onClick={handleClick}
+        >
           save Picture
         </Button>
       </div>

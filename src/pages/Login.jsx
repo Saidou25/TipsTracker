@@ -9,10 +9,9 @@ const Login = () => {
   const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
- 
+
   const showSuccessCard = (data) => {
     if (data === "Tips added successfully" || "You are Loggedin") {
-      console.log( typeof data);
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");

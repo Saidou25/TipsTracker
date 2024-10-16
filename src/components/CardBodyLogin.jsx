@@ -65,6 +65,8 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
     if (formState.email && formState.password) {
       setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
     }
   }, [formState]);
 

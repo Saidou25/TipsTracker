@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { updateProfile } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { deleteObject, ref } from "firebase/storage";
 import findUser from "../UseFindUser";
 
@@ -10,19 +9,22 @@ import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodyUpdate = ({ cardBodyTemplate }) => {
-  const { user, loading } = findUser();
-  const [error, setError] = useState(false);
+const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
+  const { user, loading: loadingCurrentUser } = findUser();
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [error, setError] = useState("");
+  const [newUrl, setNewUrl] = useState(false);
   const [formState, setFormState] = useState({
-    displayName: user.displayName ? user.displayName : "",
+    displayName: "",
     photoURL: user.photoURL,
   });
 
   const form = useRef();
 
-  const navigate = useNavigate();
-
+  // Handling only the displayName change
   const handleChange = (e) => {
+    setError(""); // Clearing eventual previous error
     const { name, value } = e.target;
 
     setFormState({
@@ -30,63 +32,83 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
       [name]: value,
     });
   };
-  // Setting the url for the uploaded profile picture
+
+  // Reset formState and all other states
+  const resetFormAndStates = () => {
+    setLoading(false);
+    setButtonDisabled(true);
+    setError("");
+    setFormState({
+      displayName: "",
+      photoURL: user.photoURL,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true); // Showing user that is login request is working
     try {
       await updateProfile(user, {
         displayName: formState.displayName
           ? formState.displayName
           : user.displayName,
-        photoURL: formState.photoURL ? formState.photoURL : user.PhotoURL,
+        photoURL: formState.photoURL ? formState.photoURL : user.photoURL,
       });
+      showSuccess("Profile successfully updated...");
+      setNewUrl(false);
+      resetFormAndStates();
     } catch (error) {
-      // console.log("An error occurred", error.message);
-      setError("Oops, something went wrong.");
-    } finally {
-      // console.log("profile updated!");
-      navigate("/profile");
+      setButtonDisabled(true);
+      setError(error);
+      setLoading(false);
     }
   };
 
-  const handleUrl = (newlyUploadedPhotoURL) => {
-    // console.log("in hadle url: ", newlyUploadedPhotoURL);
-
-    if (newlyUploadedPhotoURL && user.photoURL) {
-      // console.log(
-      //   " case 2: deleting and setting with new photo",
-      //   newlyUploadedPhotoURL
-      // );
-
+  // Setting the url for the uploaded profile picture
+  const handleUrl = async (storageRef) => {
+    setError("");
+    if (storageRef && user.photoURL) {
       // If user already has a profile picture and just uploaded a new one
       // we delete the old one from database
       if (user.photoURL) {
         const imageRef = ref(storage, user.photoURL);
-        deleteObject(imageRef)
-          .then(() => {
-            console.log("File deleted successfully");
-            //  And add the new profile picture to the user's profile
-            setFormState({
-              ...formState,
-              photoURL: newlyUploadedPhotoURL,
-            });
-          })
-          .catch((error) => {
-            // console.log("image ref", imageRef);
-            console.log("Uh-oh, an error occurred!", error.message);
+        try {
+          await deleteObject(imageRef);
+
+          //  And add the new profile picture to the user's profile
+          setFormState({
+            ...formState,
+            photoURL: storageRef,
           });
+          setLoading(false);
+          setNewUrl(true);
+        } catch (error) {
+          setError(error);
+          setLoading(false);
+          setButtonDisabled(true);
+        }
       }
     } else {
       // If no previous profile picture we set the form with new one
-      // console.log("case 1: no previous picture", newlyUploadedPhotoURL);
       setFormState({
         ...formState,
-        photoURL: newlyUploadedPhotoURL,
+        photoURL: storageRef,
       });
+      setButtonDisabled(false);
     }
   };
+
+  useEffect(() => {
+    if (formState.displayName || newUrl) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [formState, newUrl]);
+
+  if (loadingCurrentUser) {
+    return <>Retrieving data...</>;
+  }
 
   return (
     <div>
@@ -103,10 +125,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
         <br />
         {cardBodyTemplate.fields &&
           cardBodyTemplate.fields.map((field) => (
-            <div
-              className="d-flex justify-content-center"
-              key={field.label}
-            >
+            <div className="d-flex justify-content-center" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
@@ -131,7 +150,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
                 name={field.label}
                 value={formState.displayName}
                 onChange={handleChange}
-                autoComplete="off"
+                autoComplete="on"
               />
             </div>
           ))}
@@ -140,19 +159,28 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
           <Button
             type="submit"
             className="button"
-            disabled={false}
+            disabled={buttonDisabled}
             loading={loading}
+            error={error}
           >
             update profile
           </Button>
         </div>
         {error && (
-          <span
-            className="text-danger"
+          <div
+            className="text-primary d-flex align-items-center justify-content-center"
             data-testid="oops something went wrong..."
+            style={{
+              marginTop: "10%",
+              marginBottom: "10%",
+              border: "1px solid",
+              borderRadius: "10px",
+              height: "50px",
+              // color: "rgba(210, 35, 241, 0.92)"
+            }}
           >
-            {error}
-          </span>
+            {error.message}
+          </div>
         )}
       </form>
     </div>

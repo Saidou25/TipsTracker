@@ -7,19 +7,35 @@ import { updateData } from "../data";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-import Card from "../components/Card";
 import findUser from "../UseFindUser";
 import ModalWindow from "../components/ModalWindow";
 import CardBodyUpdate from "../components/CardBodyUpdate";
+import Success from "../components/Success";
+
+import "../components/EnterTips.css";
 
 const Update = () => {
   const { user, loading } = findUser();
   const [showModalWindow, setShowModalWindow] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [error, setError] = useState(""); // State for error messages
+  const [error, setError] = useState(""); // State for e
+  const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
 
+  // Showing success message when update completed
+  const showSuccessCard = (data) => {
+    if (data === "Profile successfully updated...") {
+      console.log(data);
+      setSuccess(data);
+      setTimeout(() => {
+        setSuccess("");
+        navigate("/dashboard");
+      }, 4000);
+    }
+  };
+
+  // Manages if modal window should be closed or opened
   const handleClick = () => {
     setShowModalWindow(true);
   };
@@ -94,35 +110,49 @@ const Update = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <div
-          className="card main-card"
-          // role="test-card"
-        >
-          <div className="card-title p-5">{updateData.templateTitle}</div>
-          <CardBodyUpdate
-            role="card"
-            title={new Date().toString()}
-            cardBodyTemplate={{
-              fields: updateData.fields,
-              gedinUser: user,
-              usingSince: "",
-            }}
-            data-testid="card-component"
-          />
-          <div className="card-footer p-5">
-            <div>
-              <span>You can delete your account </span>
-              <span className="here-text" onClick={handleClick}>
-                here
-              </span>
+        {success ? (
+          <div
+            className="card card-success"
+            // role="test-card"
+          >
+            <div className="card-body">
+              <Success success={success} />
             </div>
           </div>
-        </div>
-        {showModalWindow && (
-          <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
+        ) : (
+          <>
+            <div
+              className="card main-card"
+              // role="test-card"
+            >
+              <div className="card-title p-5">{updateData.templateTitle}</div>
+              <CardBodyUpdate
+                role="card"
+                title={new Date().toString()}
+                cardBodyTemplate={{
+                  fields: updateData.fields,
+                  gedinUser: user,
+                  usingSince: "",
+                }}
+                showSuccess={showSuccessCard}
+                data-testid="card-component"
+              />
+              <div className="card-footer p-5">
+                <div>
+                  <span>You can delete your account </span>
+                  <span className="here-text" onClick={handleClick}>
+                    here
+                  </span>
+                </div>
+              </div>
+            </div>
+            {showModalWindow && (
+              <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
+            )}
+            {isDeleting && <p>Deleting your account...</p>}
+            {error && <p className="error-message">{error}</p>}
+          </>
         )}
-        {isDeleting && <p>Deleting your account...</p>}
-        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );
