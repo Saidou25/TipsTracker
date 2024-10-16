@@ -61,7 +61,6 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
   const resetFormAndStates = () => {
     setLoading(false);
     setDisabledButton(true);
-    showSuccess("");
     setError("");
     setUpdateCurrentUserCollection(false);
     setFirstCurrentUserTipEntry(false);

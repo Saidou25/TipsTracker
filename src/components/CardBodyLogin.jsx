@@ -1,57 +1,72 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodyLogin = ({ cardBodyTemplate }) => {
+const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const [formState, setFormState] = useState({
     email: "",
     password: "",
   });
 
-  const navigate = useNavigate();
-
+  // Setting the form with user inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setError("");
-    setSuccess("");
+    setError(""); // Clearing eventual previous error
     setFormState({
       ...formState,
       [name]: value,
     });
   };
 
+  // Reset formState and all other states
+  const resetFormAndStates = () => {
+    setLoading(false);
+    setButtonDisabled(true);
+    setError("");
+    setFormState({
+      email: "",
+      password: "",
+    });
+  };
+
+  // Loging the user
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!formState.email || !formState.password) {
-      setError("All fields are required");
-      return;
-    }
+    setLoading(true); // Showing user that is login request is working
     const email = formState.email;
     const password = formState.password;
 
     signInWithEmailAndPassword(auth, email, password) // Firebase login function
       .then((userCredential) => {
         const user = userCredential.user;
-
-        setSuccess("You are now Loggedin");
-        setFormState({ email: "", password: "" });
-        navigate("/dashboard");
+        if (user) {
+          showSuccess("You are Loggedin");
+          resetFormAndStates(); // Self explanatory
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         setError(errorMessage, errorCode);
+        setLoading(false);
+        setButtonDisabled(true);
       });
   };
+
+  useEffect(() => {
+    // When the form is completely filled (even if autocomplete fills it) we enable the submit button
+    if (formState.email && formState.password) {
+      setButtonDisabled(false);
+    }
+  }, [formState]);
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
@@ -87,12 +102,22 @@ const CardBodyLogin = ({ cardBodyTemplate }) => {
               />
             </div>
           ))}
-        <Button type="submit" className="button" disabled={false}>
+        <Button
+          type="submit"
+          className="button"
+          disabled={buttonDisabled}
+          loading={loading}
+          error={error}
+        >
           login
         </Button>
       </div>
       {error && (
-        <span className="text-danger" data-testid="oops">
+        <span
+          className="text-danger"
+          data-testid="oops"
+          style={{ textAlign: "center" }}
+        >
           Oops, something went wrong...
         </span>
       )}

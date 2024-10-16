@@ -32,7 +32,7 @@ const EnterTips = () => {
             // role="test-card"
           >
              <div className="card-title p-5">{success}</div>
-          <Success />
+          <Success success={success}/>
           </div>
         ) : (
           <div
