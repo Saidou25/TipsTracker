@@ -1,0 +1,47 @@
+.card-success {
+  border: 2px solid rgb(117, 95, 203) !important;
+  background-color: rgb(15, 15, 19, 0.3) !important;
+  border-radius: 25px !important;
+  width: 50% !important;
+  height: 500px;
+  overflow: scroll;
+  animation: rotationmove 0.4s linear;
+  margin-bottom: 5% !important;
+}
+@keyframes rotationmove {
+  50% {
+    transform: rotateY(90deg);
+  }
+}
+@keyframes rotationfade {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .card-success {
+    width: 70% !important;
+  }
+
+  .update-end {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 600px) {
+  .card-success {
+    width: 85% !important;
+  }
+}
+@media screen and (max-width: 460px) {
+  .card-success {
+    width: 90% !important;
+  }
+}

@@ -1,15 +1,28 @@
+import { AiOutlineStop } from "react-icons/ai";
+import ButtonSpinner from "./ButtonSpinner";
+
 import "./Button.css";
 
-const Button = ({ children, type, disabled, onClick, loading, className }) => {
+const Button = ({
+  children,
+  type,
+  onClick,
+  loading,
+  disabled,
+  error,
+  className,
+}) => {
   return (
     <button
       // role="test"
       className={className}
       type={type}
-      disabled={disabled}
+      disabled={disabled || loading || error ? true : false}
       onClick={onClick}
     >
-      {loading ? <>Please wait...</> : <>{children}</>}
+      {loading && <ButtonSpinner />}
+      {(disabled || error) && <AiOutlineStop />}
+      {!loading && !disabled && <>{children}</>}
     </button>
   );
 };

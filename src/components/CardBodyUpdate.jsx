@@ -89,7 +89,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
   };
 
   return (
-    <div className="row g-0">
+    <div>
       <UpdateProfilePicture
         uploadedPhotoUrl={handleUrl}
         cardBodyTemplate={cardBodyTemplate}
@@ -104,7 +104,7 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
         {cardBodyTemplate.fields &&
           cardBodyTemplate.fields.map((field) => (
             <div
-              className="col-12 d-flex justify-content-center"
+              className="d-flex justify-content-center"
               key={field.label}
             >
               <label
@@ -136,10 +136,10 @@ const CardBodyUpdate = ({ cardBodyTemplate }) => {
             </div>
           ))}
         <br />
-        <div className="col-12 d-flex justify-content-center mb-4">
+        <div className="d-flex justify-content-center mb-4">
           <Button
             type="submit"
-            className="button no-wrap"
+            className="button"
             disabled={false}
             loading={loading}
           >

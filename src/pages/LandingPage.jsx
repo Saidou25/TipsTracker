@@ -11,7 +11,7 @@ const LandingPage = () => {
       </NavLink>
       <span>Server' s tips tracker</span>
       <br />
-      <ul className="row ul-row">
+      <ul className="row ul-row g-0">
         <li className="col-6">
           <NavLink className="nav-item" to="login">
             <span className="login">login</span>
