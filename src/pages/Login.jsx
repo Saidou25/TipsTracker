@@ -16,7 +16,7 @@ const Login = () => {
       setTimeout(() => {
         setSuccess("");
         navigate("/dashboard");
-      }, 5000);
+      }, 3000);
     }
   };
   return (

@@ -163,9 +163,9 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
   useEffect(() => {
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
     if (formState.TipsGross && formState.TipsNet) {
-      setButtonDisabled(false);
+      setDisabledButton(false);
     } else {
-      setButtonDisabled(true);
+      setDisabledButton(true);
     }
   }, [formState]);
 
