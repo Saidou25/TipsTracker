@@ -8,21 +8,6 @@ export function classification(tips) {
   july.length = 0;
   august.length = 0;
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   function daysInMonth(year, month) {
     // console.log(new Date(year, month, 0).getDate())
     return new Date(year, month, 0).getDate();

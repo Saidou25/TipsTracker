@@ -145,7 +145,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
           ))}
         <Button
           type="submit"
-          className="button mb-5"
+          className="button"
           disabled={buttonDisabled}
           loading={loading}
           error={error}

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
 import { monthTipsArray } from "../inBetween";
-import { getWeekRange } from "../getWeekRange";
 import useMonitorWidth from "../UseMonitorWidth";
 import "./Card.css";
 
@@ -109,7 +108,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
 
       // Get the date of the Monday for the week announcement
       const weekStartDate = new Date(weekKey);
-      const formattedDate = `${(weekStartDate.getMonth() + 1).toString().padStart(2, '0')}/${weekStartDate.getDate().toString().padStart(2, '0')}/${weekStartDate.getFullYear()}`;
+      // const formattedDate = `${(weekStartDate.getMonth() + 1).toString().padStart(2, '0')}/${weekStartDate.getDate().toString().padStart(2, '0')}/${weekStartDate.getFullYear()}`;
 
       // Get the date of the first tip of the week for correct "Week starting on" display
       const firstTipDate = new Date(weekTips[0].date);
