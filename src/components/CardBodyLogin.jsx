@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useEffect, useState } from "react";
 
+import Error from "./Error";
 import Button from "./Button";
 
 import "./Card.css";
@@ -53,9 +54,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage, errorCode);
+        setError(error.message);
         setLoading(false);
         setButtonDisabled(true);
       });
@@ -71,59 +70,55 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   }, [formState]);
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <div className="row my-5 g-0">
-        <br />
-        {cardBodyTemplate.fields &&
-          cardBodyTemplate.fields.map((field) => (
-            <div className="login-signup" key={field.label}>
-              <label
-                data-testid={`enterTipsForm-label-${field.label}`}
-                htmlFor={field.label}
-                className="col-12 mb-3"
-                name={field.label}
-              >
-                {field.label}:
-              </label>
-              <input
-                data-testid="login"
-                id={field.label}
-                inputMode={field.inputMod}
-                type={field.type}
-                className="col-12 login-input mb-3"
-                placeholder={field.placeholder}
-                style={{
-                  fontStyle: "oblique",
-                  paddingLeft: "3%",
-                  color: "black",
-                }}
-                autoComplete="on"
-                name={field.label}
-                value={formState.label}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-        <Button
-          type="submit"
-          className="button"
-          disabled={buttonDisabled}
-          loading={loading}
-          error={error}
-        >
-          login
-        </Button>
-      </div>
+    <>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <div className="row my-5 g-0">
+          <br />
+          {cardBodyTemplate.fields &&
+            cardBodyTemplate.fields.map((field) => (
+              <div className="login-signup" key={field.label}>
+                <label
+                  data-testid={`enterTipsForm-label-${field.label}`}
+                  htmlFor={field.label}
+                  className="col-12 mb-3"
+                  name={field.label}
+                >
+                  {field.label}:
+                </label>
+                <input
+                  data-testid="login"
+                  id={field.label}
+                  inputMode={field.inputMod}
+                  type={field.type}
+                  className="col-12 login-input mb-3"
+                  placeholder={field.placeholder}
+                  style={{
+                    fontStyle: "oblique",
+                    paddingLeft: "3%",
+                    color: "black",
+                  }}
+                  autoComplete="on"
+                  name={field.label}
+                  value={formState.label}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+          <Button
+            type="submit"
+            className="button"
+            disabled={buttonDisabled}
+            loading={loading}
+            error={error}
+          >
+            login
+          </Button>
+        </div>
+      </form>
       {error && (
-        <span
-          className="text-danger"
-          data-testid="oops"
-          style={{ textAlign: "center" }}
-        >
-          Oops, something went wrong...
-        </span>
+        <Error error={error} />
       )}
-    </form>
+    </>
   );
 };
 export default CardBodyLogin;

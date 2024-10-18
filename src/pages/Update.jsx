@@ -18,7 +18,7 @@ const Update = () => {
   const { user, loading } = findUser();
   const [showModalWindow, setShowModalWindow] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [error, setError] = useState(""); // State for e
+  const [error, setError] = useState(""); // State for error
   const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const Update = () => {
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
-        navigate("/dashboard");
+        navigate("/profile");
       }, 4000);
     }
   };

@@ -6,6 +6,7 @@ import findUser from "../UseFindUser"; // Custom hook to retrieve user's data
 
 import emptyAvatar from "../assets/profileicon.png";
 import Button from "./Button";
+import Error from "./Error";
 
 import "./UpdateProfilePicture.css";
 
@@ -66,23 +67,18 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
       },
       (error) => {
         setLoading(false);
+        setButtonDisabled(true)
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
         switch (error.code) {
           case "storage/unauthorized":
-            setError(
-              "User doesn't have permission access permission...",
-              error.message
-            );
+            setError("User doesn't have permission access permission...");
             break;
           case "storage/canceled":
-            setError("User canceled the upload...", error.message);
+            setError("User canceled the upload...");
             break;
           case "storage/unknown":
-            setError(
-              "Unknown error occurred, inspect error.serverResponse",
-              error.message
-            );
+            setError("Unknown error occurred, inspect error.serverResponse");
             break;
           default:
             setError("Oops, something happened!");
@@ -151,6 +147,7 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           save Picture
         </Button>
       </div>
+      {error && <Error error={error} />}
     </>
   );
 };

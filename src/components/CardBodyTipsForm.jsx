@@ -10,6 +10,7 @@ import {
 
 import findUser from "../UseFindUser";
 
+import Error from "./Error";
 import Button from "./Button";
 
 import "./Card.css";
@@ -224,15 +225,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
         >
           add tips
         </Button>
-        {error && (
-          <span
-            className="text-danger"
-            data-testid="oops"
-            style={{ textAlign: "center" }}
-          >
-            Oops, something went wrong...
-          </span>
-        )}
+        {error && <Error error={error} />}
       </div>
     </form>
   );

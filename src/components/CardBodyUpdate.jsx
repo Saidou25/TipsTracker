@@ -4,6 +4,7 @@ import { updateProfile } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
 import findUser from "../UseFindUser";
 
+import Error from "./Error";
 import UpdateProfilePicture from "./UpdateProfilePicture";
 import Button from "./Button";
 
@@ -59,7 +60,7 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
       resetFormAndStates();
     } catch (error) {
       setButtonDisabled(true);
-      setError(error);
+      setError(error.message);
       setLoading(false);
     }
   };
@@ -83,7 +84,7 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
           setLoading(false);
           setNewUrl(true);
         } catch (error) {
-          setError(error);
+          setError(error.message);
           setLoading(false);
           setButtonDisabled(true);
         }
@@ -166,22 +167,7 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
             update profile
           </Button>
         </div>
-        {error && (
-          <div
-            className="text-primary d-flex align-items-center justify-content-center"
-            data-testid="oops something went wrong..."
-            style={{
-              marginTop: "10%",
-              marginBottom: "10%",
-              border: "1px solid",
-              borderRadius: "10px",
-              height: "50px",
-              // color: "rgba(210, 35, 241, 0.92)"
-            }}
-          >
-            {error.message}
-          </div>
-        )}
+        {error && <Error error={error} />}
       </form>
     </div>
   );

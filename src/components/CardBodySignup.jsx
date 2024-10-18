@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import findUser from "../UseFindUser";
 
 import Button from "./Button";
+import Error from "./Error";
 
 import "./Card.css";
 
@@ -48,19 +49,16 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
         setLoading(false);
         setButtonDisabled(true);
         navigate("/dashboard");
-        console.log("Congratulation your collection has been created");
       } catch (error) {
-        console.log("error", error.message);
+        setError(error.message);
+        setButtonDisabled(true);
+        setLoading(false);
       }
     },
     [user, formState]
   );
 
-  const createNewUser = useCallback(async () => {
-    if (!formState.email || !formState.password) {
-      setError("All fields are required...");
-      return;
-    }
+  const createNewUser = useCallback(async (user) => {
     const { email, password } = formState;
 
     try {
@@ -69,25 +67,37 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
         email,
         password
       );
-      setSuccess("Congratulations! Your account has been created.");
-      setFormState({ email: "", password: "" });
+      if (userCredential) {
+        setSuccess("Congratulations! Your account has been created.");
+        setFormState({ email: "", password: "" });
+        setLoading(false);
+        setButtonDisabled(true);
+      }
       return userCredential.user;
     } catch (error) {
-      setError(`${error.message} (${error.code})`);
-      throw error;
+      setError(error.message);
+      setLoading(false);
+      setButtonDisabled(true);
     }
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    // Creates a new user
     try {
-      const newUser = await createNewUser();
+      const newUser = await createNewUser();await createNewCollection(newUser);
+      // If newUser exists, proceed with collection creation
+    if (newUser) {
       await createNewCollection(newUser);
-      // navigate("/dashboard");
-    } catch (e) {
-      setLoading(false)
-      console.log(error);
+    } else {
+      // If newUser is undefined, show an error message
+      setError("User could not be created. Please try again.");
+    }
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+      setButtonDisabled(true);
     }
   };
 
@@ -98,7 +108,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
       setButtonDisabled(true);
     }
   }, [formState]);
-
+  
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0">
@@ -143,11 +153,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
           save
         </Button>
         {success && <span className="text-success">{success}</span>}
-        {error && (
-          <span className="text-danger" data-testid="oops">
-            {error}
-          </span>
-        )}
+        {error && <Error error={error} />}
       </div>
     </form>
   );
