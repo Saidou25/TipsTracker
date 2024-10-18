@@ -16,7 +16,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   const newTipsArr = [];
   let weeklyTipsNet;
   let weeklyTipsGross;
-  // console.log("newTipsArr", newTipsArr)
 
   useEffect(() => {
     if (cardBodyTemplate.tips) {
@@ -31,7 +30,6 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       });
       setDisplayTips(filteredTips);
     } else {
-      // console.log("No tips data available.");
       setDisplayTips([]);
     }
     if (newTipsArr.length) {
@@ -84,10 +82,8 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   // ------------------- Calculate the total tips for the week and returning a div to display --------
 
   const render = (tip, index) => {
-    // console.log("tip", tip.TipsGross, "index", index)
     const prevDaysIndex = index - 1;
     const prevDaysTips = tip.TipsGross;
-    // console.log("prevDaysIndex", prevDaysIndex, "prevDaysTips", prevDaysTips);
 
     if (tip) {
       for (let i = 0; i < newTipsArr.length; i++) {

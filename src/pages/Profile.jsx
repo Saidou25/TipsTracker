@@ -6,11 +6,12 @@ import findUser from "../UseFindUser";
 import CardBodyProfile from "../components/CardBodyProfile";
 
 import Navbar from "../components/Navbar";
+import Spinner from "../components/Spinner";
 
 import "./Profile.css";
 
 const Profile = () => {
-  const { user: currentUser, loading } = findUser(); // Finds the loggedinUser
+  const { user: currentUser, loading: loadingCurrentUser } = findUser(); // Finds the loggedinUser
   const [timeCreated, setTimeCreated] = useState();
 
   useEffect(() => {
@@ -24,9 +25,9 @@ const Profile = () => {
   }, [currentUser]);
 
   // Only show loading message until the timeout completes
-  if (loading) {
-    return <p>Loading user data...</p>; // Show loading message
-  }
+  // if (loadingCurrentUser) {
+  //   return <Spinner />; // Show loading message
+  // }
 
   return (
     <div className="grad1">

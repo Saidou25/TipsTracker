@@ -5,8 +5,6 @@ import "./Card.css";
 const Card = ({ cardBodyTemplate = {} }) => {
   const { title, footer } = cardBodyTemplate;
 
-  // console.log(cardBodyTemplate);
-
   const renderFields = () => {
     if (title) {
       switch (title) {

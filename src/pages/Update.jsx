@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { deleteUser, signOut } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
@@ -26,12 +26,13 @@ const Update = () => {
   // Showing success message when update completed
   const showSuccessCard = (data) => {
     if (data === "Profile successfully updated...") {
-      console.log(data);
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
         navigate("/profile");
       }, 4000);
+    } else {
+      setSuccess("");
     }
   };
 
@@ -49,9 +50,8 @@ const Update = () => {
   const deleteAuthUser = async (user) => {
     try {
       await deleteUser(user);
-      console.log("User deleted.");
-    } catch (e) {
-      setError(e.message); // Set error message
+    } catch (error) {
+      setError(error.message); // Set error message
     }
   };
 
@@ -59,9 +59,8 @@ const Update = () => {
   const deleteFirestoreUser = async (userId) => {
     try {
       await deleteDoc(doc(db, "users", userId));
-      console.log("Firestore user deleted");
-    } catch (e) {
-      setError(e.message); // Set error message
+    } catch (error) {
+      setError(error.message); // Set error message
     } finally {
       deleteAuthUser(user);
     }
@@ -73,9 +72,8 @@ const Update = () => {
       const imageRef = ref(storage, user.photoURL);
       try {
         await deleteObject(imageRef);
-        console.log("Image deleted successfully");
-      } catch (e) {
-        setError(e.message); // Set error message
+      } catch (error) {
+        setError(error.message); // Set error message
       }
     }
   };
@@ -95,16 +93,17 @@ const Update = () => {
       await signOut(auth);
       navigate("/");
     } catch (error) {
-      console.log("Error during deletion:", error.message);
+      setError("Error during deletion");
     } finally {
       setIsDeleting(false);
       setShowModalWindow(false);
     }
   };
-
-  if (loading) {
-    return <p>Loading user data...</p>; // Show loading message
-  }
+  
+  useEffect(() => {
+    // Clears the success state when the component mounts
+    setSuccess("");
+  }, []);
 
   return (
     <div className="grad1">

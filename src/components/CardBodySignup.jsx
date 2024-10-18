@@ -92,7 +92,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
       await createNewCollection(newUser);
     } else {
       // If newUser is undefined, show an error message
-      setError("User could not be created. Please try again.");
+      setError("User already exists.");
     }
     } catch (error) {
       setLoading(false);
@@ -145,7 +145,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
           ))}
         <Button
           type="submit"
-          className="button"
+          className="button mb-5"
           disabled={buttonDisabled}
           loading={loading}
           error={error}

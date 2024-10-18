@@ -6,7 +6,6 @@ const [vw, setVw] = useState("");
 
 useEffect(() => {
   const handleResize = () => {
-          // console.log(window.innerWidth)
           if (window.innerWidth <= 430) {
             setShowDashboardMediaView(true);
             setVw(window.innerWidth);

@@ -107,9 +107,9 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
     }
   }, [formState, newUrl]);
 
-  if (loadingCurrentUser) {
-    return <>Retrieving data...</>;
-  }
+  useEffect(() => {
+    showSuccess("");
+  }, []);
 
   return (
     <div>

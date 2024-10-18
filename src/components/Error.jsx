@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Error({ error }) {
-  console.log(error);
+  
   return (
     <div
       className="text-primary d-flex align-items-center justify-content-center"

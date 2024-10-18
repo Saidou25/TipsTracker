@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { dashboardData } from "../data";
 import findUser from "../UseFindUser";
 
+import Spinner from "../components/Spinner";
 import Navbar from "../components/Navbar";
 import CardBodyDashboard from "../components/CardBodyDashboard";
 
@@ -12,7 +13,6 @@ import "./Dashboard.css";
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState("");
-  // console.log("user tips data", userTipsData);
 
   const { user: currentUser, loading } = findUser();
 
@@ -23,7 +23,6 @@ const Dashboard = () => {
       const dataArray = []; // Initialize an array to store the stringified objects
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        // console.log(`${doc.id} => ${JSON.stringify(data)}`);
         dataArray.push(data); // Push the data object into the dataArray
       });
 
@@ -40,16 +39,15 @@ const Dashboard = () => {
       );
 
       if (!loggedinUser[0].tips) {
-        // console.log("there are no tips yet for this user");
         setUserTipsData([]);
       }
       if (loggedinUser[0].tips) {
-        // console.log("there are tips for this user", loggedinUser[0].tips);
         setUserTipsData(loggedinUser[0].tips); // Getting tips of the loggedinUser
       }
     }
   }, [users, currentUser]);
 
+ 
   return (
     <div className="grad1">
       <Navbar />
