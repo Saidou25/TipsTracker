@@ -4,7 +4,6 @@ import { db } from "../firebase";
 import { dashboardData } from "../data";
 import findUser from "../UseFindUser";
 
-import Spinner from "../components/Spinner";
 import Navbar from "../components/Navbar";
 import CardBodyDashboard from "../components/CardBodyDashboard";
 

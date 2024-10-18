@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const showSuccessCard = (data) => {
-    if (data === "Tips added successfully" || "You are Loggedin") {
+    if (data ===  "You are logged in") {
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
@@ -21,8 +21,8 @@ const Login = () => {
   };
   return (
     <div className="container-fluid g-0">
-      {success === "You are Loggedin" ? (
-        <Success success="You are Loggedin" />
+      {success ? (
+        <Success success={success} />
       ) : (
         <div
           className="card main-card"

@@ -49,7 +49,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         if (user) {
-          showSuccess("You are Loggedin");
+          showSuccess("You are logged in");
           resetFormAndStates(); // Self explanatory
         }
       })

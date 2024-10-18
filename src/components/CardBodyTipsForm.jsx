@@ -87,7 +87,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
       await updateDoc(userDocRef, {
         tips: updatedTips,
       });
-      showSuccess("Tips added successfully");
+      showSuccess("Today's tips successfully adjusted");
     } catch (error) {
       setError(error.message);
     } finally {

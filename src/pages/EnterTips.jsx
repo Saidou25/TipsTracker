@@ -14,8 +14,8 @@ const EnterTips = () => {
   const navigate = useNavigate();
 
   const showSuccessCard = (data) => {
-    if (data === "Tips added successfully") {
-      setSuccess("Tips added successfully");
+    if (data === "Tips added successfully" || data === "Today's tips successfully adjusted") {
+      setSuccess(data);
       setTimeout(() => {
         setSuccess("");
         navigate("/dashboard");

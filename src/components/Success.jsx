@@ -13,11 +13,11 @@ export default function Success({ success }) {
             marginLeft: "5%",
           }}
         >
-          Profile successfully updated...
+          {success}
         </h2>
       )}
-      {success === "You are Loggedin" && <h2>You are logged in...</h2>}
-      {success === "Tips added successfully" && (
+      {success === "You are logged in" && <h2>{success}</h2>}
+      {success === "Tips added successfully" || success === "Today's tips successfully adjusted" && (
         <div className="confetti-container">
           <ConfettiComponent />
           <h2
@@ -29,7 +29,7 @@ export default function Success({ success }) {
               marginLeft: "5%",
             }}
           >
-            Congratulation, you earned money!
+            {success}
           </h2>
         </div>
       )}
