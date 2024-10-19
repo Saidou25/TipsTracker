@@ -196,7 +196,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
                 data-testid="input"
                 role="spinbutton"
                 id={field.label}
-                inputMode={field.inputMod}
+                inputMode="numeric"
                 type={field.type}
                 className="col-6 login-input mb-3"
                 placeholder={field.placeholder}

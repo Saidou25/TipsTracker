@@ -68,7 +68,7 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
         password
       );
       if (userCredential) {
-        setSuccess("Congratulations! Your account has been created.");
+        setSuccess("Congratulations! Your account has been created...");
         setFormState({ email: "", password: "" });
         setLoading(false);
         setButtonDisabled(true);

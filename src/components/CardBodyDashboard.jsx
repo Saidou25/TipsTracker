@@ -107,7 +107,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       });
 
       // Get the date of the Monday for the week announcement
-      const weekStartDate = new Date(weekKey);
+      // const weekStartDate = new Date(weekKey);
       // const formattedDate = `${(weekStartDate.getMonth() + 1).toString().padStart(2, '0')}/${weekStartDate.getDate().toString().padStart(2, '0')}/${weekStartDate.getFullYear()}`;
 
       // Get the date of the first tip of the week for correct "Week starting on" display
@@ -117,7 +117,7 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
       // Calculate the date for "Week starting on" to ensure it is the Monday of the week
       const weekStartingDate = new Date(firstTipDate);
       weekStartingDate.setDate(firstTipDate.getDate() - (firstTipDayOfWeek === 0 ? 6 : firstTipDayOfWeek - 1));
-      const weekStartingFormattedDate = `${(weekStartingDate.getMonth() + 1).toString().padStart(2, '0')}/${weekStartingDate.getDate().toString().padStart(2, '0')}/${weekStartingDate.getFullYear()}`;
+      // const weekStartingFormattedDate = `${(weekStartingDate.getMonth() + 1).toString().padStart(2, '0')}/${weekStartingDate.getDate().toString().padStart(2, '0')}/${weekStartingDate.getFullYear()}`;
 
       return (
         <div key={weekKey}>

@@ -20,7 +20,6 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
     displayName: "",
     photoURL: user.photoURL,
   });
-
   const form = useRef();
 
   // Handling only the displayName change
@@ -147,7 +146,7 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
                 placeholder={
                   user?.displayName ? user?.displayName : field.placeholder
                 }
-                style={{ fontStyle: "oblique", paddingLeft: "3%" }}
+                style={{ fontStyle: "oblique", paddingLeft: "3%", width: "40%" }}
                 name={field.label}
                 value={formState.displayName}
                 onChange={handleChange}

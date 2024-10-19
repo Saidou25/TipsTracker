@@ -54,16 +54,16 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
             setShowProgress("");
           }, 4000);
         }
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-            console.log("Nothing running");
-        }
+        // switch (snapshot.state) {
+        //   case "paused":
+        //     console.log("Upload is paused");
+        //     break;
+        //   case "running":
+        //     console.log("Upload is running");
+        //     break;
+        //   default:
+        //     console.log("Nothing running");
+        // }
       },
       (error) => {
         setLoading(false);
@@ -135,7 +135,7 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           </label>
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-4">
+      <div className="d-flex justify-content-center mt-4 px-5">
         <Button
           className="button"
           type="submit"

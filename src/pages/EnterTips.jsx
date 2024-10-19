@@ -14,7 +14,7 @@ const EnterTips = () => {
   const navigate = useNavigate();
 
   const showSuccessCard = (data) => {
-    if (data === "Tips added successfully" || data === "Today's tips successfully adjusted") {
+    if (data === "Tips added successfully..." || data === "Today's tips successfully adjusted...") {
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
