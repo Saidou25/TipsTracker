@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-     "test": "jest --config jest.config.cjs"
+    "test": "jest --config jest.config.cjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -27,6 +27,9 @@
     "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.25.8",
+    "@babel/preset-react": "^7.25.7",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",

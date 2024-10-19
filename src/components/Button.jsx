@@ -1,7 +1,8 @@
+import React from "react";
 import { AiOutlineStop } from "react-icons/ai";
 import ButtonSpinner from "./ButtonSpinner";
 
-import "./Button.css";
+// import "./Button.css"; // To comment out for testing
 
 const Button = ({
   children,
@@ -14,7 +15,7 @@ const Button = ({
 }) => {
   return (
     <button
-      // role="test"
+      role="button"
       className={className}
       type={type}
       disabled={disabled || loading || error ? true : false}
