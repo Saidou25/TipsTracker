@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import EnterTips from "./EnterTips";
+import EnterTips from "./EnterTips.test";
 
 // Mocking the Navbar component
 jest.mock("../components/Navbar", () => {
