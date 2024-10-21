@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineStop } from "react-icons/ai";
 import ButtonSpinner from "./ButtonSpinner";
 
-// import "./Button.css"; // To comment out for testing
+import "./Button.css"; // To comment out for testing
 
 const Button = ({
   children,
@@ -22,7 +22,7 @@ const Button = ({
       onClick={onClick}
     >
       {loading && <ButtonSpinner />}
-      {(disabled || error) && <AiOutlineStop />}
+      {(disabled || error) && <AiOutlineStop className="line-stop"/>}
       {!loading && !disabled && !error && <>{children}</>}
     </button>
   );

@@ -10,11 +10,11 @@
   white-space: nowrap;
   padding: 0 !important;
 }
-
 .button:hover {
   background-color: rgba(21, 3, 71, 0.4) !important;
   transition: 0.4s;
 }
+
 @media screen and (max-width: 414px) {
   .button {
     width: 40% !important;
