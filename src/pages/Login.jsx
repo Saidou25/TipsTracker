@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginData } from "../data";
 
-import CardBodyLogin from "../components/CardBodyLogin";
+import LoginCard from "./LoginCard";
 import Success from "../components/Success";
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
           // role="test-card"
         >
           <div className="card-title p-5">{loginData.templateTitle}</div>
-          <CardBodyLogin
+          <LoginCard
             className="p-0 m-0 g-0"
             cardBodyTemplate={{
               fields: loginData.fields,

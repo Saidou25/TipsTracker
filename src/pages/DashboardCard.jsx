@@ -3,9 +3,10 @@ import { FaSackDollar } from "react-icons/fa6";
 import { GiCoins } from "react-icons/gi";
 import { monthTipsArray } from "../inBetween";
 import useMonitorWidth from "../UseMonitorWidth";
-import "./Card.css";
 
-const CardBodyDashboard = ({ cardBodyTemplate }) => {
+import "../components/Card.css";
+
+const DashboardCard = ({ cardBodyTemplate }) => {
   const [displayTips, setDisplayTips] = useState([]);
   const { showDashboardMediaView } = useMonitorWidth();
   const today = new Date();
@@ -152,10 +153,18 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
           ))}
           {/* Render weekly totals after each week */}
           <div className="row bg-info g-0">
+          {showDashboardMediaView === true ? (
+            <>
+            <span className="col-4 font-weight">Total:</span>
+            <span className="col-4">{grossTotal}</span>
+            <span className="col-4">{netTotal}</span>
+            </>
+          ) : <>
             <span className="col-2 font-weight">Total:</span>
             <span className="col-6"></span>
             <span className="col-2">{grossTotal}</span>
             <span className="col-2">{netTotal}</span>
+          </>}
           </div>
           {/* Render titles after the weekly total */}
           <div className="row g-0">
@@ -178,4 +187,4 @@ const CardBodyDashboard = ({ cardBodyTemplate }) => {
   );
 };
 
-export default CardBodyDashboard;
+export default DashboardCard;

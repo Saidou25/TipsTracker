@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-import CardBodyTipsForm from "../components/CardBodyTipsForm";
+import EnterTipsCard from "./EnterTipsCard";
 import Success from "../components/Success";
 
-import "../components/EnterTips.css";
+import "./EnterTips.css";
 
 const EnterTips = () => {
   const [success, setSuccess] = useState("");
@@ -41,7 +41,7 @@ const EnterTips = () => {
           <div className="card main-card"
           data-testid="main-card">
             <div className="card-title p-5">{tipsFormData.templateTitle}</div>
-            <CardBodyTipsForm
+            <EnterTipsCard
               data-testid="card-body-tips-form"
               cardBodyTemplate={{
                 title: tipsFormData.templateTitle,

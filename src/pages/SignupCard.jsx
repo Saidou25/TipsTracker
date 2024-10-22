@@ -6,12 +6,12 @@ import { useCallback, useEffect, useState } from "react";
 
 import findUser from "../UseFindUser";
 
-import Button from "./Button";
-import Error from "./Error";
+import Button from "../components/Button";
+import Error from "../components/Error";
 
-import "./Card.css";
+import "../components/Card.css";
 
-const CardBodySignup = ({ cardBodyTemplate }) => {
+const SignupCard = ({ cardBodyTemplate }) => {
   const { user, loading: loadingCurrentUser } = findUser();
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -158,4 +158,4 @@ const CardBodySignup = ({ cardBodyTemplate }) => {
     </form>
   );
 };
-export default CardBodySignup;
+export default SignupCard;

@@ -5,7 +5,7 @@ import { dashboardData } from "../data";
 import findUser from "../UseFindUser";
 
 import Navbar from "../components/Navbar";
-import CardBodyDashboard from "../components/CardBodyDashboard";
+import DashboardCard from "./DashboardCard";
 
 import "./Dashboard.css";
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
           // role="test-card"
         >
           <div className="card-title p-5">{dashboardData.templateTitle}</div>
-          <CardBodyDashboard
+          <DashboardCard
             className="p-0 m-0 g-0"
             cardBodyTemplate={{
               fields: dashboardData.fields,

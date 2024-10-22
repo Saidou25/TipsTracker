@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import findUser from "../UseFindUser";
 import ModalWindow from "../components/ModalWindow";
-import CardBodyUpdate from "../components/CardBodyUpdate";
+import UpdateCard from "./UpdateCard";
 import Success from "../components/Success";
 
-import "../components/EnterTips.css";
+import "./EnterTips.css";
 
 const Update = () => {
   const { user, loading } = findUser();
@@ -125,7 +125,7 @@ const Update = () => {
               // role="test-card"
             >
               <div className="card-title p-5">{updateData.templateTitle}</div>
-              <CardBodyUpdate
+              <UpdateCard
                 role="card"
                 title={new Date().toString()}
                 cardBodyTemplate={{

@@ -11,12 +11,12 @@ import {
 
 import findUser from "../UseFindUser";
 
-import Error from "./Error";
-import Button from "./Button";
+import Error from "../components/Error";
+import Button from "../components/Button";
 
-import "./Card.css";
+import "../components/Card.css";
 
-const CardBodyTipsForm = ({ showSuccess }) => {
+const EnterTipsCard = ({ showSuccess }) => {
   const { user, loading: loadingUser } = findUser();
 
   const date = useMemo(() => new Date(), []);
@@ -261,4 +261,4 @@ const CardBodyTipsForm = ({ showSuccess }) => {
     </form>
   );
 };
-export default CardBodyTipsForm;
+export default EnterTipsCard;

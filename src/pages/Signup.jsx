@@ -1,5 +1,5 @@
 import { signupData } from "../data";
-import CardBodySignup from "../components/CardBodySignup";
+import SignupCard from "./SignupCard";
 
 const Signup = () => {
   return (
@@ -9,7 +9,7 @@ const Signup = () => {
         // role="test-card"
       >
         <div className="card-title p-5">{signupData.templateTitle}</div>
-        <CardBodySignup
+        <SignupCard
           className="p-0 m-0 g-0"
           cardBodyTemplate={{
             fields: signupData.fields,

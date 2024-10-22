@@ -2,10 +2,10 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useEffect, useState } from "react";
 
-import Error from "./Error";
-import Button from "./Button";
+import Error from "../components/Error";
+import Button from "../components/Button";
 
-import "./Card.css";
+import "../components/Card.css";
 
 const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   const [error, setError] = useState("");

@@ -5,8 +5,8 @@ import { CiCamera } from "react-icons/ci";
 import findUser from "../UseFindUser"; // Custom hook to retrieve user's data
 
 import emptyAvatar from "../assets/profileicon.png";
-import Button from "./Button";
-import Error from "./Error";
+import Button from "../components/Button";
+import Error from "../components/Error";
 
 import "./UpdateProfilePicture.css";
 

@@ -4,13 +4,13 @@ import { updateProfile } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
 import findUser from "../UseFindUser";
 
-import Error from "./Error";
+import Error from "../components/Error";
 import UpdateProfilePicture from "./UpdateProfilePicture";
-import Button from "./Button";
+import Button from "../components/Button";
 
-import "./Card.css";
+import "../components/Card.css";
 
-const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
+const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
   const { user, loading: loadingCurrentUser } = findUser();
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -171,4 +171,4 @@ const CardBodyUpdate = ({ cardBodyTemplate, showSuccess }) => {
     </div>
   );
 };
-export default CardBodyUpdate;
+export default UpdateCard;

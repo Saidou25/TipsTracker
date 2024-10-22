@@ -1,8 +1,8 @@
 import React from "react";
 
-import "./Card.css";
+import "../components/Card.css";
 
-const CardBodyProfile = ({ cardBodyTemplate }) => {
+const ProfileCard = ({ cardBodyTemplate }) => {
   const { loggedinUser, usingSince, imageSrc } = cardBodyTemplate;
 
   return (
@@ -18,4 +18,4 @@ const CardBodyProfile = ({ cardBodyTemplate }) => {
     </div>
   );
 };
-export default CardBodyProfile;
+export default ProfileCard;
