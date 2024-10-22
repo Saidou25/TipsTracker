@@ -88,7 +88,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
       await updateDoc(userDocRef, {
         tips: updatedTips,
       });
-      showSuccess("Today's tips successfully adjusted");
+      showSuccess("Today's tips successfully adjusted...");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -105,7 +105,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
       await updateDoc(userDocRef, {
         tips: arrayUnion({ ...formState }),
       });
-      showSuccess("Tips added successfully");
+      showSuccess("Tips added successfully...");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -201,7 +201,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
                   paddingLeft: "3%",
                   color: "black",
                 }}
-                autoComplete="false"
+                autoComplete="off"
                 value={formState.field?.label}
                 onChange={handleChange}
                 name={field.label}
