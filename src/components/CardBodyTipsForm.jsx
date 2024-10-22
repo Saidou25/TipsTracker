@@ -16,7 +16,7 @@ import Button from "./Button";
 
 import "./Card.css";
 
-const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
+const CardBodyTipsForm = ({ showSuccess }) => {
   const { user, loading: loadingUser } = findUser();
 
   const date = useMemo(() => new Date(), []);
@@ -40,8 +40,8 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formState, setFormState] = useState({
-    TipsGross: 0,
-    TipsNet: 0,
+    TipsGross: "",
+    TipsNet: "",
     dayName: fullDayName,
     date: formattedDate,
   });
@@ -175,44 +175,77 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
     <form ref={form} role="form" className="tips-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0" data-testid="card-body-tips-form">
         <br />
-        {cardBodyTemplate.fields &&
-          cardBodyTemplate.fields.map((field) => (
-            <div className="div-label" key={field.label}>
-              <label
-                data-testid={`enterTipsForm-label-${field.label}`}
-                htmlFor={field.label}
-                className="col-6"
-                name={field.label}
-              >
-                {field.label}:
-              </label>
-              <br />
-              <br />
-              <input
-                data-testid="input"
-                role="spinbutton"
-                id={field.label}
-                inputMode="numeric"
-                type={field.type}
-                className="col-6 login-input mb-3"
-                placeholder={field.placeholder}
-                style={{
-                  fontStyle: "oblique",
-                  paddingLeft: "3%",
-                  color: "black",
-                }}
-                autoComplete="off"
-                value={formState.field?.label}
-                onChange={handleChange}
-                name={field.label}
-                onKeyDown={(evt) =>
-                  ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
-                } // Prevents these keyboard keys to be inactive
-              />
-              <br />
-              <br />
-            </div>
-          ))}
+        <div className="col-12 div-label">
+          <label
+            data-testid="enterTipsForm-label"
+            htmlFor="TipsGross"
+            className="col-6"
+            name="TipsGross"
+          >
+            tips <i>(gross)</i>:
+          </label>
+          <br />
+          <br />
+          <input
+            data-testid="input"
+            role="spinbutton"
+            id="TipsGross"
+            inputMode="numeric"
+            type="number"
+            className="col-6 login-input mb-3"
+            placeholder="enter tips..."
+            style={{
+              fontStyle: "oblique",
+              paddingLeft: "3%",
+              color: "black",
+            }}
+            autoComplete="off"
+            name="TipsGross"
+            value={formState.TipsGross}
+            onChange={handleChange}
+            onKeyDown={(evt) =>
+              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
+            } // Prevents these keyboard keys to be inactive
+          />
+          <br />
+          <br />
+        </div>
+        <div className="col-12 div-label">
+          <label
+            data-testid="enterTipsForm-label"
+            htmlFor="TipsNet"
+            className="col-6"
+            name="TipsNet"
+          >
+            tips <i>(net)</i>:
+          </label>
+          <br />
+          <br />
+          <input
+            data-testid="input"
+            role="spinbutton"
+            id="TipsNet"
+            inputMode="numeric"
+            type="number"
+            className="col-6 login-input mb-3"
+            placeholder="enter tips..."
+            style={{
+              fontStyle: "oblique",
+              paddingLeft: "3%",
+              color: "black",
+            }}
+            autoComplete="off"
+            name="TipsNet"
+            value={formState.TipsNet}
+            onChange={handleChange}
+            onKeyDown={(evt) =>
+              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
+            } // Prevents these keyboard keys to be inactive
+          />
+          <br />
+          <br />
+        </div>
+
         <Button
           role="button"
           type="submit"
