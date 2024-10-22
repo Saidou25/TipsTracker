@@ -33,7 +33,6 @@ const EnterTips = () => {
         {success ? (
           <div
             className="card card-success"
-            // role="test-card"
           >
             <div className="card-title p-5">{success}</div>
             <Success success={success} />

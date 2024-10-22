@@ -1,6 +1,7 @@
 import ConfettiComponent from "./ConfettiComponent";
 
 export default function Success({ success }) {
+  console.log(success)
   return (
     <>
       {success === "Profile successfully updated..." && (

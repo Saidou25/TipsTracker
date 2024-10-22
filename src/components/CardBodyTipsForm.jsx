@@ -201,6 +201,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
                   paddingLeft: "3%",
                   color: "black",
                 }}
+                autoComplete="false"
                 value={formState.field?.label}
                 onChange={handleChange}
                 name={field.label}
