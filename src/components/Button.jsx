@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineStop } from "react-icons/ai";
 import ButtonSpinner from "./ButtonSpinner";
 
-// import "./Button.css"; // To comment out for testing
+import "./Button.css"; // To comment out for testing
 
 const Button = ({
   children,
