@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { db } from "../firebase";
 import {
@@ -171,12 +172,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
   }, [formState]);
 
   return (
-    <form
-      ref={form}
-      // role="form"
-      className="tips-form"
-      onSubmit={handleSubmit}
-    >
+    <form ref={form} role="form" className="tips-form" onSubmit={handleSubmit}>
       <div className="row my-5 g-0" data-testid="card-body-tips-form">
         <br />
         {cardBodyTemplate.fields &&
@@ -217,6 +213,7 @@ const CardBodyTipsForm = ({ cardBodyTemplate, showSuccess }) => {
             </div>
           ))}
         <Button
+          role="button"
           type="submit"
           className="button"
           loading={loading}

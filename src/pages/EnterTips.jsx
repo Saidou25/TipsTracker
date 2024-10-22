@@ -1,3 +1,4 @@
+import React from "react";
 import { tipsFormData } from "../data";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import Navbar from "../components/Navbar";
 import CardBodyTipsForm from "../components/CardBodyTipsForm";
 import Success from "../components/Success";
 
-import "../components/EnterTips.css"
+import "../components/EnterTips.css";
 
 const EnterTips = () => {
   const [success, setSuccess] = useState("");
@@ -14,7 +15,10 @@ const EnterTips = () => {
   const navigate = useNavigate();
 
   const showSuccessCard = (data) => {
-    if (data === "Tips added successfully..." || data === "Today's tips successfully adjusted...") {
+    if (
+      data === "Tips added successfully..." ||
+      data === "Today's tips successfully adjusted..."
+    ) {
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
@@ -27,28 +31,25 @@ const EnterTips = () => {
       <Navbar />
       <div className="container-fluid g-0">
         {success ? (
-            <div
+          <div
             className="card card-success"
             // role="test-card"
           >
-             <div className="card-title p-5">{success}</div>
-          <Success success={success}/>
+            <div className="card-title p-5">{success}</div>
+            <Success success={success} />
           </div>
         ) : (
-          <div
-            className="card main-card"
-            // role="test-card"
-          >
+          <div className="card main-card"
+          data-testid="main-card">
             <div className="card-title p-5">{tipsFormData.templateTitle}</div>
             <CardBodyTipsForm
-              role="card"
+              data-testid="card-body-tips-form"
               cardBodyTemplate={{
                 title: tipsFormData.templateTitle,
                 fields: tipsFormData.fields,
                 footer: tipsFormData.footer,
               }}
               showSuccess={showSuccessCard}
-              data-testid="card-component"
             />
             <div className="card-footer p-5">{tipsFormData.footer}</div>
           </div>

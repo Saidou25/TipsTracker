@@ -52,7 +52,7 @@ const profileData = {
       label: "email: ",
       type: "email",
     },
-    { type: "text", label: "using Tips Tracker since: " },
+    { label: "Using Since: ", type: "text" },
   ],
 };
 
@@ -77,7 +77,14 @@ const tipsFormData = {
 
 const updateData = {
   templateTitle: "Update your profile",
-  fields: [{ type: "text", label: "displayName", placeholder: "display name", inputMod: "text" }],
+  fields: [
+    {
+      type: "text",
+      label: "displayName",
+      placeholder: "display name",
+      inputMod: "text",
+    },
+  ],
 };
 // Testing data
 const tipsDataFeed = {

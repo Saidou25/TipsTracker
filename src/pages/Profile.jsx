@@ -1,12 +1,14 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { profileData } from "../data";
 import findUser from "../UseFindUser";
 
 import CardBodyProfile from "../components/CardBodyProfile";
-
 import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
+
+import emptyAvatar from "../assets/profileicon.png";
 
 import "./Profile.css";
 
@@ -33,16 +35,16 @@ const Profile = () => {
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        <div
-          className="card main-card"
-          // role="test-card"
-        >
+        <div className="card main-card">
           <div className="card-title p-5">{profileData.templateTitle}</div>
           <CardBodyProfile
             cardBodyTemplate={{
               fields: profileData.fields,
               loggedinUser: currentUser,
               usingSince: timeCreated,
+              imageSrc: currentUser.photoURL
+                ? currentUser.photoURL
+                : emptyAvatar,
             }}
           />
           <div className="card-footer p-5">
