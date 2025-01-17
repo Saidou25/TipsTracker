@@ -14,7 +14,7 @@ import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
 function App() {
   return (
     <Router
-      basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
+      basename={process.env.NODE_ENV === "production" ? "/tipstracker" : "/"}
     >
       <RedirectHandler />
 

@@ -13,17 +13,17 @@ const Navbar = () => {
       <div className="container-nav">
         <ul className="nav">
           <li className="nav-link">
-            <NavLink className="nav-text bg-info" to="/enterTips">
+            <NavLink className="nav-text bg-info" to="/tipstracker/enterTips">
               enter Tips
             </NavLink>
           </li>
           <li className="nav-link">
-            <NavLink className="nav-text bg-info" to="/dashboard">
+            <NavLink className="nav-text bg-info" to="/tipstracker/dashboard">
               dashboard
             </NavLink>
           </li>
           <li className="nav-link">
-            <NavLink className="nav-text bg-info" to="/profile">
+            <NavLink className="nav-text bg-info" to="/tipstracker/profile">
               profile
             </NavLink>
           </li>
