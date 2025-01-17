@@ -7,7 +7,9 @@ const RedirectHandler = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const redirectPath = params.get("redirect");
+    console.log("redirect to: " + redirectPath);
     if (redirectPath) {
+      console.log("redirect to: " + redirectPath);
       navigate(redirectPath); // Navigate to the preserved path
     }
   }, [navigate]);
