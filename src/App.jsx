@@ -9,12 +9,15 @@ import Update from "./pages/Update";
 import Team from "./components/Team";
 
 import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
+import RedirectHandler from "./components/Redirect";
 
 function App() {
   return (
     <Router
       basename={process.env.NODE_ENV === "production" ? "/tipstracker/" : "/"}
     >
+      <RedirectHandler />
+
       <Routes>
         <Route path="/" element={<LandingPage />}>
           <Route path="signup" element={<Signup />} />
