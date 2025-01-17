@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RedirectHandler from "./components/RedirectHandler";
 import LandingPage from "./pages/LandingPage";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
@@ -9,7 +10,6 @@ import Update from "./pages/Update";
 import Team from "./components/Team";
 
 import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
-import RedirectHandler from "./components/Redirect";
 
 function App() {
   return (
