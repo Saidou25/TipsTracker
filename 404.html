@@ -5,7 +5,6 @@
     <script>
       // Preserve the current path and redirect to index.html
       const currentPath = window.location.pathname;
-      console.log(currentPath);
       const newUrl = `/tipstracker/?redirect=${encodeURIComponent(currentPath)}`;
       window.location.replace(newUrl);
     </script>
