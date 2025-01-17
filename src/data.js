@@ -81,10 +81,11 @@ const updateData = {
     {
       type: "text",
       label: "displayName",
-      placeholder: "display name",
+      placeholder: "displayName",
       inputMod: "text",
     },
   ],
+  footer: ""
 };
 // Testing data
 const tipsDataFeed = {

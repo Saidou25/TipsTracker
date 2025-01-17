@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginData } from "../data";
@@ -11,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const showSuccessCard = (data) => {
-    if (data ===  "You are logged in") {
+    if (data === "You are logged in") {
       setSuccess(data);
       setTimeout(() => {
         setSuccess("");
@@ -24,21 +25,15 @@ const Login = () => {
       {success ? (
         <Success success={success} />
       ) : (
-        <div
-          className="card main-card"
-          // role="test-card"
-        >
-          <div className="card-title p-5">{loginData.templateTitle}</div>
-          <LoginCard
-            className="p-0 m-0 g-0"
-            cardBodyTemplate={{
-              fields: loginData.fields,
-            }}
-            showSuccess={showSuccessCard}
-          />
-
-          <div className="card-footer p-5">{loginData.footer}</div>
-        </div>
+        <LoginCard
+          className="p-0 m-0 g-0"
+          cardBodyTemplate={{
+            templateTitle: loginData.templateTitle,
+            fields: loginData.fields,
+            footer: loginData.footer,
+          }}
+          showSuccess={showSuccessCard}
+        />
       )}
     </div>
   );

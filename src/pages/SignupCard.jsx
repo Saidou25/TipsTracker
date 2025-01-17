@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -23,6 +24,8 @@ const SignupCard = ({ cardBodyTemplate }) => {
   });
 
   const navigate = useNavigate();
+
+  const { templateTitle, fields, footer } = cardBodyTemplate;
 
   const handleChange = (e) => {
     setError("");
@@ -86,14 +89,15 @@ const SignupCard = ({ cardBodyTemplate }) => {
     setLoading(true);
     // Creates a new user
     try {
-      const newUser = await createNewUser();await createNewCollection(newUser);
-      // If newUser exists, proceed with collection creation
-    if (newUser) {
+      const newUser = await createNewUser();
       await createNewCollection(newUser);
-    } else {
-      // If newUser is undefined, show an error message
-      setError("User already exists.");
-    }
+      // If newUser exists, proceed with collection creation
+      if (newUser) {
+        await createNewCollection(newUser);
+      } else {
+        // If newUser is undefined, show an error message
+        setError("User already exists.");
+      }
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -108,54 +112,59 @@ const SignupCard = ({ cardBodyTemplate }) => {
       setButtonDisabled(true);
     }
   }, [formState]);
-  
+
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
-      <div className="row my-5 g-0">
-        <br />
-        {cardBodyTemplate?.fields &&
-          cardBodyTemplate.fields.map((field) => (
-            <div className="login-signup" key={field.label}>
-              <label
-                data-testid={`enterTipsForm-label-${field.label}`}
-                htmlFor={field.label}
-                className="col-12 mb-3"
-                name={field.label}
-              >
-                {field.label}:
-              </label>
-              <input
-                data-testid="input"
-                id={field.label}
-                inputMode={field.inputMod}
-                type={field.type}
-                className="col-12 signup-input mb-3"
-                placeholder={field.placeholder}
-                style={{
-                  fontStyle: "oblique",
-                  paddingLeft: "3%",
-                  color: "black",
-                }}
-                autoComplete="on"
-                name={field.label}
-                value={formState.label}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-        <Button
-          type="submit"
-          className="button"
-          disabled={buttonDisabled}
-          loading={loading}
-          error={error}
-        >
-          save
-        </Button>
-        {success && <span className="text-success">{success}</span>}
-        {error && <Error error={error} />}
-      </div>
-    </form>
+    <div className="card main-card" data-testid="main-card">
+      <div className="card-title p-5">{templateTitle}</div>
+
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <div className="row my-5 g-0">
+          <br />
+          {cardBodyTemplate?.fields &&
+            cardBodyTemplate.fields.map((field) => (
+              <div className="login-signup" key={field.label}>
+                <label
+                  data-testid={`enterTipsForm-label-${field.label}`}
+                  htmlFor={field.label}
+                  className="col-12 mb-3"
+                  name={field.label}
+                >
+                  {field.label}:
+                </label>
+                <input
+                  data-testid="input"
+                  id={field.label}
+                  inputMode={field.inputMod}
+                  type={field.type}
+                  className="col-12 signup-input mb-3"
+                  placeholder={field.placeholder}
+                  style={{
+                    fontStyle: "oblique",
+                    paddingLeft: "3%",
+                    color: "black",
+                  }}
+                  autoComplete="on"
+                  name={field.label}
+                  value={formState.label}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+          <Button
+            type="submit"
+            className="button"
+            disabled={buttonDisabled}
+            loading={loading}
+            error={error}
+          >
+            save
+          </Button>
+          {success && <span className="text-success">{success}</span>}
+          {error && <Error error={error} />}
+        </div>
+      </form>
+      <div className="card-footer p-5">{footer}</div>
+    </div>
   );
 };
 export default SignupCard;

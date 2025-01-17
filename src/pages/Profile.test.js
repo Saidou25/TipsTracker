@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import CardBodyProfile from "../components/CardBodyProfile";
+import ProfileCard from "./ProfileCard";
 
 // Mocking the Navbar component
 jest.mock("../components/Navbar", () => {
@@ -9,7 +9,7 @@ jest.mock("../components/Navbar", () => {
 
 test("card should be rendered within Profile component", () => {
   render(
-    <CardBodyProfile
+    <ProfileCard
       cardBodyTemplate={{
         fields: [], 
         loggedinUser: {},

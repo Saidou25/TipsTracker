@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { updateProfile } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
+
 import findUser from "../UseFindUser";
 
 import Error from "../components/Error";
@@ -21,6 +22,8 @@ const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
     photoURL: user.photoURL,
   });
   const form = useRef();
+
+  const { templateTitle, fields, footer } = cardBodyTemplate;
 
   // Handling only the displayName change
   const handleChange = (e) => {
@@ -111,63 +114,68 @@ const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
   }, []);
 
   return (
-    <div>
-      <UpdateProfilePicture
-        uploadedPhotoUrl={handleUrl}
-        cardBodyTemplate={cardBodyTemplate}
-      />
-      <form
-        ref={form}
-        // role="form"
-        className="form mt-4 px-5"
-        onSubmit={handleSubmit}
-      >
-        <br />
-        {cardBodyTemplate.fields &&
-          cardBodyTemplate.fields.map((field) => (
-            <div className="d-flex justify-content-center" key={field.label}>
-              <label
-                data-testid={`enterTipsForm-label-${field.label}`}
-                htmlFor={field.label}
-                className="form-label here mb-3"
-                name={field.label}
-              >
-                {field.label}:
-              </label>
-              <br />
-              <br />
-              <input
-                data-testid="input"
-                role="spinbutton"
-                id={field.label}
-                inputMode={field.inputMod}
-                type={field.type}
-                className="tips-input mb-3 mx-2 text-black"
-                placeholder={
-                  user?.displayName ? user?.displayName : field.placeholder
-                }
-                style={{ fontStyle: "oblique", paddingLeft: "3%", width: "40%" }}
-                name={field.label}
-                value={formState.displayName}
-                onChange={handleChange}
-                autoComplete="on"
-              />
-            </div>
-          ))}
-        <br />
-        <div className="d-flex justify-content-center mb-4">
-          <Button
-            type="submit"
-            className="button"
-            disabled={buttonDisabled}
-            loading={loading}
-            error={error}
-          >
-            update profile
-          </Button>
-        </div>
-        {error && <Error error={error} />}
-      </form>
+    <div className="card main-card" data-testid="main-card">
+      <div className="card-title p-5">{templateTitle}</div>
+      <div className="card-body">
+        <UpdateProfilePicture
+          uploadedPhotoUrl={handleUrl}
+          cardBodyTemplate={cardBodyTemplate}
+          data-testid="mock-update-profile-picture"
+        />
+        <form ref={form} className="form mt-4 px-5" onSubmit={handleSubmit}>
+          <br />
+          {fields &&
+            fields.map((field) => (
+              <div className="d-flex justify-content-center" key={field.label}>
+                <label
+                  data-testid={`updateCard-label-${field.label}`}
+                  htmlFor={field.label}
+                  className="form-label here mb-3"
+                  name={field.label}
+                >
+                  {field.label}:
+                </label>
+                <br />
+                <br />
+                <input
+                  data-testid="input"
+                  role="spinbutton"
+                  id={field.label}
+                  inputMode={field.inputMod}
+                  type={field.type}
+                  className="tips-input mb-3 mx-2 text-black"
+                  placeholder={
+                    user?.displayName ? user?.displayName : field.placeholder
+                  }
+                  style={{
+                    fontStyle: "oblique",
+                    paddingLeft: "3%",
+                    width: "40%",
+                  }}
+                  name={field.label}
+                  value={formState.displayName}
+                  onChange={handleChange}
+                  autoComplete="on"
+                />
+              </div>
+            ))}
+          <br />
+          <div className="d-flex justify-content-center mb-4">
+            <Button
+            role="button"
+              type="submit"
+              className="button"
+              disabled={buttonDisabled}
+              loading={loading}
+              error={error}
+            >
+              update profile
+            </Button>
+          </div>
+          {error && <Error error={error} />}
+        </form>
+      </div>
+      <div className="card-footer p-5">{footer}</div>
     </div>
   );
 };

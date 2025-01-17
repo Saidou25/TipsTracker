@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { deleteUser, signOut } from "firebase/auth";
@@ -30,6 +31,13 @@ const Update = () => {
       setTimeout(() => {
         setSuccess("");
         navigate("/profile");
+      }, 4000);
+    } else if (data === "Your account has been deleted. GoodBye...") {
+      // Showing success message when user's account deletion is completed
+      setSuccess(data);
+      setTimeout(() => {
+        setSuccess("");
+        navigate("/");
       }, 4000);
     } else {
       setSuccess("");
@@ -97,9 +105,10 @@ const Update = () => {
     } finally {
       setIsDeleting(false);
       setShowModalWindow(false);
+      setSuccess("Your account has been deleted. GoodBye...");
     }
   };
-  
+
   useEffect(() => {
     // Clears the success state when the component mounts
     setSuccess("");
@@ -110,48 +119,36 @@ const Update = () => {
       <Navbar />
       <div className="container-fluid g-0">
         {success ? (
-          <div
-            className="card card-success"
-            // role="test-card"
-          >
+          <div className="card card-success">
             <div className="card-body">
               <Success success={success} />
             </div>
           </div>
         ) : (
-          <>
-            <div
-              className="card main-card"
-              // role="test-card"
-            >
-              <div className="card-title p-5">{updateData.templateTitle}</div>
-              <UpdateCard
-                role="card"
-                title={new Date().toString()}
-                cardBodyTemplate={{
-                  fields: updateData.fields,
-                  gedinUser: user,
-                  usingSince: "",
-                }}
-                showSuccess={showSuccessCard}
-                data-testid="card-component"
-              />
-              <div className="card-footer p-5">
-                <div>
-                  <span>You can delete your account </span>
-                  <span className="here-text" onClick={handleClick}>
-                    here
-                  </span>
-                </div>
-              </div>
-            </div>
-            {showModalWindow && (
-              <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
-            )}
-            {isDeleting && <p>Deleting your account...</p>}
-            {error && <p className="error-message">{error}</p>}
-          </>
+          <UpdateCard
+            // cardBodyTemplate={{
+            //   templateTitle: updateData.templateTitle,
+            //   fields: updateData.fields,
+            //   footer: (
+            //     <div className="card-footer p-5">
+            //       <span>You can delete your account </span>
+            //       <span className="here-text" onClick={handleClick}>
+            //         here
+            //       </span>
+            //     </div>
+            //   ),
+            // }}
+            // showSuccess={showSuccessCard}
+            cardBodyTemplate={updateData} 
+            showSuccess={() => {}}
+          
+          />
         )}
+        {showModalWindow && (
+          <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
+        )}
+        {isDeleting && <p>Deleting your account...</p>}
+        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import CardBodyProfile from "./CardBodyProfile";
+import ProfileCard from "./ProfileCard";
 
 test("renders workPlace body in the <p> with the {field.workPlace} as a prop", () => {
   const cardBodyTemplate = {

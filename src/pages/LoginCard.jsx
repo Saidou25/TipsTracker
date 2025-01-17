@@ -1,3 +1,4 @@
+import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
     password: "",
   });
 
+  const { fields, templateTitle, footer } = cardBodyTemplate;
   // Setting the form with user inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +72,8 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   }, [formState]);
 
   return (
-    <>
+    <div className="card main-card" data-testid="main-card">
+      <div className="card-title p-5">{templateTitle}</div>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="row my-5 g-0">
           <br />
@@ -115,10 +118,9 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
           </Button>
         </div>
       </form>
-      {error && (
-        <Error error={error} />
-      )}
-    </>
+      {error && <Error error={error} />}
+      <div className="card-footer p-5">{footer}</div>
+    </div>
   );
 };
 export default CardBodyLogin;

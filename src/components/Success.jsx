@@ -17,6 +17,7 @@ export default function Success({ success }) {
           {success}
         </h2>
       )}
+      {success === "Your account has been deleted. GoodBye..." && <h2>{success}</h2>}
       {success === "You are logged in" && <h2>{success}</h2>}
       {success === "Tips added successfully..." || success === "Today's tips successfully adjusted..." && (
         <div className="confetti-container">
