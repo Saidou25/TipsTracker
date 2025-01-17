@@ -8,8 +8,10 @@ const RedirectHandler = () => {
     const params = new URLSearchParams(window.location.search);
     const redirectPath = params.get("redirect");
     if (redirectPath) {
-      console.log("redirectPath", redirectPath);
-      navigate(redirectPath); // Navigate to the preserved path
+      // Remove /tipstracker from the redirect path if it's there
+      const cleanRedirectPath = redirectPath.replace(/^\/tipstracker/, "");
+      console.log("cleanRedirectPath", cleanRedirectPath);
+      navigate(cleanRedirectPath); // Navigate to the preserved path
     }
   }, [navigate]);
 
