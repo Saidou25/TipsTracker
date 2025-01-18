@@ -46,7 +46,12 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
     setLoading(true); // Showing user that is login request is working
     const email = formState.email;
     const password = formState.password;
-
+    if (!email || !password) {
+      setError("Both email and password are required!");
+      setLoading(false);
+      setButtonDisabled(true);
+      return;
+    }
     signInWithEmailAndPassword(auth, email, password) // Firebase login function
       .then((userCredential) => {
         const user = userCredential.user;
@@ -56,7 +61,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
         }
       })
       .catch((error) => {
-        setError(error.message);
+        setError("There is no user with these credentials!");
         setLoading(false);
         setButtonDisabled(true);
       });
@@ -118,6 +123,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
           </Button>
         </div>
       </form>
+      <br />
       {error && <Error error={error} />}
       <div className="card-footer p-5">{footer}</div>
     </div>

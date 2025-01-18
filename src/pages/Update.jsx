@@ -126,22 +126,21 @@ const Update = () => {
           </div>
         ) : (
           <UpdateCard
-            // cardBodyTemplate={{
-            //   templateTitle: updateData.templateTitle,
-            //   fields: updateData.fields,
-            //   footer: (
-            //     <div className="card-footer p-5">
-            //       <span>You can delete your account </span>
-            //       <span className="here-text" onClick={handleClick}>
-            //         here
-            //       </span>
-            //     </div>
-            //   ),
-            // }}
-            // showSuccess={showSuccessCard}
-            cardBodyTemplate={updateData} 
-            showSuccess={() => {}}
-          
+            cardBodyTemplate={{
+              templateTitle: updateData.templateTitle,
+              fields: updateData.fields,
+              footer: (
+                <div className="p-5">
+                  <span>You can delete your account </span>
+                  <span className="here-text" onClick={handleClick}>
+                    here
+                  </span>
+                </div>
+              ),
+            }}
+            showSuccess={showSuccessCard}
+            // cardBodyTemplate={updateData}
+            // showSuccess={() => {}}
           />
         )}
         {showModalWindow && (

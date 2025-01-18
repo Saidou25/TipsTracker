@@ -12,8 +12,7 @@ import Team from "./components/Team";
 import "bootswatch/dist/cyborg/bootstrap.min.css"; // Importing Bootstrap
 
 function App() {
-  const pathString = window.location.pathname;
-  console.log("pathString", pathString);
+ 
   return (
     <Router
       basename={process.env.NODE_ENV === "production" ? "/tipstracker" : "/"}

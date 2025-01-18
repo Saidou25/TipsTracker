@@ -24,10 +24,10 @@ export default function OnOff() {
   };
 
   return (
-    <div className="row g-0">
-      <div className="col-6">
-        <NavLink className="nav-item logo-container" to="/">
-          <div className="logofor-pages">GF</div>
+    <div className="row above-nav g-0">
+      <div className="col-6 logo-container">
+        <NavLink className="nav-item logofor-pages" to="/">
+          <div>GF</div>
         </NavLink>
       </div>
       <div className="col-6 on-off-container">

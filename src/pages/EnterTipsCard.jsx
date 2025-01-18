@@ -23,11 +23,12 @@ const EnterTipsCard = ({ showSuccess }) => {
   // Getting the full length of the day
   const fullDayName = date.toLocaleString("en-US", { weekday: "long" });
   // Format the date as MM/DD/YYYY
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-  });
+  const formattedDate = "01/15/2025"; 
+  // const formattedDate = date.toLocaleDateString("en-US", {
+  //   month: "2-digit",
+  //   day: "2-digit",
+  //   year: "numeric",
+  // });
 
   const [updateCurrentUserCollection, setUpdateCurrentUserCollection] =
     useState(false);
@@ -142,7 +143,6 @@ const EnterTipsCard = ({ showSuccess }) => {
       const loggedinUser = users.filter(
         (eachUser) => eachUser.email === user.email
       );
-
       if (!loggedinUser[0].tips) {
         setFirstCurrentUserTipEntry(true);
       }
@@ -256,6 +256,7 @@ const EnterTipsCard = ({ showSuccess }) => {
         >
           add tips
         </Button>
+        <br />
         {error && <Error error={error} />}
       </div>
     </form>

@@ -10,7 +10,6 @@ const RedirectHandler = () => {
     if (redirectPath) {
       // Remove /tipstracker from the redirect path if it's there
       const cleanRedirectPath = redirectPath.replace(/^\/tipstracker/, "");
-      console.log("cleanRedirectPath", cleanRedirectPath);
       navigate(cleanRedirectPath); // Navigate to the preserved path
     }
   }, [navigate]);

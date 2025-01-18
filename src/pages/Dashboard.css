@@ -15,7 +15,11 @@
 }
 .name {
   text-align: center;
-  font-size: 5rem !important;
   margin-bottom: 5%;
 }
-
+@media screen and (max-width: 414px) {
+  .name {
+    margin-top: 10%;
+    margin-bottom: 15%;
+  }
+}

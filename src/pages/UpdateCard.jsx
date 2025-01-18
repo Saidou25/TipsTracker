@@ -2,12 +2,14 @@ import { React, useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { updateProfile } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import findUser from "../UseFindUser";
 
 import Error from "../components/Error";
 import UpdateProfilePicture from "./UpdateProfilePicture";
 import Button from "../components/Button";
+import Success from "../components/Success";
 
 import "../components/Card.css";
 
@@ -16,12 +18,14 @@ const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [newUrl, setNewUrl] = useState(false);
   const [formState, setFormState] = useState({
     displayName: "",
     photoURL: user.photoURL,
   });
   const form = useRef();
+  const navigate = useNavigate();
 
   const { templateTitle, fields, footer } = cardBodyTemplate;
 
@@ -57,12 +61,16 @@ const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
           : user.displayName,
         photoURL: formState.photoURL ? formState.photoURL : user.photoURL,
       });
-      showSuccess("Profile successfully updated...");
+      setSuccess("Profile successfully updated...");
+      setTimeout(() => {
+        setSuccess("");
+        navigate("/profile");
+      }, 3000);
       setNewUrl(false);
       resetFormAndStates();
     } catch (error) {
       setButtonDisabled(true);
-      setError(error.message);
+      setError("There was an error updating your profile!");
       setLoading(false);
     }
   };
@@ -116,65 +124,72 @@ const UpdateCard = ({ cardBodyTemplate, showSuccess }) => {
   return (
     <div className="card main-card" data-testid="main-card">
       <div className="card-title p-5">{templateTitle}</div>
-      <div className="card-body">
-        <UpdateProfilePicture
-          uploadedPhotoUrl={handleUrl}
-          cardBodyTemplate={cardBodyTemplate}
-          data-testid="mock-update-profile-picture"
-        />
-        <form ref={form} className="form mt-4 px-5" onSubmit={handleSubmit}>
-          <br />
-          {fields &&
-            fields.map((field) => (
-              <div className="d-flex justify-content-center" key={field.label}>
-                <label
-                  data-testid={`updateCard-label-${field.label}`}
-                  htmlFor={field.label}
-                  className="form-label here mb-3"
-                  name={field.label}
+      {success ? (
+        <Success success={success} />
+      ) : (
+        <div className="card-body">
+          <UpdateProfilePicture
+            uploadedPhotoUrl={handleUrl}
+            cardBodyTemplate={cardBodyTemplate}
+            data-testid="mock-update-profile-picture"
+          />
+          <form ref={form} className="form mt-4 px-5" onSubmit={handleSubmit}>
+            <br />
+            {fields &&
+              fields.map((field) => (
+                <div
+                  className="d-flex justify-content-center"
+                  key={field.label}
                 >
-                  {field.label}:
-                </label>
-                <br />
-                <br />
-                <input
-                  data-testid="input"
-                  role="spinbutton"
-                  id={field.label}
-                  inputMode={field.inputMod}
-                  type={field.type}
-                  className="tips-input mb-3 mx-2 text-black"
-                  placeholder={
-                    user?.displayName ? user?.displayName : field.placeholder
-                  }
-                  style={{
-                    fontStyle: "oblique",
-                    paddingLeft: "3%",
-                    width: "40%",
-                  }}
-                  name={field.label}
-                  value={formState.displayName}
-                  onChange={handleChange}
-                  autoComplete="on"
-                />
-              </div>
-            ))}
-          <br />
-          <div className="d-flex justify-content-center mb-4">
-            <Button
-            role="button"
-              type="submit"
-              className="button"
-              disabled={buttonDisabled}
-              loading={loading}
-              error={error}
-            >
-              update profile
-            </Button>
-          </div>
-          {error && <Error error={error} />}
-        </form>
-      </div>
+                  <label
+                    data-testid={`updateCard-label-${field.label}`}
+                    htmlFor={field.label}
+                    className="form-label here mb-3"
+                    name={field.label}
+                  >
+                    {field.label}:
+                  </label>
+                  <br />
+                  <br />
+                  <input
+                    data-testid="input"
+                    role="spinbutton"
+                    id={field.label}
+                    inputMode={field.inputMod}
+                    type={field.type}
+                    className="tips-input mb-3 mx-2 text-black"
+                    placeholder={
+                      user?.displayName ? user?.displayName : field.placeholder
+                    }
+                    style={{
+                      fontStyle: "oblique",
+                      paddingLeft: "3%",
+                      width: "40%",
+                    }}
+                    name={field.label}
+                    value={formState.displayName}
+                    onChange={handleChange}
+                    autoComplete="on"
+                  />
+                </div>
+              ))}
+            <br />
+            <div className="d-flex justify-content-center mb-4">
+              <Button
+                role="button"
+                type="submit"
+                className="button"
+                disabled={buttonDisabled}
+                loading={loading}
+                error={error}
+              >
+                submit
+              </Button>
+            </div>
+            {error && <Error error={error} />}
+          </form>
+        </div>
+      )}
       <div className="card-footer p-5">{footer}</div>
     </div>
   );

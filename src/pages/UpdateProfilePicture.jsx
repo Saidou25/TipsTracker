@@ -144,7 +144,7 @@ const UpdateProfilePicture = ({ uploadedPhotoUrl }) => {
           disabled={buttonDisabled}
           onClick={handleClick}
         >
-          save Picture
+          save 
         </Button>
       </div>
       {error && <Error error={error} />}

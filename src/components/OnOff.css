@@ -1,16 +1,19 @@
 /* -------------------- logo -------------- */
+.above-nav {
+  padding: 1% 2% 0 2%;
+}
 .logo-container {
-  padding-left: 5%;
-  margin: 2%;
+  display: flex;
+  align-items: center;
 }
 .logofor-pages {
   border: solid;
   border-width: 2px;
   border-radius: 50%;
-  padding-left: 5%;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 200 !important;
-  margin: 2%;
+  padding: 2%;
+ 
+  color: white;
+  /* font-weight: 200 !important; */
 }
 /* --------------------on/off button -------------- */
 .on-off-container {
@@ -19,8 +22,8 @@
   padding: 2%;
 }
 .on-off {
-  color: rgb(148, 205, 240) !important;
+  /* color: rgb(148, 205, 240) !important; */
+  color: white;
   width: 15%;
-  padding-right: 5%;
   font-size: 2rem;
 }

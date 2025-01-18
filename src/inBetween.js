@@ -40,7 +40,9 @@ export function monthTipsArray(newTipsArr) {
   for (let month = 1; month <= 12; month++) {
     const monthStr = String(month).padStart(2, '0'); // Ensure month is two digits
     if (tipsByMonth[monthStr].length > 0) { // Only build month arrays for months with tips
-      const monthArray = buildMonthArray(tipsByMonth[monthStr], 2024, month);
+      const today = new Date();
+      const year = today.getFullYear();
+      const monthArray = buildMonthArray(tipsByMonth[monthStr], year, month);
       combinedMonthArray.push(...monthArray); // Always push the month array
     }
   }

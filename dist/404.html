@@ -6,11 +6,10 @@
   <body>
     Redirecting...
   </body>
-    <script>
-      // Preserve the current path and redirect to index.html
-      const currentPath = window.location.pathname;
-      console.log("currentPath", currentPath);
-      const newUrl = `/tipstracker/?redirect=${encodeURIComponent(currentPath)}`;
-      window.location.replace(newUrl);
-    </script>
+  <script>
+    // Preserve the current path and remove the '/tipstracker' prefix
+    const currentPath = window.location.pathname.replace(/^\/tipstracker/, "");
+    const newUrl = `/tipstracker/?redirect=${encodeURIComponent(currentPath)}`;
+    window.location.replace(newUrl);
+  </script>
 </html>

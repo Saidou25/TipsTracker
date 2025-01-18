@@ -23,7 +23,7 @@ const Button = ({
     >
       {loading && <ButtonSpinner />}
       {(disabled || error) && <AiOutlineStop className="line-stop"/>}
-      {!loading && !disabled && !error && <>{children}</>}
+      {!loading && !disabled && !error && <div className="class-children g-0 m-0">{children}</div>}
     </button>
   );
 };

@@ -26,3 +26,8 @@
 .nav-text:hover {
   background: rgb(116, 72, 225) !important;
 }
+@media screen and (max-width: 414px) {
+  .container-nav {
+    margin-top: 8%;
+  }
+}

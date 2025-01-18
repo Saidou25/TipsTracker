@@ -27,8 +27,8 @@ const DashboardCard = ({ cardBodyTemplate }) => {
       return tipDate <= today; // Only include tips up to today
     });
 
-    // Sort tips by date
-    filteredTips.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Sort tips by date most recent first
+    filteredTips.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     setDisplayTips(filteredTips);
   }, [cardBodyTemplate]);
