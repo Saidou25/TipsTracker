@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import "../components/Card.css";
 
 const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [formState, setFormState] = useState({
@@ -22,7 +22,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setError(""); // Clearing eventual previous error
+    setErrorMessage(""); // Clearing eventual previous error
     setFormState({
       ...formState,
       [name]: value,
@@ -33,7 +33,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   const resetFormAndStates = () => {
     setLoading(false);
     setButtonDisabled(true);
-    setError("");
+    setErrorMessage("");
     setFormState({
       email: "",
       password: "",
@@ -43,11 +43,12 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   // Loging the user
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setLoading(true); // Showing user that is login request is working
     const email = formState.email;
     const password = formState.password;
     if (!email || !password) {
-      setError("Both email and password are required!");
+      setErrorMessage("All fields are required!");
       setLoading(false);
       setButtonDisabled(true);
       return;
@@ -60,8 +61,8 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
           resetFormAndStates(); // Self explanatory
         }
       })
-      .catch((error) => {
-        setError("There is no user with these credentials!");
+      .catch(() => {
+        setErrorMessage("There is no user with these credentials!");
         setLoading(false);
         setButtonDisabled(true);
       });
@@ -79,16 +80,16 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   return (
     <div className="card main-card" data-testid="main-card">
       <div className="card-title p-5">{templateTitle}</div>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="row my-5 g-0">
+      <form className="login-form">
+        <div className="my-2 g-0">
           <br />
-          {cardBodyTemplate.fields &&
+          {fields &&
             cardBodyTemplate.fields.map((field) => (
               <div className="login-signup" key={field.label}>
                 <label
                   data-testid={`enterTipsForm-label-${field.label}`}
                   htmlFor={field.label}
-                  className="col-12 mb-3"
+                  className="mb-3"
                   name={field.label}
                 >
                   {field.label}:
@@ -98,13 +99,8 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
                   id={field.label}
                   inputMode={field.inputMod}
                   type={field.type}
-                  className="col-12 login-input mb-3"
+                  className="login-input mb-3"
                   placeholder={field.placeholder}
-                  style={{
-                    fontStyle: "oblique",
-                    paddingLeft: "3%",
-                    color: "black",
-                  }}
                   autoComplete="on"
                   name={field.label}
                   value={formState.label}
@@ -112,19 +108,20 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
                 />
               </div>
             ))}
+          {errorMessage ? <Error message={errorMessage} /> : null}
           <Button
             type="submit"
             className="button"
             disabled={buttonDisabled}
             loading={loading}
-            error={error}
+            error={errorMessage}
+            onClick={handleSubmit}
           >
             login
           </Button>
         </div>
       </form>
       <br />
-      {error && <Error error={error} />}
       <div className="card-footer p-5">{footer}</div>
     </div>
   );

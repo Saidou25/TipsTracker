@@ -1,10 +1,22 @@
 import ConfettiComponent from "./ConfettiComponent";
 
 export default function Success({ success }) {
-
   return (
     <>
-      {success === "Profile successfully updated..." && (
+      {success === "Username successfully updated." && (
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "20%",
+            marginBottom: "40%",
+            marginRight: "5%",
+            marginLeft: "5%",
+          }}
+        >
+          {success}
+        </h2>
+      )}
+      {success === "Profile Picture successfully updated." && (
         <h2
           style={{
             textAlign: "center",

@@ -4,7 +4,7 @@ import "./LandingPage.css";
 
 const LandingPage = () => {
   return (
-    <div className="container-fluid grad1">
+    <div className="container-fluid grad1 g-0">
       <NavLink to="/" style={{ textDecoration: "none" }} >
         <h1 className="logo">GF</h1>
         <br />

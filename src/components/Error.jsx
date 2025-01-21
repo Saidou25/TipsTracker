@@ -1,21 +1,15 @@
 import React from "react";
 
-export default function Error({ error }) {
-  
+import "./Error.css";
+
+export default function Error({ message }) {
+  console.log("Error message", message);
   return (
     <div
-      className="text-primary d-flex align-items-center justify-content-center"
+      className="error-div bg-danger p-2"
       data-testid="oops something went wrong..."
-      style={{
-        margin: "3%",
-        border: "1px solid",
-        borderRadius: "10px",
-        height: "50px",
-        padding: "3%",
-        // color: "rgba(210, 35, 241, 0.92)"
-      }}
     >
-      {error}
+      {message}
     </div>
   );
 }

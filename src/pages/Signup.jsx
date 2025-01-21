@@ -1,5 +1,6 @@
 import React from "react";
 import { signupData } from "../data";
+
 import SignupCard from "./SignupCard";
 
 const Signup = () => {

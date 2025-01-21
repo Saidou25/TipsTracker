@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import DashboardCard from "./DashboardCard";
 
 import "./Dashboard.css";
+import Users from "./Users";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -38,10 +39,10 @@ const Dashboard = () => {
         (user) => user.email === currentUser.email
       );
 
-      if (!loggedinUser[0].tips) {
+      if (!loggedinUser[0]?.tips) {
         setUserTipsData([]);
       }
-      if (loggedinUser[0].tips) {
+      if (loggedinUser[0]?.tips) {
         setUserTipsData(loggedinUser[0].tips); // Getting tips of the loggedinUser
       }
     }
@@ -68,6 +69,7 @@ const Dashboard = () => {
           <div className="card-footer p-5">{dashboardData.footer}</div>
         </div>
       </div>
+      <Users />
     </div>
   );
 };

@@ -1,17 +1,18 @@
 
 /* ------ login && signup ---------------------- */
-.signup-form,
+/* .signup-form,
 .login-form {
   display: flex;
   width: 40%;
   margin: auto !important;
-}
+} */
 .login-signup {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; 
   padding-bottom: 2rem;
-  margin: 0;
+  width: 40% !important;
+  margin: auto;
 }
 
 .div-label {
@@ -27,6 +28,9 @@
 .tips-input {
   border-radius: 2em;
   background-color: rgba(255, 255, 255, 0.693);
+  font-style: oblique;
+  padding-left: 3%;
+  color: black;
 }
 /* -------------- profile --------------------------- */
 .profile-info {
@@ -48,7 +52,7 @@
 }
 
 /* -------------- update profilePicture ------------- */
-.progress {
+/* .progress {
   height: 10% !important;
   background-color: transparent !important;
   color: rgba(198, 135, 209, 0.92) !important;
@@ -70,7 +74,7 @@
 }
 .here-text:hover {
   cursor: pointer;
-}
+} */
 /* -------------- css for money svgs ---------------- */
 
 img,
@@ -167,14 +171,14 @@ svg {
     width: 60%;
     margin: auto !important;
   }
+  .login-signup {
+    width: 80% !important;
+    margin: auto;
+  }
 }
 @media screen and (max-width: 850px) {
   .main-card {
     width: 70% !important;
-  }
-  .login-form,
-  .signup-form {
-    width: 50%;
   }
   .photo-url {
     width: 100px;
@@ -220,6 +224,7 @@ svg {
   .main-card {
     width: 90% !important;
   }
+  
   .photo-url {
     width: 100px;
     height: 100px;

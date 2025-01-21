@@ -1,0 +1,16 @@
+.error-div {
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+    width: 70%;
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+@media screen and (max-width: 950px) {
+    .error-div {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 10%;
+    }
+  }

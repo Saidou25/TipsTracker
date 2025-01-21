@@ -11,7 +11,9 @@ const ProfileCard = ({ cardBodyTemplate }) => {
         <img className="photo-url mb-4" src={imageSrc} alt="Profile" />
       </div>
       <div style={{ textAlign: "center" }}>
-        <p>username: {loggedinUser.displayName}</p>
+        {loggedinUser.displayName && (
+          <p>username: {loggedinUser.displayName}</p>
+        )}
         <p>email: {loggedinUser.email}</p>
         <p>Using Since: {usingSince}</p>
       </div>

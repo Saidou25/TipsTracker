@@ -11,7 +11,6 @@ import Navbar from "../components/Navbar";
 import findUser from "../UseFindUser";
 import ModalWindow from "../components/ModalWindow";
 import UpdateCard from "./UpdateCard";
-import Success from "../components/Success";
 
 import "./EnterTips.css";
 
@@ -20,7 +19,6 @@ const Update = () => {
   const [showModalWindow, setShowModalWindow] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(""); // State for error
-  const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
 
@@ -59,7 +57,7 @@ const Update = () => {
     try {
       await deleteUser(user);
     } catch (error) {
-      setError(error.message); // Set error message
+      setError("Oops, something went wrong."); // Set error message
     }
   };
 
@@ -68,7 +66,7 @@ const Update = () => {
     try {
       await deleteDoc(doc(db, "users", userId));
     } catch (error) {
-      setError(error.message); // Set error message
+      setError("Oops, something went wrong."); // Set error message
     } finally {
       deleteAuthUser(user);
     }
@@ -81,7 +79,7 @@ const Update = () => {
       try {
         await deleteObject(imageRef);
       } catch (error) {
-        setError(error.message); // Set error message
+        setError("Oops, something went wrong."); // Set error message
       }
     }
   };
@@ -109,40 +107,26 @@ const Update = () => {
     }
   };
 
-  useEffect(() => {
-    // Clears the success state when the component mounts
-    setSuccess("");
-  }, []);
 
   return (
     <div className="grad1">
       <Navbar />
       <div className="container-fluid g-0">
-        {success ? (
-          <div className="card card-success">
-            <div className="card-body">
-              <Success success={success} />
-            </div>
-          </div>
-        ) : (
-          <UpdateCard
-            cardBodyTemplate={{
-              templateTitle: updateData.templateTitle,
-              fields: updateData.fields,
-              footer: (
-                <div className="p-5">
-                  <span>You can delete your account </span>
-                  <span className="here-text" onClick={handleClick}>
-                    here
-                  </span>
-                </div>
-              ),
-            }}
-            showSuccess={showSuccessCard}
-            // cardBodyTemplate={updateData}
-            // showSuccess={() => {}}
-          />
-        )}
+        <UpdateCard
+          cardBodyTemplate={{
+            templateTitle: updateData.templateTitle,
+            fields: updateData.fields,
+            footer: (
+              <div>
+                <span>You can delete your account </span>
+                <span className="here-text" onClick={handleClick}>
+                  here
+                </span>
+              </div>
+            ),
+          }}
+          showSuccess={showSuccessCard}
+        />
         {showModalWindow && (
           <ModalWindow onConfirm={handleConfirm} onClose={handleClose} />
         )}

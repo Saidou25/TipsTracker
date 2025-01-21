@@ -14,17 +14,21 @@ const Button = ({
   className,
 }) => {
   return (
-    <button
-      role="button"
-      className={className}
-      type={type}
-      disabled={disabled || loading || error ? true : false}
-      onClick={onClick}
-    >
-      {loading && <ButtonSpinner />}
-      {(disabled || error) && <AiOutlineStop className="line-stop"/>}
-      {!loading && !disabled && !error && <div className="class-children g-0 m-0">{children}</div>}
-    </button>
+    <div className="button-div">
+      <button
+        role="button"
+        className={className}
+        type={type}
+        disabled={disabled || loading || error ? true : false}
+        onClick={onClick}
+      >
+        {loading && <ButtonSpinner />}
+        {(disabled || error) && <AiOutlineStop className="line-stop" />}
+        {!loading && !disabled && !error && (
+          <div className="class-children g-0 m-0">{children}</div>
+        )}
+      </button>
+    </div>
   );
 };
 export default Button;

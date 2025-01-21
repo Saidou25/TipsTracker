@@ -1,0 +1,41 @@
+.title {
+  margin-bottom: 5% !important;
+  max-width: 80%;
+  margin: auto;
+}
+.users-row {
+  padding-bottom: 5%;
+  width: 80%;
+  margin: auto;
+}
+.picture-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.picture-div {
+    width: 70%;
+}
+.dashboard-picture {
+  border-radius: 50%;
+}
+.username {
+  color: white;
+}
+@media screen and (max-width: 414px) {
+    .title {
+        max-width: 90%;
+      }
+    .users-row {
+        width: 90%;
+      }
+      .picture-column {
+        margin: 2%;
+      }
+    .picture-div {
+        width: 100%;
+    }
+    .username {
+        font-size: 16px;
+      }
+}

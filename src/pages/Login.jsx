@@ -21,21 +21,25 @@ const Login = () => {
     }
   };
   return (
-    <div className="container-fluid g-0">
+    <>
       {success ? (
-        <Success success={success} />
+        <div className="container-fluid g-0">
+          <Success success={success} />
+        </div>
       ) : (
-        <LoginCard
-          className="p-0 m-0 g-0"
-          cardBodyTemplate={{
-            templateTitle: loginData.templateTitle,
-            fields: loginData.fields,
-            footer: loginData.footer,
-          }}
-          showSuccess={showSuccessCard}
-        />
+        <div className="container-fluid g-0">
+          <LoginCard
+            className="p-0 m-0 g-0"
+            cardBodyTemplate={{
+              templateTitle: loginData.templateTitle,
+              fields: loginData.fields,
+              footer: loginData.footer,
+            }}
+            showSuccess={showSuccessCard}
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

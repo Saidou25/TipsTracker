@@ -1,6 +1,22 @@
+.progress {
+    height: 10% !important;
+    background-color: transparent !important;
+    color: rgba(198, 135, 209, 0.92) !important;
+    font-size: 1rem !important;
+  }
+.image-camera {
+    position: relative;
+}
+.photo-update {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    background-position: cover;
+    margin-top: 2%;
+  }
 .camera {
     color: rgba(207, 200, 207, 0.835);
-    /* color: rgb(241, 168, 240); */
     max-height: 100px !important;
     position: absolute;
     margin-top: -95%;
@@ -10,3 +26,20 @@
     border-radius: 50%;
     
 }
+  .no-wrap {
+    white-space: nowrap !important;
+  }
+  .update-start {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .update-end {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .here-text {
+    color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+  }
+  .here-text:hover {
+    cursor: pointer;
+  }

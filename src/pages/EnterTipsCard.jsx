@@ -39,7 +39,7 @@ const EnterTipsCard = ({ showSuccess }) => {
   const [userTipsData, setUserTipsData] = useState([]);
   const [disabledButton, setDisabledButton] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [formState, setFormState] = useState({
     TipsGross: "",
     TipsNet: "",
@@ -51,7 +51,7 @@ const EnterTipsCard = ({ showSuccess }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setError("");
+    setErrorMessage("");
     setFormState({
       ...formState,
       [name]: value,
@@ -64,7 +64,7 @@ const EnterTipsCard = ({ showSuccess }) => {
   const resetFormAndStates = () => {
     setLoading(false);
     setDisabledButton(true);
-    setError("");
+    setErrorMessage("");
     setUpdateCurrentUserCollection(false);
     setFirstCurrentUserTipEntry(false);
     setFormState({
@@ -90,8 +90,9 @@ const EnterTipsCard = ({ showSuccess }) => {
         tips: updatedTips,
       });
       showSuccess("Today's tips successfully adjusted...");
-    } catch (error) {
-      setError(error.message);
+      setErrorMessage("");
+    } catch {
+      setErrorMessage("Could not update today's tips. Please try again later.");
     } finally {
       resetFormAndStates();
     }
@@ -107,8 +108,9 @@ const EnterTipsCard = ({ showSuccess }) => {
         tips: arrayUnion({ ...formState }),
       });
       showSuccess("Tips added successfully...");
-    } catch (error) {
-      setError(error.message);
+      setErrorMessage("");
+    } catch {
+      setErrorMessage("Failed adding tips.");
     } finally {
       resetFormAndStates();
     }
@@ -125,17 +127,21 @@ const EnterTipsCard = ({ showSuccess }) => {
   };
 
   useEffect(() => {
-    const fetcData = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const dataArray = []; // Initialize an array to store the stringified objects
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        dataArray.push(data); // Push the data object into the dataArray
-      });
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const dataArray = []; // Initialize an array to store the stringified objects
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          dataArray.push(data); // Push the data object into the dataArray
+        });
 
-      setUsers(dataArray); // list of users and their tips collection
+        setUsers(dataArray); // list of users and their tips collection
+      } catch {
+        setErrorMessage("Failed to fetch user data: ");
+      }
     };
-    fetcData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -182,7 +188,7 @@ const EnterTipsCard = ({ showSuccess }) => {
             className="col-6"
             name="TipsGross"
           >
-            tips <i>(gross)</i>:
+            Tips <i>(gross)</i>:
           </label>
           <br />
           <br />
@@ -217,7 +223,7 @@ const EnterTipsCard = ({ showSuccess }) => {
             className="col-6"
             name="TipsNet"
           >
-            tips <i>(net)</i>:
+            Tips <i>(net)</i>:
           </label>
           <br />
           <br />
@@ -245,19 +251,23 @@ const EnterTipsCard = ({ showSuccess }) => {
           <br />
           <br />
         </div>
-
+        {errorMessage ? (
+          <>
+            <Error message={errorMessage} />
+            <br />
+            <br />
+          </>
+        ) : null}
         <Button
           role="button"
           type="submit"
           className="button"
           loading={loading}
           disabled={disabledButton}
-          error={error}
+          error={errorMessage}
         >
           add tips
         </Button>
-        <br />
-        {error && <Error error={error} />}
       </div>
     </form>
   );

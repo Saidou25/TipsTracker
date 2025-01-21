@@ -6,7 +6,6 @@ import findUser from "../UseFindUser";
 
 import ProfileCard from "./ProfileCard";
 import Navbar from "../components/Navbar";
-import Spinner from "../components/Spinner";
 
 import emptyAvatar from "../assets/profileicon.png";
 
@@ -30,6 +29,7 @@ const Profile = () => {
   // if (loadingCurrentUser) {
   //   return <Spinner />; // Show loading message
   // }
+
 
   return (
     <div className="grad1">
