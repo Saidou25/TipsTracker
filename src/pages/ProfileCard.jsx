@@ -7,6 +7,9 @@ const ProfileCard = ({ cardBodyTemplate }) => {
 
   return (
     <div data-testid="main-card">
+      <div className="progress">
+        <span style={{ visibility: "hidden" }}>showProgress</span>
+      </div>
       <div className="container-fluid">
         <img className="photo-url mb-4" src={imageSrc} alt="Profile" />
       </div>
@@ -15,7 +18,7 @@ const ProfileCard = ({ cardBodyTemplate }) => {
           <p>username: {loggedinUser.displayName}</p>
         )}
         <p>email: {loggedinUser.email}</p>
-        <p>Using Since: {usingSince}</p>
+        <p>using Since: {usingSince}</p>
       </div>
     </div>
   );

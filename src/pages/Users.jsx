@@ -24,18 +24,19 @@ export default function Users() {
 
   return (
     <>
-      <h4 className="title">Other users</h4>
       <div className="row users-row g-0">
         {usersData &&
           usersData.map((userData) => (
-            <>
-              <div className="col-2 picture-column g-0" key={userData.email}>
-                <div className="picture-div">
-                  <img className="dashboard-picture img-fluid" src={userData.photoURL} alt="profile-picture" />
-                </div>
-                <span className="username">{userData.displayName}</span>
+            <div className="col-2 picture-column g-0" key={userData.email}>
+              <div className="picture-div">
+                <img
+                  className="dashboard-picture img-fluid"
+                  src={userData.photoURL}
+                  alt="profile-picture"
+                />
               </div>
-            </>
+              <span className="username">{userData.displayName}</span>
+            </div>
           ))}
       </div>
     </>

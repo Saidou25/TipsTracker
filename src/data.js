@@ -36,9 +36,9 @@ const loginData = {
   footer: "Welcome to Tips Tracker",
 };
 const dashboardData = {
-  templateTitle: "Dashboard",
+  templateTitle: "View your tips",
   tips: [],
-  footer: "Dashboard footer",
+  footer: "All tips will be reset on January first of next year.",
 };
 
 const profileData = {
@@ -52,7 +52,7 @@ const profileData = {
       label: "email: ",
       type: "email",
     },
-    { label: "Using Since: ", type: "text" },
+    { label: "using Since: ", type: "text" },
   ],
 };
 

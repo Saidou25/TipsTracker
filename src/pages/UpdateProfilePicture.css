@@ -8,8 +8,8 @@
     position: relative;
 }
 .photo-update {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     aspect-ratio: 1 / 1;
     background-position: cover;

@@ -7,9 +7,9 @@ import findUser from "../UseFindUser";
 
 import Navbar from "../components/Navbar";
 import DashboardCard from "./DashboardCard";
+import Users from "./Users";
 
 import "./Dashboard.css";
-import Users from "./Users";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -48,7 +48,6 @@ const Dashboard = () => {
     }
   }, [users, currentUser]);
 
- 
   return (
     <div className="grad1">
       <Navbar />
@@ -69,7 +68,12 @@ const Dashboard = () => {
           <div className="card-footer p-5">{dashboardData.footer}</div>
         </div>
       </div>
-      <Users />
+      <h4 className="users-title">Others using Tips Tracker</h4>
+      <div className="users-container g-0">
+        <div className="card users-card">
+          <Users />
+        </div>
+      </div>
     </div>
   );
 };
