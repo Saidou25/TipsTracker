@@ -24,11 +24,6 @@
   padding-left: 3%;
   color: black;
 }
-/* ---------------- tipsForm ---------------------- */
-.tips-form {
-  width: 40%;
-  margin: auto !important;
-}
 /* ---------------- remove some default css ------- */
 .card {
   --bs-card-spacer-x: 0rem !important;

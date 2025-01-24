@@ -60,6 +60,18 @@ const tipsFormData = {
   templateTitle: "Please enter your tips",
   fields: [
     {
+      type: "string",
+      label: "Today's date: ",
+      placeholder: "",
+      inputMod: "string",
+    },
+    {
+      tylpe: "string",
+      label: "Custom date: ",
+      placeholder: "enter date",
+      inputMod: "string",
+    },
+    {
       type: "number",
       label: "TipsGross",
       placeholder: "enter tips",
@@ -85,7 +97,7 @@ const updateData = {
       inputMod: "text",
     },
   ],
-  footer: ""
+  footer: "",
 };
 // Testing data
 const tipsDataFeed = {

@@ -7,15 +7,44 @@
   align-items: center;
 }
 .picture-div {
-  width: 70%;
+  width: 80%;
+  display: block;
+  text-align: center;
+}
+.rotate-image {
+  animation: rotateImage 0.5s linear forwards;
+}
+@keyframes rotateImage {
+  0% {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform:  rotateY(180deg);
+  }
 }
 .dashboard-picture {
   border-radius: 50%;
+  object-fit: cover; /* Ensures the image fills the box, cropping if necessary */
+  /* width: 80%; 
+  height: 80%; */
+  max-width: 90%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background-position: cover;
+}
+.rotated-picture {
+  border-radius: 50%;
+  max-width: 90%;
+  height: auto;
 }
 .username {
   color: white;
 }
-
+@media screen and (max-width: 1400px) {
+  .username {
+    display: none;
+  }
+}
 @media screen and (max-width: 414px) {
   .users-row {
     width: 90%;
