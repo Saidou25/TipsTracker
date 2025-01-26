@@ -43,11 +43,12 @@ const EnterTips = () => {
             <div className="card-title p-5">{tipsFormData.templateTitle}</div>
             <EnterTipsCard
               data-testid="card-body-tips-form"
-              cardBodyTemplate={{
-                title: tipsFormData.templateTitle,
-                fields: tipsFormData.fields,
-                footer: tipsFormData.footer,
-              }}
+              // cardBodyTemplate={{
+              //   title: tipsFormData.templateTitle,
+              //   fields: tipsFormData.fields,
+              //   footer: tipsFormData.footer,
+              // }}
+              cardBodyTemplate={tipsFormData}
               showSuccess={showSuccessCard}
             />
             <div className="card-footer p-5">{tipsFormData.footer}</div>

@@ -5,6 +5,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   updateDoc,
 } from "firebase/firestore";
@@ -16,7 +17,7 @@ import Button from "../components/Button";
 
 import "../components/Card.css";
 
-const EnterTipsCard = ({ showSuccess }) => {
+const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   const { user, loading: loadingUser } = findUser();
 
   const date = useMemo(() => new Date(), []);
@@ -30,6 +31,9 @@ const EnterTipsCard = ({ showSuccess }) => {
     year: "numeric",
   });
 
+  const [customDate, setCustomDate] = useState("");
+  const [warning, setWarning] = useState("");
+  const [confirm, setConfirm] = useState(false);
   const [updateCurrentUserCollection, setUpdateCurrentUserCollection] =
     useState(false);
   const [todayTipAdjustment, setTodayTipAdjustment] = useState(false);
@@ -48,18 +52,48 @@ const EnterTipsCard = ({ showSuccess }) => {
   });
 
   const form = useRef();
+  const userDocRef = doc(db, "users", "userId");
+  const { fields, footer, templateTitle } = cardBodyTemplate;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setErrorMessage("");
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
+    setWarning("");
+    if (name === "Custom date: ") {
+      const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])\/\d{4}$/;
+      if (!regex.test(value)) {
+        setErrorMessage("Entry must match MM/DD/YYYY format.");
+        return;
+      }
+      const today = new Date(value);
+      // Getting the full length of the day
+      const fullCustomDayName = today.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+
+      // Format the date as MM/DD/YYYY
+      const formattedCustomDate = today.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      });
+      setCustomDate(formattedCustomDate);
+      setFormState({
+        ...formState,
+        dayName: fullCustomDayName,
+        date: formattedCustomDate,
+      });
+    } else {
+      setFormState({
+        ...formState,
+        [name]: value,
+      });
+    }
     if (formState.TipsGross && formState.TipsNet) {
       setDisabledButton(false);
     }
   };
+
   // Resetting formState and other states in one function to avoid repeating the same lines
   const resetFormAndStates = () => {
     setLoading(false);
@@ -101,7 +135,6 @@ const EnterTipsCard = ({ showSuccess }) => {
   // When user enters the most recent tips
   const updateTheCollection = useCallback(async () => {
     const userDocRef = doc(db, "users", user.uid);
-
     try {
       // Atomically add a new region to the "regions" array field.
       await updateDoc(userDocRef, {
@@ -116,10 +149,38 @@ const EnterTipsCard = ({ showSuccess }) => {
     }
   }, [user, formState, userTipsData, updateTodaysTips]);
 
+  // Updating old tips
+  const correctPreviousTip = async () => {
+    const userDocRef = doc(db, "users", user.uid);
+
+    // Step 2: Fetch the current document
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const data = userDoc.data().tips;
+      const tipsData = data.tips || [];
+      // console.log(data)
+      //    // Step 3: Update the specific object in the array
+      const updatedTips = tipsData.map((tip) =>
+        tip.date === customDate ? { ...tipsData, ...updatedTips } : tipsData
+      );
+
+      //    // Step 4: Write the updated array back to Firestore
+      //    await updateDoc(userDocRef, { activities: updatedActivities });
+      //    console.log("Activity updated successfully!");
+      //  } else {
+      //    console.log("Document does not exist!");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (firstCurrentUserTipEntry || updateCurrentUserCollection) {
+    if (confirm) {
+      console.log("Confirmed");
+      return;
+    }
+    if (firstCurrentUserTipEntry || updateCurrentUserCollection || customDate) {
       updateTheCollection();
     } else if (todayTipAdjustment) {
       updateTodaysTips();
@@ -153,10 +214,18 @@ const EnterTipsCard = ({ showSuccess }) => {
         setFirstCurrentUserTipEntry(true);
       }
       // If loggedin user already did enter his/her tips in the past then we set update the collection to true and the collection will be update thru handleSubmit
-      if (loggedinUser[0].tips) {
+      if (loggedinUser[0]?.tips) {
         const tipsAdjustment = loggedinUser[0].tips.filter(
           (tip) => tip.date === formattedDate
         );
+        const olderTip = loggedinUser[0].tips.filter(
+          (tip) => tip.date === customDate
+        );
+        if (olderTip[0]?.date) {
+          setWarning(
+            `You are attempting to overwrite your tips for ${olderTip[0].date}. Please confirm that this is intentional.`
+          );
+        }
         // If loggedin user is trying to correct is today's tip entry we trigger updateTodaysTips her so he/her can do it
         if (tipsAdjustment.length) {
           setTodayTipAdjustment(true);
@@ -166,7 +235,7 @@ const EnterTipsCard = ({ showSuccess }) => {
         }
       }
     }
-  }, [users, user]);
+  }, [users, user, customDate, warning]);
 
   useEffect(() => {
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
@@ -179,94 +248,58 @@ const EnterTipsCard = ({ showSuccess }) => {
 
   return (
     <form ref={form} role="form" className="tips-form" onSubmit={handleSubmit}>
-      <div className="row my-5 g-0" data-testid="card-body-tips-form">
+      <div className="my-2 g-0">
         <br />
-        <div className="col-12 div-label">
-          <label
-            data-testid="enterTipsForm-label"
-            htmlFor="TipsGross"
-            className="col-6"
-            name="TipsGross"
-          >
-            Tips <i>(gross)</i>:
-          </label>
-          <br />
-          <br />
-          <input
-            data-testid="input"
-            role="spinbutton"
-            id="TipsGross"
-            inputMode="numeric"
-            type="number"
-            className="col-6 login-input mb-3"
-            placeholder="enter tips..."
-            style={{
-              fontStyle: "oblique",
-              paddingLeft: "3%",
-              color: "black",
-            }}
-            autoComplete="off"
-            name="TipsGross"
-            value={formState.TipsGross}
-            onChange={handleChange}
-            onKeyDown={(evt) =>
-              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
-            } // Prevents these keyboard keys to be inactive
-          />
-          <br />
-          <br />
-        </div>
-        <div className="col-12 div-label">
-          <label
-            data-testid="enterTipsForm-label"
-            htmlFor="TipsNet"
-            className="col-6"
-            name="TipsNet"
-          >
-            Tips <i>(net)</i>:
-          </label>
-          <br />
-          <br />
-          <input
-            data-testid="input"
-            role="spinbutton"
-            id="TipsNet"
-            inputMode="numeric"
-            type="number"
-            className="col-6 login-input mb-3"
-            placeholder="enter tips..."
-            style={{
-              fontStyle: "oblique",
-              paddingLeft: "3%",
-              color: "black",
-            }}
-            autoComplete="off"
-            name="TipsNet"
-            value={formState.TipsNet}
-            onChange={handleChange}
-            onKeyDown={(evt) =>
-              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
-            } // Prevents these keyboard keys to be inactive
-          />
-          <br />
-          <br />
-        </div>
-        {errorMessage ? (
-          <>
-            <Error message={errorMessage} />
-            <br />
-            <br />
-          </>
-        ) : null}
+        {fields &&
+          fields.map((field) => (
+            <div className="login-signup" key={field.label}>
+              <label
+                data-testid={`enterTipsForm-label-${field.label}`}
+                htmlFor={field.label}
+                className="mb-3"
+                name={field.label}
+              >
+                {field.label === "TipsGross" && <span>Tips (gross): </span>}
+                {field.label === "TipsNet" && <span>Tips (net): </span>}
+                {field.label !== "TipsNet" && field.label !== "TipsGross" && (
+                  <span>{field.label}</span>
+                )}
+              </label>
+
+              {field.label === "Today's date: " ? (
+                <div className="login-input mb-3">{formattedDate}</div>
+              ) : (
+                <input
+                  data-testid="login"
+                  id={field.label}
+                  inputMode={field.inputMod}
+                  type={field.type}
+                  className="login-input mb-3"
+                  placeholder={field.placeholder}
+                  autoComplete="on"
+                  name={field.label}
+                  value={formState.label}
+                  onChange={handleChange}
+                />
+              )}
+              {field.label === "Custom date: " && warning && (
+                <>
+                  <span>{warning}</span>
+                  <button onClick={() => setConfirm(true)}>confirm</button>
+                </>
+              )}
+            </div>
+          ))}
+        {errorMessage ? <Error message={errorMessage} /> : null}
         <Button
-          role="button"
           type="submit"
           className="button"
-          loading={loading}
           disabled={disabledButton}
+          loading={loading}
           error={errorMessage}
+          onClick={handleSubmit}
         >
-          add tips
+          login
         </Button>
       </div>
     </form>
