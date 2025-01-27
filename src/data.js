@@ -57,14 +57,14 @@ const profileData = {
 };
 
 const tipsFormData = {
-  templateTitle: "Please enter your tips",
+  templateTitle: "Please enter your tips for",
   fields: [
-    {
-      type: "string",
-      label: "Today's date: ",
-      placeholder: "",
-      inputMod: "string",
-    },
+    // {
+    //   type: "string",
+    //   label: "Today's date: ",
+    //   placeholder: "",
+    //   inputMod: "string",
+    // },
     {
       tylpe: "string",
       label: "Custom date: ",

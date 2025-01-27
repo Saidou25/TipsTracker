@@ -90,10 +90,10 @@
   }
 }
 @media screen and (max-width: 1440px) {
-  .tips-form {
+  /* .tips-form {
   width: 60%;
   margin: auto;
-}
+} */
 @media screen and (max-width: 1030px) {
   .login-sinup {
     display: flex !important;
@@ -102,10 +102,10 @@
 }
 }
 @media screen and (max-width: 950px) {
-  .tips-form {
+  /* .tips-form {
     width: 60%;
     margin: auto !important;
-  }
+  } */
   .login-signup {
     width: 80% !important;
     margin: auto;

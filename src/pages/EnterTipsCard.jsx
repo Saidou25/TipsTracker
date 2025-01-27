@@ -2,6 +2,7 @@ import React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { db } from "../firebase";
 import {
+  arrayRemove,
   arrayUnion,
   collection,
   doc,
@@ -9,6 +10,8 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
+import { dateFormat } from "../helpers/dateFormat";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 import findUser from "../UseFindUser";
 
@@ -19,26 +22,13 @@ import "../components/Card.css";
 
 const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   const { user, loading: loadingUser } = findUser();
-
   const date = useMemo(() => new Date(), []);
-  // Getting the full length of the day
-  const fullDayName = date.toLocaleString("en-US", { weekday: "long" });
-  // Format the date as MM/DD/YYYY
-  // const formattedDate = "01/15/2025"; for testing
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-  });
+  const { fullDayName, formattedDate } = dateFormat(date);
 
   const [customDate, setCustomDate] = useState("");
   const [warning, setWarning] = useState("");
+  const [warningConfirmed, setWarningConfirmed] = useState("");
   const [confirm, setConfirm] = useState(false);
-  const [updateCurrentUserCollection, setUpdateCurrentUserCollection] =
-    useState(false);
-  const [todayTipAdjustment, setTodayTipAdjustment] = useState(false);
-  const [firstCurrentUserTipEntry, setFirstCurrentUserTipEntry] =
-    useState(false);
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState([]);
   const [disabledButton, setDisabledButton] = useState(true);
@@ -52,14 +42,24 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   });
 
   const form = useRef();
-  const userDocRef = doc(db, "users", "userId");
   const { fields, footer, templateTitle } = cardBodyTemplate;
+
+  const handleWarning = (e) => {
+    const { value } = e.target;
+    if (value === "on") {
+      setWarning("");
+      setWarningConfirmed("Tips will be updated.");
+      setConfirm(true);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setErrorMessage("");
     setWarning("");
+    console.log(name, value);
     if (name === "Custom date: ") {
+      setWarningConfirmed("");
       const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])\/\d{4}$/;
       if (!regex.test(value)) {
         setErrorMessage("Entry must match MM/DD/YYYY format.");
@@ -78,6 +78,23 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
         year: "numeric",
       });
       setCustomDate(formattedCustomDate);
+      const loggedinUser = users.filter(
+        (eachUser) => eachUser.email === user.email
+      );
+      const olderTip = loggedinUser[0].tips.filter(
+        (tip) => tip.date === formattedCustomDate
+      );
+      if (olderTip[0]) {
+        setFormState({
+          ...formState,
+          dayName: fullCustomDayName,
+          date: formattedCustomDate,
+        });
+        setWarning(
+          `You are attempting to overwrite your tips for ${formattedCustomDate}. Please confirm that this is intentional.`
+        );
+        return;
+      }
       setFormState({
         ...formState,
         dayName: fullCustomDayName,
@@ -89,9 +106,6 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
         [name]: value,
       });
     }
-    if (formState.TipsGross && formState.TipsNet) {
-      setDisabledButton(false);
-    }
   };
 
   // Resetting formState and other states in one function to avoid repeating the same lines
@@ -99,17 +113,20 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     setLoading(false);
     setDisabledButton(true);
     setErrorMessage("");
-    setUpdateCurrentUserCollection(false);
-    setFirstCurrentUserTipEntry(false);
     setFormState({
       TipsGross: 0,
       TipsNet: 0,
       dayName: fullDayName,
       date: formattedDate,
     });
+    setCustomDate("");
+    setWarning("");
+    setWarningConfirmed("");
+    setConfirm(false);
+    setUserTipsData([]);
   };
 
-  // if user wants to re-adjust the tips just entered
+  // if user wants to re-adjust the tips entered form the same day
   let updatedTips = [];
   const updateTodaysTips = useCallback(async () => {
     const userDocRef = doc(db, "users", user.uid);
@@ -125,10 +142,9 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       });
       showSuccess("Today's tips successfully adjusted...");
       setErrorMessage("");
+      resetFormAndStates();
     } catch {
       setErrorMessage("Could not update today's tips. Please try again later.");
-    } finally {
-      resetFormAndStates();
     }
   }, [userTipsData, user, formState]);
 
@@ -149,41 +165,58 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     }
   }, [user, formState, userTipsData, updateTodaysTips]);
 
-  // Updating old tips
-  const correctPreviousTip = async () => {
+  // Delete old tip
+  const deleteOldTip = async () => {
     const userDocRef = doc(db, "users", user.uid);
-
-    // Step 2: Fetch the current document
     const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const data = userDoc.data().tips;
-      const tipsData = data.tips || [];
-      // console.log(data)
-      //    // Step 3: Update the specific object in the array
-      const updatedTips = tipsData.map((tip) =>
-        tip.date === customDate ? { ...tipsData, ...updatedTips } : tipsData
-      );
-
-      //    // Step 4: Write the updated array back to Firestore
-      //    await updateDoc(userDocRef, { activities: updatedActivities });
-      //    console.log("Activity updated successfully!");
-      //  } else {
-      //    console.log("Document does not exist!");
+    const tips = userDoc.data().tips;
+    for (let findTip of tips) {
+      if (findTip.date === customDate) {
+        try {
+          await updateDoc(userDocRef, {
+            tips: arrayRemove(findTip),
+          });
+          console.log("tip deleted");
+        } catch (error) {
+          console.log(error.message);
+        } finally {
+          updateTheCollection();
+        }
+      }
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (confirm) {
-      console.log("Confirmed");
-      return;
-    }
-    if (firstCurrentUserTipEntry || updateCurrentUserCollection || customDate) {
-      updateTheCollection();
-    } else if (todayTipAdjustment) {
-      updateTodaysTips();
+    if (users.length) {
+      const loggedinUser = users.filter(
+        (eachUser) => eachUser.email === user.email
+      );
+      if (!loggedinUser[0].tips.length) {
+        updateTheCollection();
+        console.log("first time");
+      } else {
+        const allUserTips = loggedinUser[0].tips;
+        for (let userTips of allUserTips) {
+          if (userTips.date !== formattedDate && !customDate && !confirm) {
+            updateTheCollection();
+            // console.log("add today's tips")
+          }
+          if (userTips.date === formattedDate && !confirm && !customDate) {
+            // updateTodaysTips("update today's tip");
+            console.log();
+          }
+          if (customDate && !confirm) {
+            // console.log("add forgotten tip")
+            updateTheCollection();
+          }
+          if (confirm && customDate && userTips.date === customDate) {
+            // console.log("delete old tip")
+            deleteOldTip();
+          }
+        }
+      }
     }
   };
 
@@ -206,44 +239,17 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   }, []);
 
   useEffect(() => {
-    if (users.length) {
-      const loggedinUser = users.filter(
-        (eachUser) => eachUser.email === user.email
-      );
-      if (!loggedinUser[0].tips) {
-        setFirstCurrentUserTipEntry(true);
-      }
-      // If loggedin user already did enter his/her tips in the past then we set update the collection to true and the collection will be update thru handleSubmit
-      if (loggedinUser[0]?.tips) {
-        const tipsAdjustment = loggedinUser[0].tips.filter(
-          (tip) => tip.date === formattedDate
-        );
-        const olderTip = loggedinUser[0].tips.filter(
-          (tip) => tip.date === customDate
-        );
-        if (olderTip[0]?.date) {
-          setWarning(
-            `You are attempting to overwrite your tips for ${olderTip[0].date}. Please confirm that this is intentional.`
-          );
-        }
-        // If loggedin user is trying to correct is today's tip entry we trigger updateTodaysTips her so he/her can do it
-        if (tipsAdjustment.length) {
-          setTodayTipAdjustment(true);
-          setUserTipsData(loggedinUser[0].tips); // pulling the tips list of the current loggedin user
-        } else {
-          setUpdateCurrentUserCollection(true);
-        }
-      }
-    }
-  }, [users, user, customDate, warning]);
-
-  useEffect(() => {
+    console.log(formState)
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
-    if (formState.TipsGross && formState.TipsNet) {
-      setDisabledButton(false);
-    } else {
+    if (!formState.TipsGross || !formState.TipsNet) {
       setDisabledButton(true);
-    }
+      return;
+    } else if (formState.TipsGross <= formState.TipsNet) {
+      setErrorMessage("Net tips must be less than Gross tips.");
+      setDisabledButton(true);
+      return;
+    } else ((formState.TipsGross && formState.TipsNet) && (formState.TipsGross > formState.TipsNet))
+    setDisabledButton(false);
   }, [formState]);
 
   return (
@@ -252,7 +258,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
         <br />
         {fields &&
           fields.map((field) => (
-            <div className="login-signup" key={field.label}>
+            <div className="tips-label-input" key={field.label}>
               <label
                 data-testid={`enterTipsForm-label-${field.label}`}
                 htmlFor={field.label}
@@ -267,7 +273,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
               </label>
 
               {field.label === "Today's date: " ? (
-                <div className="login-input mb-3">{formattedDate}</div>
+                <div className="mb-3">{formattedDate}</div>
               ) : (
                 <input
                   data-testid="login"
@@ -285,8 +291,18 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
               {field.label === "Custom date: " && warning && (
                 <>
                   <span>{warning}</span>
-                  <button onClick={() => setConfirm(true)}>confirm</button>
+                  <input
+                    type="checkbox"
+                    name="warning"
+                    onClick={handleWarning}
+                  />
                 </>
+              )}
+              {field.label === "Custom date: " && warningConfirmed && (
+                <div className="warning-div">
+                  <FaRegCheckCircle className="facheck-circle" />
+                  <span>{warningConfirmed}</span>
+                </div>
               )}
             </div>
           ))}
@@ -301,6 +317,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
         >
           login
         </Button>
+        <br />
       </div>
     </form>
   );

@@ -1,3 +1,37 @@
+.card-tips-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 !important;
+  /* height: 50px; */
+  background-color: rgba(7, 1, 53, 0.8) !important;
+  font-size: 20px
+}
+.tips-form {
+  width: 60%;
+  margin: auto;
+}
+.tips-label-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  padding-bottom: 2rem;
+  /* width: 40% !important; */
+  margin: auto;
+}
+.warning-div {
+  display: flex;
+  align-items: center;
+}
+.facheck-circle {
+  color: white;
+  background-color: green;
+  border-radius: 50%;
+  height: 8%;
+  width: 8%;
+  margin-right: 3%;
+}
 .card-success {
   border: 2px solid rgb(117, 95, 203) !important;
   background-color: rgb(15, 15, 19, 0.3) !important;
@@ -38,6 +72,10 @@
 @media screen and (max-width: 600px) {
   .card-success {
     width: 85% !important;
+  }
+  .tips-form {
+    width: 80%;
+    margin: auto;
   }
 }
 @media screen and (max-width: 460px) {
