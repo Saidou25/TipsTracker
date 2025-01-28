@@ -114,9 +114,7 @@ const SignupCard = ({ cardBodyTemplate }) => {
   }, [formState]);
 
   return (
-    <div className="card main-card" data-testid="main-card">
-      <div className="card-title p-5">{templateTitle}</div>
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="tips-form" onSubmit={handleSubmit}>
         <div className="my-2 g-0">
           <br />
           {fields &&
@@ -145,6 +143,7 @@ const SignupCard = ({ cardBodyTemplate }) => {
               </div>
             ))}
           {errorMessage ? <Error message={errorMessage} /> : null}
+          <br />
           <Button
             type="submit"
             className="button"
@@ -154,12 +153,10 @@ const SignupCard = ({ cardBodyTemplate }) => {
           >
             save
           </Button>
-          {success && <span className="text-success">{success}</span>}
+          <br />
+          {/* {success && <span className="text-success">{success}</span>} */}
         </div>
       </form>
-      <br />
-      <div className="card-footer p-5">{footer}</div>
-    </div>
   );
 };
 export default SignupCard;

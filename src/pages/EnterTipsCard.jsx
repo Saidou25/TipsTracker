@@ -12,6 +12,8 @@ import {
 } from "firebase/firestore";
 import { dateFormat } from "../helpers/dateFormat";
 import { FaRegCheckCircle } from "react-icons/fa";
+// import { FaSackDollar } from "react-icons/fa6";
+// import { GiCoins } from "react-icons/gi";
 
 import findUser from "../UseFindUser";
 
@@ -49,29 +51,39 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     const { value } = e.target;
     if (value === "on") {
       setShowWarning("");
-      setShowWarningConfirmed("Tips will be updated.");
+      setShowWarningConfirmed("Overwriting confirmed");
       setConfirm(true);
+      setErrorMessage("");
     }
   };
 
   const handleshowCustomDate = (e) => {
     const { name, value } = e.target;
-    // console.log(name, value);
     if (name === "show-custom-date" && value === "on") {
+      setShowWarning("");
       setShowCustomDate(true);
     }
     if (name === "cancel-custom-date" && value === "on") {
       setShowCustomDate(false);
       setShowWarningConfirmed(false);
+      setErrorMessage("");
+      setConfirm(false);
+      setFormState({
+        ...formState,
+        dayName: fullDayName,
+        date: formattedDate,
+      });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setErrorMessage("");
-    setShowWarning("");
+    // setShowWarning("");
     // console.log(name, value);
     if (name === "Custom date: ") {
+      setConfirm(false);
+      setShowWarning("");
       setShowWarningConfirmed("");
       const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])\/\d{4}$/;
       if (!regex.test(value) && value.length >= 10) {
@@ -97,16 +109,29 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       const olderTip = loggedinUser[0].tips.filter(
         (tip) => tip.date === formattedCustomDate
       );
+
+      if (formattedCustomDate === formattedDate) {
+        setFormState({
+          ...formState,
+          dayName: fullDayName,
+          date: formattedDate,
+        });
+        setShowWarning("");
+        setShowCustomDate(false);
+        setShowWarningConfirmed("");
+      }
       if (olderTip[0]) {
         setFormState({
           ...formState,
           dayName: fullCustomDayName,
           date: formattedCustomDate,
         });
-        setShowWarning(
-          `You are attempting to overwrite your tips for ${formattedCustomDate}. Please confirm that this is intentional.`
-        );
-        return;
+        if (formattedCustomDate === olderTip[0].date) {
+          setShowWarning(
+            `You are about to overwrite your tips for ${formattedCustomDate}. Please confirm if this action is intentional`
+          );
+          return;
+        }
       }
       setFormState({
         ...formState,
@@ -190,7 +215,6 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
           await updateDoc(userDocRef, {
             tips: arrayRemove(findTip),
           });
-          console.log("tip deleted");
         } catch (error) {
           console.log(error.message);
         } finally {
@@ -202,6 +226,10 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (customDate && !confirm && showWarning) {
+      setErrorMessage("You must confirm your date change");
+      return;
+    }
     setLoading(true);
     if (users.length) {
       const loggedinUser = users.filter(
@@ -257,15 +285,10 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     if (!formState.TipsGross || !formState.TipsNet) {
       setDisabledButton(true);
       return;
-    } else if (formState.TipsGross <= formState.TipsNet) {
-      setErrorMessage("Net tips must be less than Gross tips.");
-      setDisabledButton(true);
-      return;
-    } else
-      formState.TipsGross &&
-        formState.TipsNet &&
-        formState.TipsGross > formState.TipsNet;
-    setDisabledButton(false);
+    } else if (formState.TipsGross && formState.TipsNet) {
+      setErrorMessage("");
+      setDisabledButton(false);
+    }
   }, [formState]);
 
   return (
@@ -297,8 +320,18 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                     className="mb-3"
                     name={field.label}
                   >
-                    {field.label === "TipsGross" && <span>Tips (gross): </span>}
-                    {field.label === "TipsNet" && <span>Tips (net): </span>}
+                    {field.label === "TipsGross" && (
+                      <div className="coins-div">
+                        <span>Tips (gross): </span>
+                        <span className="coins">{/* <FaSackDollar />: */}</span>
+                      </div>
+                    )}
+                    {field.label === "TipsNet" && (
+                      <div className="coins-div">
+                        <span>Tips (net): </span>
+                        <span className="coins-span">{/* <GiCoins />: */}</span>
+                      </div>
+                    )}
                     {field.label !== "TipsNet" &&
                       field.label !== "TipsGross" && <span>{field.label}</span>}
                   </label>
@@ -344,14 +377,10 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                   )}
                 </>
               )}
-              {/* 
-              {field.label === "Today's date: " ? (
-                <div className="mb-3">{formattedDate}</div>
-              ) : ( */}
-              {/* // )} */}
             </div>
           ))}
         {errorMessage ? <Error message={errorMessage} /> : null}
+        <br />
         <Button
           type="submit"
           className="button"

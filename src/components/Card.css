@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center; 
   padding-bottom: 2rem;
-  width: 40% !important;
   margin: auto;
 }
 .div-label {
@@ -90,26 +89,12 @@
   }
 }
 @media screen and (max-width: 1440px) {
-  /* .tips-form {
-  width: 60%;
-  margin: auto;
-} */
 @media screen and (max-width: 1030px) {
   .login-sinup {
     display: flex !important;
     flex-direction: column !important;
   }
 }
-}
-@media screen and (max-width: 950px) {
-  /* .tips-form {
-    width: 60%;
-    margin: auto !important;
-  } */
-  .login-signup {
-    width: 80% !important;
-    margin: auto;
-  }
 }
 @media screen and (max-width: 850px) {
   .main-card {

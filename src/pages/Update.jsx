@@ -19,6 +19,7 @@ const Update = () => {
   const [showModalWindow, setShowModalWindow] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(""); // State for error
+  const [success, setSuccess] = useState(""); // State for error
 
   const navigate = useNavigate();
 

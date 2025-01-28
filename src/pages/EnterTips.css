@@ -18,7 +18,17 @@
   padding-bottom: 2rem;
   margin: auto;
 }
-
+/* .coins-div {
+  display: inline-block;
+  vertical-align: bottom;
+}
+.coins {
+  vertical-align: bottom !important;
+}
+.coins-span {
+  vertical-align: middle; 
+  line-height: normal;
+} */
 .warning-div-check {
   display: inline-block; /* Allow the checkbox and text to be in a line */
   vertical-align: middle; /* Align text vertically with the checkbox */

@@ -11,6 +11,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // const { fields, templateTitle, footer } = loginData;
+
   const showSuccessCard = (data) => {
     if (data === "You are logged in") {
       setSuccess(data);
@@ -28,15 +30,19 @@ const Login = () => {
         </div>
       ) : (
         <div className="container-fluid g-0">
-          <LoginCard
-            className="p-0 m-0 g-0"
-            cardBodyTemplate={{
-              templateTitle: loginData.templateTitle,
-              fields: loginData.fields,
-              footer: loginData.footer,
-            }}
-            showSuccess={showSuccessCard}
-          />
+          <div className="card main-card" data-testid="main-card">
+            <div className="card-title p-5">{loginData.templateTitle}</div>
+            <LoginCard
+              className="p-0 m-0 g-0"
+              cardBodyTemplate={{
+                templateTitle: loginData.templateTitle,
+                fields: loginData.fields,
+                footer: loginData.footer,
+              }}
+              showSuccess={showSuccessCard}
+            />
+            <div className="card-footer p-5">{loginData.footer}</div>
+          </div>
         </div>
       )}
     </>

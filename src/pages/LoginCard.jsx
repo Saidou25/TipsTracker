@@ -78,9 +78,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
   }, [formState]);
 
   return (
-    <div className="card main-card" data-testid="main-card">
-      <div className="card-title p-5">{templateTitle}</div>
-      <form className="login-form">
+      <form className="tips-form">
         <div className="my-2 g-0">
           <br />
           {fields &&
@@ -109,6 +107,7 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
               </div>
             ))}
           {errorMessage ? <Error message={errorMessage} /> : null}
+          <br />
           <Button
             type="submit"
             className="button"
@@ -119,11 +118,9 @@ const CardBodyLogin = ({ cardBodyTemplate, showSuccess }) => {
           >
             login
           </Button>
+          <br />
         </div>
       </form>
-      <br />
-      <div className="card-footer p-5">{footer}</div>
-    </div>
   );
 };
 export default CardBodyLogin;
