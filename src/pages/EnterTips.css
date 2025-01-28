@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   margin: 0 !important;
-  /* height: 50px; */
   background-color: rgba(7, 1, 53, 0.8) !important;
   font-size: 20px
 }
@@ -17,19 +16,45 @@
   flex-direction: column;
   justify-content: center; 
   padding-bottom: 2rem;
-  /* width: 40% !important; */
   margin: auto;
 }
-.warning-div {
+
+.warning-div-check {
+  display: inline-block; /* Allow the checkbox and text to be in a line */
+  vertical-align: middle; /* Align text vertically with the checkbox */
+}
+.all-checks {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block; /* Ensures the checkbox stays inline with text */
+  flex-shrink: 0; /* Prevents the checkbox from shrinking */
+  width: 5%; /* Percentage of the parent container's width */
+  max-width: 30px; /* Optional: Set a maximum width */
+  height: auto; /* Automatically adjusts height based on width */
+  aspect-ratio: 1 / 1; /* Ensures the checkbox stays a perfect circle */
+  cursor: pointer;
+  border: 2px solid white; 
+  background-color: grey;
+  border-radius: 50%; /* Makes it circular */
+  margin-right: 3%;
+  vertical-align: middle;
+}
+span {
+  vertical-align: middle; /* Vertically align text with checkbox */
+  line-height: normal; /* Adjust line height if needed */
+}
+.warning-div-fa {
   display: flex;
   align-items: center;
+  margin-top: 5px;
 }
 .facheck-circle {
   color: white;
   background-color: green;
   border-radius: 50%;
-  height: 8%;
-  width: 8%;
+  height: 5%;
+  width: 5%;
   margin-right: 3%;
 }
 .card-success {

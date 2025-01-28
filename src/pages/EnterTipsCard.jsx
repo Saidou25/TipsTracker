@@ -25,9 +25,10 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   const date = useMemo(() => new Date(), []);
   const { fullDayName, formattedDate } = dateFormat(date);
 
+  const [showCustomDate, setShowCustomDate] = useState(false);
   const [customDate, setCustomDate] = useState("");
-  const [warning, setWarning] = useState("");
-  const [warningConfirmed, setWarningConfirmed] = useState("");
+  const [showWarning, setShowWarning] = useState("");
+  const [showWarningConfirmed, setShowWarningConfirmed] = useState("");
   const [confirm, setConfirm] = useState(false);
   const [users, setUsers] = useState([]);
   const [userTipsData, setUserTipsData] = useState([]);
@@ -44,24 +45,36 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   const form = useRef();
   const { fields, footer, templateTitle } = cardBodyTemplate;
 
-  const handleWarning = (e) => {
+  const handleshowWarning = (e) => {
     const { value } = e.target;
     if (value === "on") {
-      setWarning("");
-      setWarningConfirmed("Tips will be updated.");
+      setShowWarning("");
+      setShowWarningConfirmed("Tips will be updated.");
       setConfirm(true);
+    }
+  };
+
+  const handleshowCustomDate = (e) => {
+    const { name, value } = e.target;
+    // console.log(name, value);
+    if (name === "show-custom-date" && value === "on") {
+      setShowCustomDate(true);
+    }
+    if (name === "cancel-custom-date" && value === "on") {
+      setShowCustomDate(false);
+      setShowWarningConfirmed(false);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setErrorMessage("");
-    setWarning("");
-    console.log(name, value);
+    setShowWarning("");
+    // console.log(name, value);
     if (name === "Custom date: ") {
-      setWarningConfirmed("");
+      setShowWarningConfirmed("");
       const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])\/\d{4}$/;
-      if (!regex.test(value)) {
+      if (!regex.test(value) && value.length >= 10) {
         setErrorMessage("Entry must match MM/DD/YYYY format.");
         return;
       }
@@ -90,7 +103,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
           dayName: fullCustomDayName,
           date: formattedCustomDate,
         });
-        setWarning(
+        setShowWarning(
           `You are attempting to overwrite your tips for ${formattedCustomDate}. Please confirm that this is intentional.`
         );
         return;
@@ -113,17 +126,18 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     setLoading(false);
     setDisabledButton(true);
     setErrorMessage("");
+    setCustomDate("");
+    setShowCustomDate(false);
+    setShowWarning("");
+    setShowWarningConfirmed("");
+    setConfirm(false);
+    setUserTipsData([]);
     setFormState({
       TipsGross: 0,
       TipsNet: 0,
       dayName: fullDayName,
       date: formattedDate,
     });
-    setCustomDate("");
-    setWarning("");
-    setWarningConfirmed("");
-    setConfirm(false);
-    setUserTipsData([]);
   };
 
   // if user wants to re-adjust the tips entered form the same day
@@ -195,7 +209,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       );
       if (!loggedinUser[0].tips.length) {
         updateTheCollection();
-        console.log("first time");
+        // console.log("first time");
       } else {
         const allUserTips = loggedinUser[0].tips;
         for (let userTips of allUserTips) {
@@ -239,7 +253,6 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   }, []);
 
   useEffect(() => {
-    console.log(formState)
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
     if (!formState.TipsGross || !formState.TipsNet) {
       setDisabledButton(true);
@@ -248,7 +261,10 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       setErrorMessage("Net tips must be less than Gross tips.");
       setDisabledButton(true);
       return;
-    } else ((formState.TipsGross && formState.TipsNet) && (formState.TipsGross > formState.TipsNet))
+    } else
+      formState.TipsGross &&
+        formState.TipsNet &&
+        formState.TipsGross > formState.TipsNet;
     setDisabledButton(false);
   }, [formState]);
 
@@ -256,54 +272,83 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     <form ref={form} role="form" className="tips-form" onSubmit={handleSubmit}>
       <div className="my-2 g-0">
         <br />
+
         {fields &&
           fields.map((field) => (
             <div className="tips-label-input" key={field.label}>
-              <label
-                data-testid={`enterTipsForm-label-${field.label}`}
-                htmlFor={field.label}
-                className="mb-3"
-                name={field.label}
-              >
-                {field.label === "TipsGross" && <span>Tips (gross): </span>}
-                {field.label === "TipsNet" && <span>Tips (net): </span>}
-                {field.label !== "TipsNet" && field.label !== "TipsGross" && (
-                  <span>{field.label}</span>
-                )}
-              </label>
-
-              {field.label === "Today's date: " ? (
-                <div className="mb-3">{formattedDate}</div>
-              ) : (
-                <input
-                  data-testid="login"
-                  id={field.label}
-                  inputMode={field.inputMod}
-                  type={field.type}
-                  className="login-input mb-3"
-                  placeholder={field.placeholder}
-                  autoComplete="on"
-                  name={field.label}
-                  value={formState.label}
-                  onChange={handleChange}
-                />
-              )}
-              {field.label === "Custom date: " && warning && (
-                <>
-                  <span>{warning}</span>
+              {field.label === "Custom date: " && !showCustomDate ? (
+                <div className="showWarning-div-check">
                   <input
+                    className="all-checks"
                     type="checkbox"
-                    name="warning"
-                    onClick={handleWarning}
+                    name="show-custom-date"
+                    onClick={handleshowCustomDate}
                   />
+                  <span>
+                    Tips will default to today's date. Check this box to select
+                    a different date if needed.
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <label
+                    data-testid={`enterTipsForm-label-${field.label}`}
+                    htmlFor={field.label}
+                    className="mb-3"
+                    name={field.label}
+                  >
+                    {field.label === "TipsGross" && <span>Tips (gross): </span>}
+                    {field.label === "TipsNet" && <span>Tips (net): </span>}
+                    {field.label !== "TipsNet" &&
+                      field.label !== "TipsGross" && <span>{field.label}</span>}
+                  </label>
+                  <input
+                    data-testid="login"
+                    id={field.label}
+                    inputMode={field.inputMod}
+                    type={field.type}
+                    className="login-input mb-3"
+                    placeholder={field.placeholder}
+                    autoComplete="on"
+                    name={field.label}
+                    value={formState.label}
+                    onChange={handleChange}
+                  />
+                  {field.label === "Custom date: " && showCustomDate && (
+                    <div className="show-custom-date">
+                      <input
+                        className="all-checks"
+                        type="checkbox"
+                        name="cancel-custom-date"
+                        onClick={handleshowCustomDate}
+                      />
+                      <span>Cancel custom date</span>
+                    </div>
+                  )}
+                  {field.label === "Custom date: " && showWarning && (
+                    <div className="showWarning-div-check">
+                      <input
+                        className="all-checks"
+                        type="checkbox"
+                        name="showWarning"
+                        onClick={handleshowWarning}
+                      />
+                      <span>{showWarning}</span>
+                    </div>
+                  )}
+                  {field.label === "Custom date: " && showWarningConfirmed && (
+                    <div className="showWarning-div-fa">
+                      <FaRegCheckCircle className="facheck-circle" />
+                      <span>{showWarningConfirmed}</span>
+                    </div>
+                  )}
                 </>
               )}
-              {field.label === "Custom date: " && warningConfirmed && (
-                <div className="warning-div">
-                  <FaRegCheckCircle className="facheck-circle" />
-                  <span>{warningConfirmed}</span>
-                </div>
-              )}
+              {/* 
+              {field.label === "Today's date: " ? (
+                <div className="mb-3">{formattedDate}</div>
+              ) : ( */}
+              {/* // )} */}
             </div>
           ))}
         {errorMessage ? <Error message={errorMessage} /> : null}

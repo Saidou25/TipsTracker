@@ -61,9 +61,9 @@ const tipsFormData = {
   fields: [
     // {
     //   type: "string",
-    //   label: "Today's date: ",
-    //   placeholder: "",
-    //   inputMod: "string",
+    //   label: "Choose date",
+    //   // placeholder: "",
+    //   // inputMod: "string",
     // },
     {
       tylpe: "string",
