@@ -5,7 +5,7 @@
   align-items: center;
   margin: 0 !important;
   background-color: rgba(7, 1, 53, 0.8) !important;
-  font-size: 20px
+  font-size: 20px;
 }
 .tips-form {
   width: 60%;
@@ -14,21 +14,26 @@
 .tips-label-input {
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   padding-bottom: 2rem;
   margin: auto;
 }
-/* .coins-div {
-  display: inline-block;
-  vertical-align: bottom;
+.coins-div {
+  display: flex;
+  align-items: baseline;
+  /* height: 50px; */
 }
 .coins {
-  vertical-align: bottom !important;
+  display: flex;
+  align-items: baseline;
+  padding-left: 7px;
+  /* height: 60%; */
 }
 .coins-span {
-  vertical-align: middle; 
-  line-height: normal;
-} */
+  display: flex;
+  align-items: baseline;
+  /* height: 60%; */
+}
 .warning-div-check {
   display: inline-block; /* Allow the checkbox and text to be in a line */
   vertical-align: middle; /* Align text vertically with the checkbox */
@@ -44,19 +49,21 @@
   height: auto; /* Automatically adjusts height based on width */
   aspect-ratio: 1 / 1; /* Ensures the checkbox stays a perfect circle */
   cursor: pointer;
-  border: 2px solid white; 
+  border: 1px solid white;
   background-color: grey;
   border-radius: 50%; /* Makes it circular */
   margin-right: 3%;
   vertical-align: middle;
+  background-color: rgba(210, 35, 241, 0.92) !important;
 }
-span {
+.warning-span {
   vertical-align: middle; /* Vertically align text with checkbox */
   line-height: normal; /* Adjust line height if needed */
 }
 .warning-div-fa {
-  display: flex;
+  /* display: flex;
   align-items: center;
+  justify-content: center; */
   margin-top: 5px;
 }
 .facheck-circle {

@@ -74,13 +74,13 @@ const tipsFormData = {
     {
       type: "number",
       label: "TipsGross",
-      placeholder: "enter tips",
+      placeholder: "enter tip amount before tipout...",
       inputMod: "numeric",
     },
     {
       type: "number",
       label: "TipsNet",
-      placeholder: "enter tips",
+      placeholder: "enter tip amount after tipout...",
       inputMod: "numeric",
     },
   ],

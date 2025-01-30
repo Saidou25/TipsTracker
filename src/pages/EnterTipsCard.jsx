@@ -65,6 +65,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
     }
     if (name === "cancel-custom-date" && value === "on") {
       setShowCustomDate(false);
+      setShowWarning("");
       setShowWarningConfirmed(false);
       setErrorMessage("");
       setConfirm(false);
@@ -86,7 +87,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       setShowWarning("");
       setShowWarningConfirmed("");
       const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])\/\d{4}$/;
-      if (!regex.test(value) && value.length >= 10) {
+      if (!regex.test(value)) {
         setErrorMessage("Entry must match MM/DD/YYYY format.");
         return;
       }
@@ -225,7 +226,6 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     if (customDate && !confirm && showWarning) {
       setErrorMessage("You must confirm your date change");
       return;
@@ -281,6 +281,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
   }, []);
 
   useEffect(() => {
+    console.log(showWarning)
     // When the form is completely filled (even if autocomplete fills it) we enable the submit button
     if (!formState.TipsGross || !formState.TipsNet) {
       setDisabledButton(true);
@@ -290,7 +291,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
       setDisabledButton(false);
     }
   }, [formState]);
-
+console.log(formState);
   return (
     <form ref={form} role="form" className="tips-form" onSubmit={handleSubmit}>
       <div className="my-2 g-0">
@@ -307,7 +308,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                     name="show-custom-date"
                     onClick={handleshowCustomDate}
                   />
-                  <span>
+                  <span className="warning-span">
                     Tips will default to today's date. Check this box to select
                     a different date if needed.
                   </span>
@@ -322,14 +323,18 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                   >
                     {field.label === "TipsGross" && (
                       <div className="coins-div">
-                        <span>Tips (gross): </span>
-                        <span className="coins">{/* <FaSackDollar />: */}</span>
+                        <div className="coins-span">Gross tips: </div>
+                        {/* <div className="coins">
+                          <FaSackDollar />:
+                        </div> */}
                       </div>
                     )}
                     {field.label === "TipsNet" && (
                       <div className="coins-div">
-                        <span>Tips (net): </span>
-                        <span className="coins-span">{/* <GiCoins />: */}</span>
+                        <div className="coins-span">Net tips: </div>
+                        {/* <div className="coins">
+                          <GiCoins />:
+                        </div> */}
                       </div>
                     )}
                     {field.label !== "TipsNet" &&
@@ -355,7 +360,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                         name="cancel-custom-date"
                         onClick={handleshowCustomDate}
                       />
-                      <span>Cancel custom date</span>
+                      <span className="warning-span">Cancel custom date</span>
                     </div>
                   )}
                   {field.label === "Custom date: " && showWarning && (
@@ -366,7 +371,7 @@ const EnterTipsCard = ({ showSuccess, cardBodyTemplate }) => {
                         name="showWarning"
                         onClick={handleshowWarning}
                       />
-                      <span>{showWarning}</span>
+                      <span className="warning-span">{showWarning}</span>
                     </div>
                   )}
                   {field.label === "Custom date: " && showWarningConfirmed && (
