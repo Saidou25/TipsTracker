@@ -1,7 +1,7 @@
 {
   "homepage": "https://saidou25.github.io/tipstracker/",
   "name": "tipstracker",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "engines": {
